@@ -729,10 +729,10 @@ const SkillsBento = ({ dict }: { dict: any }) => {
         {/* Bento 1: About Me */}
         <motion.div
           whileHover={{ scale: 0.98 }}
-          className="col-span-1 md:col-span-2 row-span-1 bg-black text-white dark:bg-white dark:text-black p-6 md:p-12 xl:p-16 flex flex-col justify-center shadow-[8px_8px_0px_rgba(0,0,0,0.1)] dark:shadow-[8px_8px_0px_rgba(255,255,255,0.2)]"
+          className="col-span-1 md:col-span-2 row-span-1 bg-black text-white dark:bg-white dark:text-black p-6 md:p-12 flex flex-col justify-center shadow-[8px_8px_0px_rgba(0,0,0,0.1)] dark:shadow-[8px_8px_0px_rgba(255,255,255,0.2)]"
         >
-          <h3 className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-black uppercase tracking-tighter mb-6">{dict.about_title}</h3>
-          <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-medium leading-relaxed opacity-90 max-w-xl xl:max-w-2xl">
+          <h3 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6">{dict.about_title}</h3>
+          <p className="text-lg md:text-xl font-medium leading-relaxed opacity-90 max-w-xl">
             {dict.about_text}
           </p>
         </motion.div>
@@ -740,42 +740,42 @@ const SkillsBento = ({ dict }: { dict: any }) => {
         {/* Bento 2: Frontend */}
         <motion.div
           whileHover={{ scale: 0.98 }}
-          className="col-span-1 md:col-span-1 row-span-1 border-2 border-black dark:border-white p-6 md:p-8 xl:p-10 flex flex-col justify-between bg-zinc-50 dark:bg-zinc-900/20"
+          className="col-span-1 md:col-span-1 row-span-1 border-2 border-black dark:border-white p-6 md:p-8 flex flex-col justify-between bg-zinc-50 dark:bg-zinc-900/20"
         >
           <div>
-            <h4 className="text-xl lg:text-2xl xl:text-3xl font-black uppercase tracking-tighter mb-2">{dict.bento_frontend}</h4>
-            <p className="text-sm lg:text-base xl:text-lg font-medium opacity-70 mb-6">{dict.bento_frontend_desc}</p>
+            <h4 className="text-xl font-black uppercase tracking-tighter mb-2">{dict.bento_frontend}</h4>
+            <p className="text-sm font-medium opacity-70 mb-6">{dict.bento_frontend_desc}</p>
           </div>
           <div className="flex flex-wrap gap-2">
-            {['React', 'Next.js', 'Tailwind', 'TS'].map(t => <span key={t} className="px-2 py-1 bg-black text-white dark:bg-white dark:text-black text-[10px] xl:text-xs font-bold uppercase tracking-wider">{t}</span>)}
+            {['React', 'Next.js', 'Tailwind', 'TS'].map(t => <span key={t} className="px-2 py-1 bg-black text-white dark:bg-white dark:text-black text-[10px] font-bold uppercase tracking-wider">{t}</span>)}
           </div>
         </motion.div>
 
         {/* Bento 3: Backend */}
         <motion.div
           whileHover={{ scale: 0.98 }}
-          className="col-span-1 md:col-span-1 row-span-1 border-2 border-black dark:border-white p-6 md:p-8 xl:p-10 flex flex-col justify-between bg-zinc-50 dark:bg-zinc-900/20"
+          className="col-span-1 md:col-span-1 row-span-1 border-2 border-black dark:border-white p-6 md:p-8 flex flex-col justify-between bg-zinc-50 dark:bg-zinc-900/20"
         >
           <div>
-            <h4 className="text-xl lg:text-2xl xl:text-3xl font-black uppercase tracking-tighter mb-2">{dict.bento_backend}</h4>
-            <p className="text-sm lg:text-base xl:text-lg font-medium opacity-70 mb-6">{dict.bento_backend_desc}</p>
+            <h4 className="text-xl font-black uppercase tracking-tighter mb-2">{dict.bento_backend}</h4>
+            <p className="text-sm font-medium opacity-70 mb-6">{dict.bento_backend_desc}</p>
           </div>
           <div className="flex flex-wrap gap-2">
-            {['Node.js', 'Python', 'SQL', 'APIs'].map(t => <span key={t} className="px-2 py-1 bg-black text-white dark:bg-white dark:text-black text-[10px] xl:text-xs font-bold uppercase tracking-wider">{t}</span>)}
+            {['Node.js', 'Python', 'SQL', 'APIs'].map(t => <span key={t} className="px-2 py-1 bg-black text-white dark:bg-white dark:text-black text-[10px] font-bold uppercase tracking-wider">{t}</span>)}
           </div>
         </motion.div>
 
         {/* Bento 4: Mobile & Tools */}
         <motion.div
           whileHover={{ scale: 0.98 }}
-          className="col-span-1 md:col-span-2 row-span-1 border-2 border-black dark:border-white p-6 md:p-12 xl:p-16 flex flex-col md:flex-row gap-8 items-start md:items-center justify-between bg-zinc-50 dark:bg-zinc-900/20"
+          className="col-span-1 md:col-span-2 row-span-1 border-2 border-black dark:border-white p-6 md:p-12 flex flex-col md:flex-row gap-8 items-start md:items-center justify-between bg-zinc-50 dark:bg-zinc-900/20"
         >
-          <div className="max-w-md xl:max-w-xl">
-            <h4 className="text-2xl lg:text-3xl xl:text-4xl font-black uppercase tracking-tighter mb-4">{dict.bento_mobile}</h4>
-            <p className="text-base lg:text-lg xl:text-xl font-medium opacity-70">{dict.bento_mobile_desc}</p>
+          <div className="max-w-md">
+            <h4 className="text-2xl font-black uppercase tracking-tighter mb-4">{dict.bento_mobile}</h4>
+            <p className="text-base font-medium opacity-70">{dict.bento_mobile_desc}</p>
           </div>
           <div className="flex flex-wrap gap-2 md:justify-end">
-            {['React Native', 'Expo', 'Git', 'Figma', 'Postman'].map(t => <span key={t} className="px-3 py-1 border border-black dark:border-white text-xs lg:text-sm font-bold uppercase tracking-wider">{t}</span>)}
+            {['React Native', 'Expo', 'Git', 'Figma', 'Postman'].map(t => <span key={t} className="px-3 py-1 border border-black dark:border-white text-xs font-bold uppercase tracking-wider">{t}</span>)}
           </div>
         </motion.div>
 
@@ -864,25 +864,25 @@ const ProjectCarousel = ({ dict, isDark }: { dict: any, isDark: boolean }) => {
               transition={{ duration: 0.4 }}
               className="flex flex-col h-full justify-center"
             >
-              <div className="text-xs lg:text-sm font-mono tracking-widest uppercase mb-4 flex items-center gap-4 text-zinc-500">
+              <div className="text-xs font-mono tracking-widest uppercase mb-4 flex items-center gap-4 text-zinc-500">
                 <div className="w-8 h-[2px] bg-zinc-500"></div>
                 0{active + 1} / {projects[active].cat}
               </div>
 
-              <h3 className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tighter mb-4 md:mb-12 uppercase leading-[0.9]">
+              <h3 className="text-3xl md:text-5xl font-black tracking-tighter mb-4 md:mb-12 uppercase leading-[0.9]">
                 {projects[active].title}
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-12 mb-4 md:mb-12">
                 <div className="border-l-2 border-black/20 dark:border-white/20 pl-4">
-                  <h4 className="font-bold uppercase tracking-widest text-[10px] lg:text-xs mb-2 md:mb-3 opacity-50 text-foreground">Reto / Challenge</h4>
-                  <p className="text-sm md:text-base lg:text-lg xl:text-xl font-medium opacity-90 leading-relaxed">
+                  <h4 className="font-bold uppercase tracking-widest text-[10px] mb-2 md:mb-3 opacity-50 text-foreground">Reto / Challenge</h4>
+                  <p className="text-base md:text-lg font-medium opacity-90 leading-relaxed">
                     {projects[active].challenge}
                   </p>
                 </div>
                 <div className="border-l-2 border-black/20 dark:border-white/20 pl-4">
-                  <h4 className="font-bold uppercase tracking-widest text-[10px] lg:text-xs mb-2 md:mb-3 opacity-50 text-foreground">Solución / Solution</h4>
-                  <p className="text-sm md:text-base lg:text-lg xl:text-xl font-medium opacity-90 leading-relaxed">
+                  <h4 className="font-bold uppercase tracking-widest text-[10px] mb-2 md:mb-3 opacity-50 text-foreground">Solución / Solution</h4>
+                  <p className="text-base md:text-lg font-medium opacity-90 leading-relaxed">
                     {projects[active].solution}
                   </p>
                 </div>
@@ -890,7 +890,7 @@ const ProjectCarousel = ({ dict, isDark }: { dict: any, isDark: boolean }) => {
 
               <div className="flex gap-2 flex-wrap mt-4 md:mt-auto">
                 {projects[active].tags.map(tag => (
-                  <span key={tag} className="border border-black/20 dark:border-white/20 px-2 md:px-3 py-1 text-[10px] md:text-xs lg:text-sm font-bold uppercase tracking-widest">
+                  <span key={tag} className="border border-black/20 dark:border-white/20 px-2 md:px-3 py-1 text-[10px] md:text-xs font-bold uppercase tracking-widest">
                     {tag}
                   </span>
                 ))}
@@ -1153,27 +1153,27 @@ export default function Portfolio() {
         <div className="w-full md:w-1/2 min-h-[50vh] md:h-full flex flex-col justify-center px-6 py-16 md:py-12 md:px-16 lg:px-24 xl:px-32 border-b md:border-b-0 md:border-r border-background/20 relative">
 
           <div className="mb-12">
-            <h2 className="text-4xl md:text-6xl xl:text-7xl font-black tracking-tighter mb-8 uppercase leading-tight">{d.edu_title}</h2>
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-8 uppercase leading-tight">{d.edu_title}</h2>
 
             {/* Timeline */}
             <div className="relative pl-6 border-l-2 border-background/20 space-y-8">
               <div className="relative">
                 <div className="absolute -left-[29px] top-1 w-4 h-4 rounded-full bg-background"></div>
-                <div className="font-mono text-[10px] xl:text-xs uppercase opacity-60 mb-1">{d.edu1_date}</div>
-                <h3 className="text-xl xl:text-2xl font-bold uppercase leading-tight">{d.edu1_title}</h3>
-                <p className="text-sm xl:text-base opacity-80 mt-1">{d.edu_uni}</p>
+                <div className="font-mono text-[10px] uppercase opacity-60 mb-1">{d.edu1_date}</div>
+                <h3 className="text-xl font-bold uppercase leading-tight">{d.edu1_title}</h3>
+                <p className="text-sm opacity-80 mt-1">{d.edu_uni}</p>
               </div>
               <div className="relative">
                 <div className="absolute -left-[29px] top-1 w-4 h-4 rounded-full border-2 border-background bg-foreground"></div>
-                <div className="font-mono text-[10px] xl:text-xs uppercase opacity-60 mb-1">{d.edu2_date}</div>
-                <h3 className="text-xl xl:text-2xl font-bold uppercase leading-tight">{d.edu2_title}</h3>
-                <p className="text-sm xl:text-base opacity-80 mt-1">{d.edu_uni}</p>
+                <div className="font-mono text-[10px] uppercase opacity-60 mb-1">{d.edu2_date}</div>
+                <h3 className="text-xl font-bold uppercase leading-tight">{d.edu2_title}</h3>
+                <p className="text-sm opacity-80 mt-1">{d.edu_uni}</p>
               </div>
             </div>
           </div>
 
           <div className="mb-12">
-            <h3 className="text-sm xl:text-base font-mono tracking-widest uppercase mb-4 opacity-60 flex items-center gap-2">
+            <h3 className="text-sm font-mono tracking-widest uppercase mb-4 opacity-60 flex items-center gap-2">
               <div className="w-4 h-[1px] bg-background"></div>
               {d.cert_title}
             </h3>
@@ -1196,7 +1196,7 @@ export default function Portfolio() {
                   whileHover={{ scale: 1.05 }}
                   className="cursor-grab active:cursor-grabbing bg-background text-foreground px-4 py-2 rounded-full border border-transparent hover:border-foreground/50 transition-colors shadow-lg"
                 >
-                  <span className="font-bold text-sm xl:text-base whitespace-nowrap">{cert.name}</span>
+                  <span className="font-bold text-sm whitespace-nowrap">{cert.name}</span>
                   <span className="text-[10px] opacity-50 ml-2 uppercase tracking-widest hidden lg:inline-block">{cert.org}</span>
                 </motion.div>
               ))}
@@ -1204,11 +1204,11 @@ export default function Portfolio() {
           </div>
 
           <div>
-            <h3 className="text-sm xl:text-base font-mono tracking-widest uppercase mb-4 opacity-60 flex items-center gap-2">
+            <h3 className="text-sm font-mono tracking-widest uppercase mb-4 opacity-60 flex items-center gap-2">
               <div className="w-4 h-[1px] bg-background"></div>
               {d.info_title}
             </h3>
-            <ul className="space-y-2 opacity-80 text-sm xl:text-base">
+            <ul className="space-y-2 opacity-80 text-sm">
               <li className="flex items-start gap-2"><span className="opacity-50 mt-1">▹</span> {d.info1}</li>
               <li className="flex items-start gap-2"><span className="opacity-50 mt-1">▹</span> {d.info2}</li>
               <li className="flex items-start gap-2"><span className="opacity-50 mt-1">▹</span> {d.info3}</li>
@@ -1219,23 +1219,23 @@ export default function Portfolio() {
 
         {/* Right Side: Contact */}
         <div id="contact" className="w-full md:w-1/2 min-h-[50vh] md:h-full flex flex-col justify-center px-6 pt-12 pb-20 md:py-12 md:px-16 lg:px-24 xl:px-32">
-          <h2 className="text-5xl md:text-6xl xl:text-7xl font-black tracking-tighter mb-6 uppercase leading-tight">{d.nav_contact}</h2>
-          <p className="text-lg xl:text-xl mb-12 opacity-80 max-w-md xl:max-w-xl leading-relaxed">
+          <h2 className="text-5xl md:text-6xl font-black tracking-tighter mb-6 uppercase leading-tight">{d.nav_contact}</h2>
+          <p className="text-lg mb-12 opacity-80 max-w-md leading-relaxed">
             {d.contact_desc}
           </p>
 
-          <a href="mailto:danielvillarrealh@gmail.com" className="text-base sm:text-xl md:text-3xl lg:text-4xl xl:text-5xl font-bold underline decoration-2 underline-offset-8 mb-16 hover:opacity-50 transition-opacity break-all">
+          <a href="mailto:danielvillarrealh@gmail.com" className="text-base sm:text-xl md:text-3xl font-bold underline decoration-2 underline-offset-8 mb-16 hover:opacity-50 transition-opacity break-all">
             danielvillarrealh@gmail.com
           </a>
 
           <div className="flex gap-4 md:gap-8 flex-wrap mb-auto items-center">
-            <Link href="/cv" className="flex items-center gap-2 text-sm xl:text-base font-bold uppercase hover:bg-foreground hover:text-background border-2 border-foreground px-4 py-2 transition-colors">
+            <Link href="/cv" className="flex items-center gap-2 text-sm font-bold uppercase hover:bg-foreground hover:text-background border-2 border-foreground px-4 py-2 transition-colors">
               {d.nav_cv} <ArrowUpRight size={16} />
             </Link>
-            <a href="https://github.com/Dandanieldan" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-xl xl:text-2xl font-bold uppercase hover:opacity-50 transition-opacity">
+            <a href="https://github.com/Dandanieldan" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-xl font-bold uppercase hover:opacity-50 transition-opacity">
               GITHUB <ArrowUpRight size={24} />
             </a>
-            <a href="https://www.linkedin.com/in/daniel-villarreal-h" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-xl xl:text-2xl font-bold uppercase hover:opacity-50 transition-opacity">
+            <a href="https://www.linkedin.com/in/daniel-villarreal-h" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-xl font-bold uppercase hover:opacity-50 transition-opacity">
               LINKEDIN <ArrowUpRight size={24} />
             </a>
           </div>
