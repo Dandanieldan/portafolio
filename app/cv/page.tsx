@@ -347,12 +347,12 @@ export default function CVPage() {
           </p>
           <div className="flex justify-center items-center gap-4 mt-2 flex-wrap">
             <a
-              href="https://portafolio-teal-nine-16.vercel.app"
+              href="https://danielvillarreal.vercel.app"
               target="_blank"
               rel="noreferrer"
               className="font-mono text-[9px] md:text-[10px] text-zinc-400 dark:text-zinc-500 print:text-zinc-600 tracking-tight hover:text-black dark:hover:text-white transition-colors underline underline-offset-2"
             >
-              {t.portfolioLabel}: portafolio-teal-nine-16.vercel.app
+              {t.portfolioLabel}: danielvillarreal.vercel.app
             </a>
             <span className="text-zinc-300 dark:text-zinc-700 print:text-zinc-400 select-none">|</span>
             <a
