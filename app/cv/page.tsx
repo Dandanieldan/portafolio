@@ -1,19 +1,19 @@
 "use client";
 
-import { useState } from "react";
-import { ArrowLeft, Printer, Globe, ArrowUpRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowLeft, Printer, Globe, Download, Check } from "lucide-react";
 import Link from "next/link";
 
 const cvData = {
   es: {
     title: "DANIEL VILLARREAL HERNANDEZ",
-    subtitle: "INGENIERÍA EN SOFTWARE",
+    subtitle: "DESARROLLADOR DE SOFTWARE",
     contact: "(+52) 6183371209 | Victoria de Durango, Durango | danielvillarrealh@gmail.com",
-    profile: "Desarrollador de Software con experiencia en desarrollo de software y tecnologías web, enfocado en construir aplicaciones funcionales, escalables y centradas en la experiencia del usuario, creando soluciones modernas que combinan rendimiento, diseño y usabilidad.",
+    profile: "Desarrollador de Software con experiencia en desarrollo web y móvil. Me enfoco en construir aplicaciones funcionales, escalables y centradas en la experiencia del usuario, creando soluciones modernas que combinan rendimiento, diseño y usabilidad.",
     skillsTitle: "RESUMEN DE HABILIDADES",
     skills: [
-      { name: "Roles Clave", desc: "Desarrollo Frontend, Desarrollo Backend, Herramientas y Control de Versiones." },
-      { name: "Características", desc: "Desarrollo de Software, Desarrollo Web, HTML5, CSS3, JavaScript, TypeScript, React.js, Next.js, React Native, Bootstrap, Tailwind CSS, Node.js, PHP, Python, Git, GitHub, Postman, npm." },
+      { name: "Roles Clave", desc: "Desarrollo Frontend, Desarrollo Backend, Dispositivos Móviles, Herramientas de Control de Versiones." },
+      { name: "Tecnologías", desc: "HTML5, CSS3, JavaScript, TypeScript, React.js, Next.js, React Native, Bootstrap, Tailwind CSS, Node.js, PHP, Python, Git, GitHub, Postman, npm." },
       { name: "Capacidades", desc: "Diseño responsivo y mobile-first, Arquitectura basada en componentes, Consumo e integración de APIs REST, Aplicaciones basadas en bases de datos, Manejo de estado y datos, Flujos de interacción de usuario y validación de formularios, Autenticación básica y gestión de usuarios." }
     ],
     projectsTitle: "PROYECTOS DE DESARROLLO",
@@ -31,28 +31,28 @@ const cvData = {
         role: "Desarrollador Web Frontend",
         company: "Correos Clic — Plataforma de E-commerce (Correos de México)",
         bullets: [
-          "Contribuyó al desarrollo de la plataforma oficial de comercio electrónico de Correos de México, enfocada en la venta de productos en línea y la gestión de servicios.",
-          "Desarrolló funciones frontend utilizando Next.js y React, aplicando Tailwind CSS para diseños responsivos basados en diseños de Figma.",
-          "Construyó una arquitectura basada en componentes con interacciones y animaciones de interfaz de usuario modernas.",
-          "Colaboró en la integración de flujos de trabajo de comercio electrónico, incluyendo la visualización de productos y los flujos de interacción del usuario."
+          "Colaboré en el desarrollo de la plataforma oficial de comercio electrónico de Correos de México, enfocada en la venta de productos en línea y la gestión de servicios.",
+          "Desarrollé funciones frontend utilizando Next.js y React, aplicando Tailwind CSS para diseños responsivos basados en especificaciones de Figma.",
+          "Construuí una arquitectura basada en componentes con interacciones y animaciones de interfaz de usuario modernas.",
+          "Colaboré en la integración de flujos de trabajo de comercio electrónico, incluyendo la visualización de productos y los flujos de interacción del usuario."
         ]
       },
       {
         role: "Sistema Web, Seguimiento de Fitness y Progreso",
         company: "Calorie Intake & Gym Tracker",
         bullets: [
-          "Desarrolló una plataforma web para el seguimiento de la ingesta de calorías, el progreso en el gimnasio y las transformaciones físicas.",
-          "Implementó el registro de progreso a través de métricas y registros basados en fotos.",
-          "Integró rutinas de entrenamiento y planes de dieta dentro de un sistema de usuario centralizado."
+          "Desarrollé una plataforma web para el seguimiento de la ingesta de calorías, el progreso en el gimnasio y las transformaciones físicas.",
+          "Implementé el registro de progreso a través de métricas y registros basados en fotos.",
+          "Integré rutinas de entrenamiento y planes de dieta dentro de un sistema de usuario centralizado."
         ]
       },
       {
         role: "Aplicaciones Móviles & Web",
         company: "Mobile & Web Applications (React Native / Expo)",
         bullets: [
-          "Desarrolló aplicaciones móviles utilizando React Native y Expo.",
-          "Implementó la lógica de la aplicación, el manejo de datos y las interacciones del usuario.",
-          "Enfocado en arquitectura limpia, rendimiento y mantenibilidad."
+          "Desarrollé aplicaciones móviles utilizando React Native y Expo.",
+          "Implementé la lógica de la aplicación, el manejo de datos y las interacciones del usuario.",
+          "Enfoque en arquitectura limpia, rendimiento y mantenibilidad."
         ]
       },
       {
@@ -70,15 +70,15 @@ const cvData = {
       {
         role: "HP — Soporte Técnico",
         bullets: [
-          "Diagnosticó y resolvió problemas de hardware y software.",
-          "Realizó mantenimiento de sistemas y soporte al usuario."
+          "Diagnostiqué y resolví problemas de hardware y software.",
+          "Realicé mantenimiento de sistemas y soporte al usuario."
         ]
       },
       {
         role: "Walmart — Asistente de Soporte de TI",
         bullets: [
-          "Soporte a sistemas internos y configuración de equipos.",
-          "Colaboró con equipos de TI para resolver incidentes."
+          "Brindé soporte a sistemas internos y configuración de equipos.",
+          "Colaboré con equipos de TI para resolver incidentes."
         ]
       }
     ],
@@ -101,19 +101,20 @@ const cvData = {
       "HTML & CSS Essentials — Cisco Networking Academy",
       "Python Essentials — Cisco Networking Academy"
     ],
-    backToPortfolio: "Volver al Portafolio",
-    printText: "Imprimir / Guardar PDF",
-    langText: "English Version"
+    backToPortfolio: "Volver",
+    printText: "Imprimir / PDF",
+    langText: "English",
+    downloadENText: "PDF en Inglés"
   },
   en: {
     title: "DANIEL VILLARREAL HERNANDEZ",
-    subtitle: "SOFTWARE ENGINEERING",
+    subtitle: "SOFTWARE DEVELOPER",
     contact: "(+52) 6183371209 | Victoria de Durango, Durango | danielvillarrealh@gmail.com",
     profile: "Software Developer with experience in web and mobile development. Focused on building functional, scalable, and user-centered applications, creating modern solutions that combine performance, design, and usability.",
     skillsTitle: "SKILLS SUMMARY",
     skills: [
-      { name: "Core Roles", desc: "Frontend Development, Backend Development, Tools & Version Control." },
-      { name: "Features", desc: "Software Development, Web Development, HTML5, CSS3, JavaScript, TypeScript, React.js, Next.js, React Native, Bootstrap, Tailwind CSS, Node.js, PHP, Python, Git, GitHub, Postman, npm." },
+      { name: "Core Roles", desc: "Frontend Development, Backend Development, Mobile, Version Control Tools." },
+      { name: "Technologies", desc: "HTML5, CSS3, JavaScript, TypeScript, React.js, Next.js, React Native, Bootstrap, Tailwind CSS, Node.js, PHP, Python, Git, GitHub, Postman, npm." },
       { name: "Capabilities", desc: "Responsive and mobile-first design, Component-based architecture, REST API consumption and integration, Database-driven applications, State and data handling, Form validation and user interaction flows, Basic authentication and user management." }
     ],
     projectsTitle: "DEVELOPMENT PROJECTS",
@@ -201,79 +202,122 @@ const cvData = {
       "HTML & CSS Essentials — Cisco Networking Academy",
       "Python Essentials — Cisco Networking Academy"
     ],
-    backToPortfolio: "Back to Portfolio",
-    printText: "Print / Save PDF",
-    langText: "Versión en Español"
+    backToPortfolio: "Back",
+    printText: "Print / PDF",
+    langText: "Español",
+    downloadENText: "English PDF"
   }
 };
 
 export default function CVPage() {
   const [lang, setLang] = useState<"es" | "en">("es");
+  const [mounted, setMounted] = useState(false);
   const t = cvData[lang];
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
-    <div className="min-h-screen bg-white text-black p-4 md:p-8 flex flex-col items-center">
-      {/* Controls - Hidden on Print */}
-      <div className="w-full max-w-[800px] flex justify-between items-center mb-8 bg-zinc-50 border border-zinc-200 p-4 print:hidden">
-        <Link href="/" className="flex items-center gap-2 text-xs font-mono font-bold uppercase hover:opacity-60 transition-opacity">
+    <div className="cv-page min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 p-0 md:p-8 flex flex-col items-center transition-colors duration-300">
+      {/* Immersive Film Grain Overlay */}
+      <div className="noise-overlay" />
+
+      {/* Floating Control Header - Hidden on Print */}
+      <div className="w-full max-w-[850px] sticky top-0 z-40 bg-zinc-50/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-zinc-200/60 dark:border-zinc-800/80 p-4 mb-4 md:mb-8 flex justify-between items-center rounded-none md:rounded-lg print:hidden">
+        <Link 
+          href="/" 
+          className="flex items-center gap-2 text-xs font-mono font-bold uppercase hover:opacity-60 transition-opacity"
+        >
           <ArrowLeft size={14} /> {t.backToPortfolio}
         </Link>
-        <div className="flex gap-3">
+        <div className="flex gap-2">
+          {/* Language Switcher */}
           <button 
             onClick={() => setLang(lang === "es" ? "en" : "es")}
-            className="flex items-center gap-2 text-xs font-mono font-bold uppercase hover:bg-black hover:text-white border-2 border-black px-3 py-1.5 transition-colors"
+            className="flex items-center gap-1.5 text-[10px] md:text-xs font-mono font-bold uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black border border-black dark:border-white px-2.5 py-1.5 transition-colors"
           >
-            <Globe size={14} /> {t.langText}
+            <Globe size={12} /> {t.langText}
           </button>
+          
+          {/* Print Button */}
           <button 
             onClick={() => window.print()}
-            className="flex items-center gap-2 text-xs font-mono font-bold uppercase bg-black text-white hover:bg-zinc-800 px-3 py-1.5 transition-colors"
+            className="flex items-center gap-1.5 text-[10px] md:text-xs font-mono font-bold uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black border border-black dark:border-white px-2.5 py-1.5 transition-colors"
           >
-            <Printer size={14} /> {t.printText}
+            <Printer size={12} /> {t.printText}
           </button>
+
+          {/* Download Original English PDF */}
+          <a 
+            href="/cv-en.pdf" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 text-[10px] md:text-xs font-mono font-bold uppercase bg-black text-white dark:bg-white dark:text-black hover:opacity-85 px-2.5 py-1.5 transition-opacity"
+          >
+            <Download size={12} /> {t.downloadENText}
+          </a>
         </div>
       </div>
 
-      {/* Main Resume Sheet - Perfect standard proportions for A4 / Letter */}
-      <div className="w-full max-w-[800px] bg-white print:p-0 font-sans leading-tight text-xs">
+      {/* Main Resume Sheet - Proportional layout representing dynamic web + perfect print output */}
+      <div className="w-full max-w-[850px] bg-white dark:bg-zinc-900/30 border border-zinc-200/50 dark:border-zinc-800/50 shadow-[0_4px_30px_rgba(0,0,0,0.03)] dark:shadow-[0_4px_30px_rgba(0,0,0,0.2)] p-6 md:p-14 font-sans leading-relaxed text-zinc-800 dark:text-zinc-300 text-xs transition-colors duration-300 print:bg-white print:text-black print:p-0 print:shadow-none print:border-none print:max-w-full">
+        
         {/* Header */}
-        <div className="text-center border-b border-black pb-4 mb-4">
-          <h1 className="text-2xl font-black tracking-tight">{t.title}</h1>
-          <h2 className="text-sm font-mono tracking-widest uppercase mt-1 text-zinc-600 print:text-black">{t.subtitle}</h2>
-          <p className="font-mono text-[10px] mt-2 text-zinc-500 print:text-black">{t.contact}</p>
+        <div className="text-center pb-6 mb-6 border-b border-zinc-200 dark:border-zinc-800 print:border-black">
+          <h1 className="text-2xl md:text-3xl font-black tracking-tighter text-black dark:text-white print:text-black uppercase">
+            {t.title}
+          </h1>
+          <h2 className="text-xs md:text-sm font-mono tracking-widest uppercase mt-1.5 text-zinc-500 dark:text-zinc-400 print:text-black font-semibold">
+            {t.subtitle}
+          </h2>
+          <p className="font-mono text-[9px] md:text-[10px] mt-3 text-zinc-400 dark:text-zinc-500 print:text-zinc-600 tracking-tight">
+            {t.contact}
+          </p>
         </div>
 
         {/* Profile / Summary */}
-        <div className="mb-4">
-          <p className="text-justify leading-relaxed">{t.profile}</p>
+        <div className="mb-6">
+          <p className="text-justify leading-relaxed text-zinc-700 dark:text-zinc-300 print:text-black text-[11px] md:text-[12px]">
+            {t.profile}
+          </p>
         </div>
 
         {/* Skills Section */}
-        <div className="mb-4">
-          <h3 className="font-bold border-b border-black pb-1 mb-2 tracking-wider text-[11px]">{t.skillsTitle}</h3>
-          <div className="space-y-1.5">
+        <div className="mb-6">
+          <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black border-b border-zinc-200 dark:border-zinc-800 print:border-black pb-1 mb-3 text-[10px] font-bold">
+            {t.skillsTitle}
+          </h3>
+          <div className="space-y-2">
             {t.skills.map((skill, idx) => (
-              <div key={idx} className="flex gap-2">
-                <span className="font-bold min-w-[100px]">{skill.name}:</span>
-                <span className="flex-1 text-zinc-700 print:text-black">{skill.desc}</span>
+              <div key={idx} className="grid grid-cols-1 md:grid-cols-[140px_1fr] gap-1 md:gap-4 text-[11px] md:text-[12px]">
+                <span className="font-bold text-zinc-900 dark:text-zinc-100 print:text-black font-mono uppercase text-[10px] tracking-wider pt-0.5">{skill.name}</span>
+                <span className="text-zinc-600 dark:text-zinc-400 print:text-black leading-relaxed">{skill.desc}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Projects Section */}
-        <div className="mb-4">
-          <h3 className="font-bold border-b border-black pb-1 mb-2 tracking-wider text-[11px]">{t.projectsTitle}</h3>
-          <div className="space-y-3">
+        <div className="mb-6">
+          <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black border-b border-zinc-200 dark:border-zinc-800 print:border-black pb-1 mb-4 text-[10px] font-bold">
+            {t.projectsTitle}
+          </h3>
+          <div className="space-y-5">
             {t.projects.map((proj, idx) => (
-              <div key={idx}>
-                <div className="flex justify-between font-bold">
-                  <span>{proj.role}</span>
+              <div 
+                key={idx} 
+                className="hover:border-l-black dark:hover:border-l-white transition-all pl-0 md:pl-4 md:-ml-4 border-l-2 border-l-transparent text-[11px] md:text-[12px]"
+              >
+                <div className="flex flex-col md:flex-row md:justify-between items-start md:items-baseline gap-1">
+                  <span className="font-bold text-zinc-900 dark:text-zinc-100 print:text-black text-xs md:text-sm">{proj.role}</span>
                 </div>
-                <div className="text-zinc-600 print:text-black italic mb-1">{proj.company}</div>
-                <ul className="list-disc pl-4 space-y-0.5 text-zinc-700 print:text-black">
+                <div className="text-zinc-500 dark:text-zinc-450 print:text-zinc-700 font-mono text-[10px] uppercase tracking-wider mb-2">{proj.company}</div>
+                <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-zinc-400 print:text-black leading-relaxed">
                   {proj.bullets.map((bullet, bIdx) => (
-                    <li key={bIdx} className="leading-snug">{bullet}</li>
+                    <li key={bIdx}>{bullet}</li>
                   ))}
                 </ul>
               </div>
@@ -282,15 +326,20 @@ export default function CVPage() {
         </div>
 
         {/* Technical Experience Section */}
-        <div className="mb-4">
-          <h3 className="font-bold border-b border-black pb-1 mb-2 tracking-wider text-[11px]">{t.experienceTitle}</h3>
-          <div className="space-y-3">
+        <div className="mb-6">
+          <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black border-b border-zinc-200 dark:border-zinc-800 print:border-black pb-1 mb-4 text-[10px] font-bold">
+            {t.experienceTitle}
+          </h3>
+          <div className="space-y-4">
             {t.experience.map((exp, idx) => (
-              <div key={idx}>
-                <div className="font-bold">{exp.role}</div>
-                <ul className="list-disc pl-4 space-y-0.5 text-zinc-700 print:text-black mt-1">
+              <div 
+                key={idx}
+                className="hover:border-l-black dark:hover:border-l-white transition-all pl-0 md:pl-4 md:-ml-4 border-l-2 border-l-transparent text-[11px] md:text-[12px]"
+              >
+                <div className="font-bold text-zinc-900 dark:text-zinc-100 print:text-black text-xs md:text-sm">{exp.role}</div>
+                <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-zinc-400 print:text-black leading-relaxed mt-2">
                   {exp.bullets.map((bullet, bIdx) => (
-                    <li key={bIdx} className="leading-snug">{bullet}</li>
+                    <li key={bIdx}>{bullet}</li>
                   ))}
                 </ul>
               </div>
@@ -298,41 +347,52 @@ export default function CVPage() {
           </div>
         </div>
 
-        {/* Grid for Education & Additional */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Columns for Education & Additional */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-t border-zinc-200 dark:border-zinc-800 print:border-black pt-6">
           {/* Left Column: Education */}
           <div>
-            <h3 className="font-bold border-b border-black pb-1 mb-2 tracking-wider text-[11px]">{t.educationTitle}</h3>
-            <div className="space-y-3">
+            <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black text-[10px] font-bold mb-3">
+              {t.educationTitle}
+            </h3>
+            <div className="space-y-4 text-[11px] md:text-[12px]">
               {t.education.map((edu, idx) => (
                 <div key={idx}>
-                  <div className="flex justify-between font-bold">
-                    <span>{edu.degree}</span>
-                    <span className="font-normal text-[10px] font-mono">{edu.date}</span>
+                  <div className="flex justify-between font-bold text-zinc-900 dark:text-zinc-100 print:text-black">
+                    <span className="text-xs md:text-sm">{edu.degree}</span>
+                    <span className="font-normal text-[10px] font-mono text-zinc-400 dark:text-zinc-500 print:text-zinc-600">{edu.date}</span>
                   </div>
-                  <div className="text-zinc-600 print:text-black">{edu.school}</div>
+                  <div className="text-zinc-500 dark:text-zinc-450 print:text-zinc-700 text-[10px] uppercase font-mono tracking-wider mt-0.5">{edu.school}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Right Column: Certs & Info */}
-          <div>
-            <h3 className="font-bold border-b border-black pb-1 mb-2 tracking-wider text-[11px]">{t.certificationsTitle}</h3>
-            <ul className="list-disc pl-4 space-y-0.5 text-zinc-700 print:text-black">
-              {t.certifications.map((cert, idx) => (
-                <li key={idx}>{cert}</li>
-              ))}
-            </ul>
+          {/* Right Column: Certs & Additional */}
+          <div className="space-y-4">
+            <div>
+              <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black text-[10px] font-bold mb-3">
+                {t.certificationsTitle}
+              </h3>
+              <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-zinc-400 print:text-black text-[11px] md:text-[12px] leading-relaxed">
+                {t.certifications.map((cert, idx) => (
+                  <li key={idx}>{cert}</li>
+                ))}
+              </ul>
+            </div>
 
-            <h3 className="font-bold border-b border-black pb-1 mb-2 mt-4 tracking-wider text-[11px]">{t.additionalTitle}</h3>
-            <ul className="list-disc pl-4 space-y-0.5 text-zinc-700 print:text-black">
-              {t.additional.map((info, idx) => (
-                <li key={idx}>{info}</li>
-              ))}
-            </ul>
+            <div>
+              <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black text-[10px] font-bold mb-3">
+                {t.additionalTitle}
+              </h3>
+              <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-zinc-400 print:text-black text-[11px] md:text-[12px] leading-relaxed">
+                {t.additional.map((info, idx) => (
+                  <li key={idx}>{info}</li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
+
       </div>
     </div>
   );

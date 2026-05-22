@@ -64,3 +64,9 @@ a, button, [role="button"], input, select, textarea {
 .dark .noise-overlay {
   opacity: 0.06;
 }
+
+/* Restore default cursor on CV page */
+.cv-page, .cv-page * {
+  cursor: auto !important;
+}
+
