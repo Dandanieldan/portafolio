@@ -912,6 +912,19 @@ export default function Portfolio() {
       <div className="noise-overlay" />
       <CustomCursor isDark={isDark} />
 
+      {/* Full-Screen Backdrop Dim Overlay (Z-[35]) */}
+      <AnimatePresence>
+        {isProfileActive && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.3 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsProfileActive(false)}
+            className="fixed inset-0 bg-black/10 dark:bg-black/35 z-[35] pointer-events-auto backdrop-blur-[1px] cursor-pointer"
+          />
+        )}
+      </AnimatePresence>
+
       {/* Navbar Minimalista Monocromático */}
       <nav className="fixed w-full z-50 p-6 mix-blend-difference text-white pointer-events-none">
         <div className="max-w-7xl mx-auto flex justify-between items-center w-full">
@@ -947,18 +960,6 @@ export default function Portfolio() {
 
       {/* Hero Section */}
       <section id="home" className="min-h-[100svh] w-full snap-start flex flex-col justify-center pt-24 pb-20 px-6 md:px-16 lg:px-24 relative">
-        {/* Profile Card Overlay backdrop */}
-        <AnimatePresence>
-          {isProfileActive && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.3 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsProfileActive(false)}
-              className="fixed inset-0 bg-black/10 dark:bg-black/35 z-30 pointer-events-auto backdrop-blur-[1px]"
-            />
-          )}
-        </AnimatePresence>
 
         <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: "easeOut" }} className="mb-24 relative">
           
@@ -990,14 +991,15 @@ export default function Portfolio() {
               style={{ transformStyle: "preserve-3d" }}
               className="relative w-fit"
             >
-              {/* FRONT SIDE: Original typography with restored dragging functionality */}
+              {/* FRONT SIDE: Original typography with restored dragging and click-to-flip gestures */}
               <div 
                 style={{ backfaceVisibility: "hidden" }}
-                className="w-fit"
+                className={`w-fit transition-all duration-300 ${isProfileActive ? "pointer-events-none select-none opacity-0" : "pointer-events-auto opacity-100"}`}
               >
                 <motion.div
                   drag
                   dragConstraints={{ left: -100, right: 100, top: -50, bottom: 50 }}
+                  onTap={() => setIsProfileActive(true)}
                   className="cursor-grab active:cursor-grabbing group inline-block relative z-10 w-fit"
                 >
                   <h1 className="text-[11vw] md:text-[10vw] leading-[0.95] font-black tracking-tighter uppercase px-4 -mx-4 rounded-sm group-hover:bg-foreground group-hover:text-background transition-all duration-300">
@@ -1011,7 +1013,9 @@ export default function Portfolio() {
               {/* BACK SIDE: Minimal Editorial Digital Identity Card - Fits front side dimensions */}
               <div 
                 style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
-                className="absolute inset-0 w-full h-full border border-foreground bg-background text-foreground p-6 md:p-8 flex flex-col justify-between shadow-[0_10px_35px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_35px_rgba(255,255,255,0.03)] font-mono text-[10px] tracking-tight leading-tight select-text"
+                className={`absolute inset-0 w-full h-full border border-foreground bg-background text-foreground p-6 md:p-8 flex flex-col justify-between shadow-[0_10px_35px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_35px_rgba(255,255,255,0.03)] font-mono text-[10px] tracking-tight leading-tight select-text transition-all duration-300 ${
+                  isProfileActive ? "pointer-events-auto opacity-100 z-50" : "pointer-events-none opacity-0"
+                }`}
               >
                 {/* ID Header */}
                 <div className="flex justify-between items-center border-b border-foreground/20 pb-3 uppercase text-[9px] opacity-75">
@@ -1057,21 +1061,24 @@ export default function Portfolio() {
 
                 {/* Footer Links */}
                 <div className="border-t border-foreground/20 pt-3 flex flex-wrap justify-between items-center gap-2">
-                  <div className="flex gap-4 uppercase font-bold text-[9px]">
-                    <Link href="/cv" className="hover:bg-foreground hover:text-background px-1 py-0.5 transition-colors">
+                  <div className="flex gap-4 uppercase font-bold text-[9px] pointer-events-auto">
+                    <Link href="/cv" className="hover:bg-foreground hover:text-background px-1 py-0.5 transition-colors cursor-pointer relative z-50">
                       [ {lang === 'es' ? 'VER CV' : 'DOWNLOAD CV'} ]
                     </Link>
-                    <a href="https://github.com/Dandanieldan" target="_blank" rel="noreferrer" className="hover:bg-foreground hover:text-background px-1 py-0.5 transition-colors">
+                    <a href="https://github.com/Dandanieldan" target="_blank" rel="noreferrer" className="hover:bg-foreground hover:text-background px-1 py-0.5 transition-colors cursor-pointer relative z-50">
                       [ GitHub ]
                     </a>
-                    <a href="https://www.linkedin.com/in/daniel-villarreal-h" target="_blank" rel="noreferrer" className="hover:bg-foreground hover:text-background px-1 py-0.5 transition-colors">
+                    <a href="https://www.linkedin.com/in/daniel-villarreal-h" target="_blank" rel="noreferrer" className="hover:bg-foreground hover:text-background px-1 py-0.5 transition-colors cursor-pointer relative z-50">
                       [ LinkedIn ]
                     </a>
                   </div>
 
                   <button 
-                    onClick={() => setIsProfileActive(false)}
-                    className="opacity-50 hover:opacity-100 transition-opacity font-bold"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsProfileActive(false);
+                    }}
+                    className="opacity-50 hover:opacity-100 transition-opacity font-bold cursor-pointer relative z-50"
                   >
                     [ CLOSE ]
                   </button>
