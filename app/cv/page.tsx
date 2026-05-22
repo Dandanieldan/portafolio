@@ -11,7 +11,7 @@ const cvData = {
     title: "DANIEL VILLARREAL HERNANDEZ",
     subtitle: "DESARROLLADOR DE SOFTWARE",
     contact: "(+52) 6183371209 | Victoria de Durango, Durango | danielvillarrealh@gmail.com",
-    profile: "Soy Daniel Villarreal, desarrollador de software enfocado en crear experiencias web y móviles modernas, funcionales y escalables. Me apasiona construir productos digitales centrados en claridad, rendimiento y experiencia de usuario.",
+    profile: "Desarrollador de Software con experiencia en desarrollo web y móvil. Me enfoco en construir aplicaciones funcionales, escalables y centradas en la experiencia del usuario, creando soluciones modernas que combinan rendimiento, diseño y usabilidad.",
     skillsTitle: "RESUMEN DE HABILIDADES",
     skills: [
       { name: "Roles Clave", desc: "Desarrollo Frontend, Desarrollo Backend, Dispositivos Móviles, Herramientas de Control de Versiones." },
@@ -114,7 +114,7 @@ const cvData = {
     title: "DANIEL VILLARREAL HERNANDEZ",
     subtitle: "SOFTWARE DEVELOPER",
     contact: "(+52) 6183371209 | Victoria de Durango, Durango | danielvillarrealh@gmail.com",
-    profile: "I'm Daniel Villarreal, a software developer focused on building modern, functional, and scalable web and mobile experiences. I'm passionate about crafting digital products centered on clarity, performance, and user experience.",
+    profile: "Software Developer with experience in web and mobile development. Focused on building functional, scalable, and user-centered applications, creating modern solutions that combine performance, design, and usability.",
     skillsTitle: "SKILLS SUMMARY",
     skills: [
       { name: "Core Roles", desc: "Frontend Development, Backend Development, Mobile, Version Control Tools." },
