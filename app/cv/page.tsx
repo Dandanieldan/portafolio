@@ -332,34 +332,34 @@ export default function CVPage() {
       </div>
 
       {/* Main Resume Sheet - Proportional layout representing dynamic web + perfect print output */}
-      <div className="w-full max-w-[850px] bg-white dark:bg-zinc-900/30 border border-zinc-200/50 dark:border-zinc-800/50 shadow-[0_4px_30px_rgba(0,0,0,0.03)] dark:shadow-[0_4px_30px_rgba(0,0,0,0.2)] p-6 md:p-14 font-sans leading-relaxed text-zinc-800 dark:text-zinc-300 text-xs transition-colors duration-300 print:bg-white print:text-black print:p-0 print:shadow-none print:border-none print:max-w-full">
+      <div className="w-full max-w-[850px] bg-white dark:bg-zinc-900/30 border border-zinc-200/50 dark:border-zinc-800/50 shadow-[0_4px_30px_rgba(0,0,0,0.03)] dark:shadow-[0_4px_30px_rgba(0,0,0,0.2)] p-6 md:p-14 font-sans leading-relaxed text-zinc-800 dark:text-zinc-300 text-xs transition-colors duration-300 print:p-0 print:max-w-full">
         
         {/* Header */}
-        <div className="text-center pb-6 mb-6 border-b border-zinc-200 dark:border-zinc-800 print:border-black">
-          <h1 className="text-2xl md:text-3xl font-black tracking-tighter text-black dark:text-white print:text-black uppercase">
+        <div className="text-center pb-6 mb-6 border-b border-zinc-200 dark:border-zinc-800">
+          <h1 className="text-2xl md:text-3xl font-black tracking-tighter text-black dark:text-white uppercase">
             {t.title}
           </h1>
-          <h2 className="text-xs md:text-sm font-mono tracking-widest uppercase mt-1.5 text-zinc-500 dark:text-zinc-400 print:text-black font-semibold">
+          <h2 className="text-xs md:text-sm font-mono tracking-widest uppercase mt-1.5 text-zinc-500 dark:text-zinc-400 font-semibold">
             {t.subtitle}
           </h2>
-          <p className="font-mono text-[9px] md:text-[10px] mt-3 text-zinc-400 dark:text-zinc-500 print:text-zinc-600 tracking-tight flex flex-col md:flex-row justify-center items-center gap-1 md:gap-2 flex-wrap">
+          <p className="font-mono text-[9px] md:text-[10px] mt-3 text-zinc-400 dark:text-zinc-500 tracking-tight flex flex-col md:flex-row justify-center items-center gap-1 md:gap-2 flex-wrap">
             <span>{t.contact}</span>
-            <span className="hidden md:inline text-zinc-300 dark:text-zinc-700 print:text-zinc-400 select-none">|</span>
+            <span className="hidden md:inline text-zinc-300 dark:text-zinc-700 select-none">|</span>
             <span className="flex items-center gap-2">
               <a
                 href="https://danielvillarreal.vercel.app"
                 target="_blank"
                 rel="noreferrer"
-                className="hover:text-black dark:hover:text-white print:text-zinc-800 transition-colors underline underline-offset-2 print:no-underline"
+                className="hover:text-black dark:hover:text-white transition-colors underline underline-offset-2 print:no-underline"
               >
                 {t.portfolioLabel}: danielvillarreal.vercel.app
               </a>
-              <span className="text-zinc-300 dark:text-zinc-700 print:text-zinc-400 select-none">|</span>
+              <span className="text-zinc-300 dark:text-zinc-700 select-none">|</span>
               <a
                 href="https://www.linkedin.com/in/daniel-villarreal-h"
                 target="_blank"
                 rel="noreferrer"
-                className="hover:text-black dark:hover:text-white print:text-zinc-800 transition-colors underline underline-offset-2 print:no-underline"
+                className="hover:text-black dark:hover:text-white transition-colors underline underline-offset-2 print:no-underline"
               >
                 {t.linkedinLabel}: linkedin.com/in/daniel-villarreal-h
               </a>
@@ -369,21 +369,21 @@ export default function CVPage() {
 
         {/* Profile / Summary */}
         <div className="mb-6">
-          <p className="text-justify leading-relaxed text-zinc-700 dark:text-zinc-300 print:text-black text-[11px] md:text-[12px]">
+          <p className="text-justify leading-relaxed text-zinc-700 dark:text-zinc-300 text-[11px] md:text-[12px]">
             {t.profile}
           </p>
         </div>
 
         {/* Skills Section */}
         <div className="mb-6">
-          <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black border-b border-zinc-200 dark:border-zinc-800 print:border-black pb-1 mb-3 text-[10px] font-bold">
+          <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 border-b border-zinc-200 dark:border-zinc-800 pb-1 mb-3 text-[10px] font-bold">
             {t.skillsTitle}
           </h3>
           <div className="space-y-2">
             {t.skills.map((skill, idx) => (
               <div key={idx} className="grid grid-cols-1 md:grid-cols-[140px_1fr] gap-1 md:gap-4 text-[11px] md:text-[12px]">
-                <span className="font-bold text-zinc-900 dark:text-zinc-100 print:text-black font-mono uppercase text-[10px] tracking-wider pt-0.5">{skill.name}</span>
-                <span className="text-zinc-600 dark:text-zinc-400 print:text-black leading-relaxed">{skill.desc}</span>
+                <span className="font-bold text-zinc-900 dark:text-zinc-100 font-mono uppercase text-[10px] tracking-wider pt-0.5">{skill.name}</span>
+                <span className="text-zinc-600 dark:text-zinc-400 leading-relaxed">{skill.desc}</span>
               </div>
             ))}
           </div>
@@ -391,7 +391,7 @@ export default function CVPage() {
 
         {/* Projects Section */}
         <div className="mb-6">
-          <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black border-b border-zinc-200 dark:border-zinc-800 print:border-black pb-1 mb-4 text-[10px] font-bold">
+          <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 border-b border-zinc-200 dark:border-zinc-800 pb-1 mb-4 text-[10px] font-bold">
             {t.projectsTitle}
           </h3>
           <div className="space-y-5">
@@ -401,10 +401,10 @@ export default function CVPage() {
                 className="hover:border-l-black dark:hover:border-l-white transition-all pl-0 md:pl-4 md:-ml-4 border-l-2 border-l-transparent text-[11px] md:text-[12px]"
               >
                 <div className="flex flex-col md:flex-row md:justify-between items-start md:items-baseline gap-1">
-                  <span className="font-bold text-zinc-900 dark:text-zinc-100 print:text-black text-xs md:text-sm">{proj.role}</span>
+                  <span className="font-bold text-zinc-900 dark:text-zinc-100 text-xs md:text-sm">{proj.role}</span>
                 </div>
-                <div className="text-zinc-500 dark:text-zinc-450 print:text-zinc-700 font-mono text-[10px] uppercase tracking-wider mb-2">{proj.company}</div>
-                <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-zinc-400 print:text-black leading-relaxed">
+                <div className="text-zinc-500 dark:text-zinc-450 font-mono text-[10px] uppercase tracking-wider mb-2">{proj.company}</div>
+                <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-zinc-400 leading-relaxed">
                   {proj.bullets.map((bullet, bIdx) => (
                     <li key={bIdx}>{bullet}</li>
                   ))}
@@ -416,7 +416,7 @@ export default function CVPage() {
 
         {/* Technical Experience Section */}
         <div className="mb-6">
-          <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black border-b border-zinc-200 dark:border-zinc-800 print:border-black pb-1 mb-4 text-[10px] font-bold">
+          <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 border-b border-zinc-200 dark:border-zinc-800 pb-1 mb-4 text-[10px] font-bold">
             {t.experienceTitle}
           </h3>
           <div className="space-y-4">
@@ -425,8 +425,8 @@ export default function CVPage() {
                 key={idx}
                 className="hover:border-l-black dark:hover:border-l-white transition-all pl-0 md:pl-4 md:-ml-4 border-l-2 border-l-transparent text-[11px] md:text-[12px]"
               >
-                <div className="font-bold text-zinc-900 dark:text-zinc-100 print:text-black text-xs md:text-sm">{exp.role}</div>
-                <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-zinc-400 print:text-black leading-relaxed mt-2">
+                <div className="font-bold text-zinc-900 dark:text-zinc-100 text-xs md:text-sm">{exp.role}</div>
+                <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2">
                   {exp.bullets.map((bullet, bIdx) => (
                     <li key={bIdx}>{bullet}</li>
                   ))}
@@ -437,20 +437,20 @@ export default function CVPage() {
         </div>
 
         {/* Columns for Education & Additional */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-t border-zinc-200 dark:border-zinc-800 print:border-black pt-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-t border-zinc-200 dark:border-zinc-800 pt-6">
           {/* Left Column: Education */}
           <div>
-            <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black text-[10px] font-bold mb-3">
+            <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 text-[10px] font-bold mb-3">
               {t.educationTitle}
             </h3>
             <div className="space-y-4 text-[11px] md:text-[12px]">
               {t.education.map((edu, idx) => (
                 <div key={idx}>
-                  <div className="flex justify-between font-bold text-zinc-900 dark:text-zinc-100 print:text-black">
+                  <div className="flex justify-between font-bold text-zinc-900 dark:text-zinc-100">
                     <span className="text-xs md:text-sm">{edu.degree}</span>
-                    <span className="font-normal text-[10px] font-mono text-zinc-400 dark:text-zinc-500 print:text-zinc-600">{edu.date}</span>
+                    <span className="font-normal text-[10px] font-mono text-zinc-400 dark:text-zinc-500">{edu.date}</span>
                   </div>
-                  <div className="text-zinc-500 dark:text-zinc-450 print:text-zinc-700 text-[10px] uppercase font-mono tracking-wider mt-0.5">{edu.school}</div>
+                  <div className="text-zinc-500 dark:text-zinc-450 text-[10px] uppercase font-mono tracking-wider mt-0.5">{edu.school}</div>
                 </div>
               ))}
             </div>
@@ -459,10 +459,10 @@ export default function CVPage() {
           {/* Right Column: Certs & Additional */}
           <div className="space-y-4">
             <div>
-              <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black text-[10px] font-bold mb-3">
+              <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 text-[10px] font-bold mb-3">
                 {t.certificationsTitle}
               </h3>
-              <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-zinc-400 print:text-black text-[11px] md:text-[12px] leading-relaxed">
+              <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-zinc-400 text-[11px] md:text-[12px] leading-relaxed">
                 {t.certifications.map((cert, idx) => (
                   <li key={idx}>{cert}</li>
                 ))}
@@ -470,10 +470,10 @@ export default function CVPage() {
             </div>
 
             <div>
-              <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black text-[10px] font-bold mb-3">
+              <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 text-[10px] font-bold mb-3">
                 {t.additionalTitle}
               </h3>
-              <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-zinc-400 print:text-black text-[11px] md:text-[12px] leading-relaxed">
+              <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-zinc-400 text-[11px] md:text-[12px] leading-relaxed">
                 {t.additional.map((info, idx) => (
                   <li key={idx}>{info}</li>
                 ))}
