@@ -113,35 +113,13 @@ body.cv-mode::-webkit-scrollbar-thumb:hover {
 
 /* ===================== PRINT STYLES ===================== */
 @media print {
-  /* Hide UI chrome */
-  .noise-overlay,
-  .print\:hidden {
+  .noise-overlay {
     display: none !important;
   }
 
-  /* Reset cursor & background for printing */
-  body, html {
-    cursor: default !important;
-    background: white !important;
-    overflow: visible !important;
-  }
-
-  /* Ensure all text is dark enough to print */
   * {
-    color-adjust: exact;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
-  }
-
-  /* Force link rows to be visible — portfolio + linkedin in cv header */
-  a {
-    color: #374151 !important; /* zinc-700 equivalent */
-    text-decoration: underline !important;
-  }
-
-  /* Prevent page breaks inside key sections */
-  .mb-6, .mb-12 {
-    page-break-inside: avoid;
   }
 }
 

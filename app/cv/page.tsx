@@ -350,7 +350,7 @@ export default function CVPage() {
               href="https://danielvillarreal.vercel.app"
               target="_blank"
               rel="noreferrer"
-              className="font-mono text-[9px] md:text-[10px] text-zinc-400 dark:text-zinc-500 print:text-zinc-600 tracking-tight hover:text-black dark:hover:text-white transition-colors underline underline-offset-2"
+              className="font-mono text-[9px] md:text-[10px] text-zinc-400 dark:text-zinc-500 print:text-zinc-800 print:no-underline tracking-tight hover:text-black dark:hover:text-white transition-colors underline underline-offset-2"
             >
               {t.portfolioLabel}: danielvillarreal.vercel.app
             </a>
@@ -359,7 +359,7 @@ export default function CVPage() {
               href="https://www.linkedin.com/in/daniel-villarreal-h"
               target="_blank"
               rel="noreferrer"
-              className="font-mono text-[9px] md:text-[10px] text-zinc-400 dark:text-zinc-500 print:text-zinc-600 tracking-tight hover:text-black dark:hover:text-white transition-colors underline underline-offset-2"
+              className="font-mono text-[9px] md:text-[10px] text-zinc-400 dark:text-zinc-500 print:text-zinc-800 print:no-underline tracking-tight hover:text-black dark:hover:text-white transition-colors underline underline-offset-2"
             >
               {t.linkedinLabel}: linkedin.com/in/daniel-villarreal-h
             </a>
