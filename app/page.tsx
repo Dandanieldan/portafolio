@@ -16,6 +16,7 @@ const translations = {
     nav_edu: "FORMACIÓN",
     nav_skills: "SKILLS",
     nav_contact: "CONTACTO",
+    nav_cv: "DESCARGAR CV",
     hero_title1: "SOFTWARE",
     hero_title2: "ENGINEER.",
     hero_title3: "FRONTEND DEV.",
@@ -59,13 +60,11 @@ const translations = {
     bento_backend_desc: "Implementación de servidores en Node.js, diseño e integración de APIs REST, y modelado eficiente de estructuras de datos relacionales y no relacionales.",
     bento_mobile: "MÓVIL & HERRAMIENTAS",
     bento_mobile_desc: "Construcción de aplicaciones móviles nativas con React Native y Expo. Manejo fluido de control de versiones y metodologías ágiles en equipos remotos.",
-    proj5_cat: "UI / UX DESIGN",
-    proj5_title: "Product Card",
-    proj5_challenge: "Mejorar la conversión de compra diseñando una tarjeta de producto moderna, atractiva y que proporcione feedback inmediato al usuario sin saturar la interfaz.",
-    proj5_solution: "Desarrollé un componente interactivo con animaciones fluidas usando Framer Motion, logrando un 'Call to Action' dinámico que reacciona de forma intuitiva a la interacción.",
-    proj5_demo_title: "Product Card Interactiva",
-    proj5_demo_add: "Añadir al carrito",
-    proj5_demo_added: "Agregado",
+    proj5_cat: "DATA VISUALIZATION",
+    proj5_title: "Live Dashboard",
+    proj5_challenge: "Visualizar miles de eventos en tiempo real sin saturar al usuario, manteniendo un rendimiento fluido de 60 FPS.",
+    proj5_solution: "Desarrollé una arquitectura de renderizado optimizada, con estructuras de datos eficientes para procesar flujos masivos de información.",
+    proj5_demo_title: "Real-Time Event Stream",
     edu_title: "EDUCACIÓN",
     edu_uni: "Universidad Politécnica de Durango (UNIPOLI)",
     edu1_title: "Ingeniería en Software",
@@ -93,6 +92,7 @@ const translations = {
     nav_edu: "EDUCATION",
     nav_skills: "SKILLS",
     nav_contact: "CONTACT",
+    nav_cv: "DOWNLOAD CV",
     hero_title1: "SOFTWARE",
     hero_title2: "ENGINEER.",
     hero_title3: "FRONTEND DEV.",
@@ -136,13 +136,11 @@ const translations = {
     bento_backend_desc: "Server implementation using Node.js, REST API design and integration, and efficient modeling of relational and non-relational data structures.",
     bento_mobile: "MOBILE & TOOLS",
     bento_mobile_desc: "Building native mobile applications with React Native and Expo. Fluent in version control and agile methodologies in remote teams.",
-    proj5_cat: "UI / UX DESIGN",
-    proj5_title: "Product Card",
-    proj5_challenge: "Improve purchase conversion by designing a modern, attractive product card that provides immediate user feedback without cluttering the interface.",
-    proj5_solution: "Developed an interactive component with fluid animations using Framer Motion, achieving a dynamic 'Call to Action' that reacts intuitively to interaction.",
-    proj5_demo_title: "Interactive Product Card",
-    proj5_demo_add: "Add to cart",
-    proj5_demo_added: "Added",
+    proj5_cat: "DATA VISUALIZATION",
+    proj5_title: "Live Dashboard",
+    proj5_challenge: "Visualize thousands of real-time events without overwhelming the user, maintaining a fluid 60 FPS performance.",
+    proj5_solution: "Developed an optimized rendering architecture with efficient data structures to process massive information streams.",
+    proj5_demo_title: "Real-Time Event Stream",
     edu_title: "EDUCATION",
     edu_uni: "Polytechnic University of Durango (UNIPOLI)",
     edu1_title: "Software Engineering",
@@ -559,50 +557,102 @@ const CommandPaletteDemo = ({ dict }: { dict: any }) => {
 };
 
 
-// --- Product Card Demo (Correos Clic) ---
-const ProductCardDemo = ({ dict }: { dict: any }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isAdded, setIsAdded] = useState(false);
+// --- Live Dashboard Demo ---
+const LiveDashboardDemo = ({ dict }: { dict: any }) => {
+  const [nodes, setNodes] = useState<{ id: number, x: number, y: number, size: number }[]>([]);
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNodes(prev => {
+        const newNodes = [...prev, {
+          id: Date.now(),
+          x: Math.random() * 100,
+          y: Math.random() * 100,
+          size: Math.random() * 8 + 2
+        }].slice(-25);
+        return newNodes;
+      });
+    }, 250);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center h-full w-full interactive-demo overflow-hidden border-l border-black/10 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/20 p-8">
-      <div className="text-[10px] font-mono tracking-widest uppercase text-zinc-500 mb-8 absolute top-8 left-8">{dict.proj5_demo_title}</div>
-
-      <motion.div
-        className="relative w-64 bg-white dark:bg-zinc-800 border-2 border-black dark:border-white flex flex-col p-4 cursor-pointer"
-        onHoverStart={() => setIsHovered(true)}
-        onHoverEnd={() => setIsHovered(false)}
-        whileHover={{ y: -5, x: -5, boxShadow: "10px 10px 0px rgba(0,0,0,1)" }}
-        initial={{ boxShadow: "0px 0px 0px rgba(0,0,0,1)" }}
-        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      >
-        {/* Image Placeholder with Parallax/Zoom */}
-        <div className="w-full h-40 bg-zinc-100 dark:bg-zinc-700 mb-4 flex items-center justify-center overflow-hidden">
-          <motion.div
-            animate={{ scale: isHovered ? 1.1 : 1, rotate: isHovered ? 5 : 0 }}
-            transition={{ duration: 0.4 }}
-            className="w-24 h-24 bg-black/10 dark:bg-white/10"
-            style={{ borderRadius: '40% 60% 70% 30% / 40% 50% 60% 50%' }}
-          />
+    <div className="flex flex-col h-full w-full interactive-demo overflow-hidden border-l border-black/10 dark:border-white/10 bg-zinc-950 p-6 relative">
+      {/* Grid Background */}
+      <div className="absolute inset-0 opacity-[0.08] dark:opacity-[0.15]" 
+           style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
+      
+      {/* Header */}
+      <div className="flex justify-between items-center z-10 mb-6">
+        <div className="text-[9px] font-mono tracking-widest uppercase text-white/50">{dict.proj5_demo_title}</div>
+        <div className="flex items-center gap-2">
+          <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
+          <span className="text-[9px] font-mono tracking-widest text-green-500">LIVE</span>
         </div>
-
-        <h4 className="font-black text-lg uppercase tracking-tighter mb-1 leading-tight">Premium<br />Hoodie</h4>
-        <p className="font-mono text-xs opacity-50 mb-4">$120.00 USD</p>
-
-        <motion.button
-          onClick={() => setIsAdded(true)}
-          whileTap={{ scale: 0.95 }}
-          className={`mt-auto w-full py-3 text-xs font-bold uppercase tracking-widest transition-colors ${isAdded ? 'bg-green-500 text-white border-2 border-green-500' : 'bg-black text-white dark:bg-white dark:text-black border-2 border-black dark:border-white'}`}
-        >
-          {isAdded ? dict.proj5_demo_added : dict.proj5_demo_add}
-        </motion.button>
-      </motion.div>
-
-      {isAdded && (
-        <button onClick={() => setIsAdded(false)} className="absolute bottom-8 text-[10px] uppercase underline text-center hover:opacity-50 font-mono text-zinc-500">
-          Reset Demo
-        </button>
-      )}
+      </div>
+      
+      {/* Dashboard Body */}
+      <div className="flex-1 flex gap-4 z-10 h-full">
+        {/* Main Vis */}
+        <div className="flex-[2] border border-white/10 bg-black/40 relative overflow-hidden backdrop-blur-sm h-full">
+           <AnimatePresence>
+             {nodes.map(n => (
+               <motion.div
+                 key={n.id}
+                 initial={{ opacity: 0, scale: 0 }}
+                 animate={{ opacity: [0, 1, 0], scale: [0, 1.5, 0.5] }}
+                 transition={{ duration: 2, ease: "easeOut" }}
+                 className="absolute rounded-full bg-white border border-white/40"
+                 style={{ left: `${n.x}%`, top: `${n.y}%`, width: n.size, height: n.size }}
+               />
+             ))}
+           </AnimatePresence>
+           
+           <div className="absolute bottom-4 left-4 flex gap-4">
+             <div>
+               <div className="text-[8px] font-mono text-white/40 mb-1">LATENCY</div>
+               <div className="text-xs font-mono text-white">12ms</div>
+             </div>
+             <div>
+               <div className="text-[8px] font-mono text-white/40 mb-1">EVENTS/S</div>
+               <div className="text-xs font-mono text-white">14.2K</div>
+             </div>
+           </div>
+        </div>
+        
+        {/* Sidebar Metrics */}
+        <div className="flex-1 flex flex-col gap-4 h-full">
+           {/* Chart 1 */}
+           <div className="flex-1 border border-white/10 bg-black/40 p-3 flex flex-col justify-end gap-1 relative overflow-hidden">
+             <div className="text-[8px] font-mono text-white/40 absolute top-3 left-3">MEMORY (GB)</div>
+             <div className="flex items-end gap-1 h-12 w-full">
+               {[40, 60, 30, 80, 50, 90, 70].map((h, i) => (
+                 <motion.div 
+                   key={i}
+                   animate={{ height: [`${h}%`, `${Math.max(10, h - 20)}%`, `${h}%`] }}
+                   transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.1 }}
+                   className="flex-1 bg-white/20"
+                 />
+               ))}
+             </div>
+           </div>
+           
+           {/* Chart 2 */}
+           <div className="flex-1 border border-white/10 bg-black/40 p-3 relative overflow-hidden flex flex-col">
+             <div className="text-[8px] font-mono text-white/40 mb-2">ACTIVE NODES</div>
+             <div className="flex flex-wrap gap-1 content-start flex-1 overflow-hidden">
+                {Array(36).fill(0).map((_, i) => (
+                  <motion.div
+                    key={i}
+                    animate={{ opacity: [0.2, 1, 0.2] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: Math.random() * 2 }}
+                    className="w-2 h-2 bg-white/40"
+                  />
+                ))}
+             </div>
+           </div>
+        </div>
+      </div>
     </div>
   );
 };
@@ -706,7 +756,7 @@ const ProjectCarousel = ({ dict, isDark }: { dict: any, isDark: boolean }) => {
     {
       cat: dict.proj5_cat, title: dict.proj5_title, challenge: dict.proj5_challenge, solution: dict.proj5_solution,
       tags: ['UX/UI', 'Framer Motion', 'React'],
-      demo: <ProductCardDemo dict={dict} />
+      demo: <LiveDashboardDemo dict={dict} />
     }
   ];
 
@@ -968,7 +1018,10 @@ export default function Portfolio() {
             danielvillarrealh@gmail.com
           </a>
 
-          <div className="flex gap-8 mb-auto">
+          <div className="flex gap-4 md:gap-8 flex-wrap mb-auto items-center">
+            <a href="/cv.pdf" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm font-bold uppercase hover:bg-foreground hover:text-background border-2 border-foreground px-4 py-2 transition-colors">
+              {d.nav_cv} <ArrowUpRight size={16} />
+            </a>
             <a href="https://github.com/Dandanieldan" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-xl font-bold uppercase hover:opacity-50 transition-opacity">
               GITHUB <ArrowUpRight size={24} />
             </a>
