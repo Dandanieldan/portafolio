@@ -86,7 +86,16 @@ const translations = {
     info3: "Experiencia en proyectos reales y entornos de trabajo en equipo.",
     contact_desc: "Siempre estoy abierto a conversar sobre nuevas oportunidades, tecnologías o proyectos interesantes. ¡Hablemos!",
     stack_title: "STACK TÉCNICO",
-    footer_text: "© 2026 Daniel Villarreal. Ing. de Software."
+    footer_text: "© 2026 Daniel Villarreal. Ing. de Software.",
+    card_title: "Daniel Villarreal",
+    card_sub: "Desarrollador de Software",
+    card_status: "ESTADO: DISPONIBLE",
+    card_focus: "Desarrollo Web y Móvil",
+    card_ux: "Interfaces enfocadas en UX",
+    card_systems: "Sistemas Frontend",
+    card_loc: "Durango, México",
+    card_remote: "✓ Abierto a oportunidades remotas",
+    card_close: "[ CERRAR ]",
   },
   en: {
     nav_projects: "PROJECTS",
@@ -162,7 +171,16 @@ const translations = {
     info3: "Experience in real-world projects and collaborative team environments.",
     contact_desc: "I am always open to discussing new opportunities, emerging technologies, or interesting projects. Let's talk!",
     stack_title: "TECH STACK",
-    footer_text: "© 2026 Daniel Villarreal. Software Engineer."
+    footer_text: "© 2026 Daniel Villarreal. Software Engineer.",
+    card_title: "Daniel Villarreal",
+    card_sub: "Software Developer",
+    card_status: "STATUS: AVAILABLE",
+    card_focus: "Web & Mobile Development",
+    card_ux: "UX-focused interfaces",
+    card_systems: "Frontend Systems",
+    card_loc: "Durango, Mexico",
+    card_remote: "✓ Open to remote opportunities",
+    card_close: "[ CLOSE ]",
   }
 };
 
@@ -900,6 +918,10 @@ export default function Portfolio() {
   const [lang, setLang] = useState<Lang>('es');
   const [isProfileActive, setIsProfileActive] = useState(false);
 
+  // States to track scroll direction to show/hide navigation menu items
+  const [showNavLinks, setShowNavLinks] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
   useEffect(() => setMounted(true), []);
 
   if (!mounted) return null;
@@ -907,8 +929,23 @@ export default function Portfolio() {
   const isDark = resolvedTheme === 'dark';
   const d = translations[lang];
 
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const currentScrollY = e.currentTarget.scrollTop;
+    if (currentScrollY > lastScrollY && currentScrollY > 50) {
+      // Scrolling down -> hide links
+      setShowNavLinks(false);
+    } else {
+      // Scrolling up -> show links
+      setShowNavLinks(true);
+    }
+    setLastScrollY(currentScrollY);
+  };
+
   return (
-    <div className="h-screen w-full overflow-y-scroll snap-y snap-mandatory bg-background text-foreground font-sans relative">
+    <div 
+      onScroll={handleScroll}
+      className="h-screen w-full overflow-y-scroll snap-y snap-mandatory bg-background text-foreground font-sans relative"
+    >
       <div className="noise-overlay" />
       <CustomCursor isDark={isDark} />
 
@@ -932,12 +969,21 @@ export default function Portfolio() {
             DV.
           </a>
 
-          <div className="hidden md:flex gap-8 items-center pointer-events-auto font-mono text-xs uppercase font-bold tracking-widest">
+          {/* Animating links container: hides when scrolling down, shows when scrolling up */}
+          <motion.div
+            animate={{ 
+              opacity: showNavLinks ? 1 : 0, 
+              y: showNavLinks ? 0 : -20,
+              pointerEvents: showNavLinks ? "auto" : "none" 
+            }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="hidden md:flex gap-8 items-center font-mono text-xs uppercase font-bold tracking-widest"
+          >
             <a href="#skills" className="hover:opacity-50 transition-opacity cursor-pointer">{d.nav_skills}</a>
             <a href="#projects" className="hover:opacity-50 transition-opacity cursor-pointer">{d.nav_projects}</a>
             <a href="#education" className="hover:opacity-50 transition-opacity cursor-pointer">{d.nav_edu}</a>
             <a href="#contact" className="hover:opacity-50 transition-opacity cursor-pointer">{d.nav_contact}</a>
-          </div>
+          </motion.div>
 
           <div className="flex gap-6 items-center pointer-events-auto">
             <button
@@ -1013,62 +1059,55 @@ export default function Portfolio() {
               {/* BACK SIDE: Minimal Editorial Digital Identity Card - Fits front side dimensions */}
               <div 
                 style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
-                className={`absolute inset-0 w-full h-full border border-foreground bg-background text-foreground p-6 md:p-8 flex flex-col justify-between shadow-[0_10px_35px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_35px_rgba(255,255,255,0.03)] font-mono text-[10px] tracking-tight leading-tight select-text transition-all duration-300 ${
+                className={`absolute inset-0 w-full h-full border-2 border-foreground bg-background text-foreground p-5 md:p-6 flex flex-col justify-between shadow-[0_10px_35px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_35px_rgba(255,255,255,0.03)] font-mono text-xs md:text-sm tracking-tight leading-tight select-text transition-all duration-300 ${
                   isProfileActive ? "pointer-events-auto opacity-100 z-50" : "pointer-events-none opacity-0"
                 }`}
               >
                 {/* ID Header */}
-                <div className="flex justify-between items-center border-b border-foreground/20 pb-3 uppercase text-[9px] opacity-75">
-                  <span className="font-bold">SYSTEM ACTIVE // PROFILE ID: #DV-618</span>
-                  <span className="flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-foreground animate-pulse" />
-                    STATUS: AVAILABLE
+                <div className="flex justify-between items-center border-b border-foreground/20 pb-2 uppercase text-[10px] md:text-xs font-bold opacity-80">
+                  <span>{d.card_status}</span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-foreground animate-pulse" />
+                    ONLINE
                   </span>
                 </div>
 
                 {/* Main Body */}
-                <div className="grid grid-cols-2 gap-6 my-auto text-left">
-                  <div className="border-r border-foreground/20 pr-6 flex flex-col justify-between py-1">
-                    <div>
-                      <div className="text-[9px] opacity-40 uppercase">DEVELOPER</div>
-                      <h2 className="text-xl font-sans font-black tracking-tighter uppercase leading-none mt-1">
-                        Daniel Villarreal
-                      </h2>
-                      <span className="text-[10px] opacity-70 block mt-0.5">
-                        Software Developer
-                      </span>
-                    </div>
-                    
-                    <div className="mt-4 space-y-0.5 text-[8px] opacity-50 uppercase">
-                      <div>SYSTEM ID: #DV-61833</div>
-                      <div>SECTOR: MX (GMT-6)</div>
-                    </div>
+                <div className="grid grid-cols-2 gap-4 my-auto text-left">
+                  <div className="border-r border-foreground/20 pr-4 flex flex-col justify-center py-1">
+                    <div className="text-[10px] md:text-xs opacity-50 uppercase">DEVELOPER</div>
+                    <h2 className="text-xl md:text-3xl font-sans font-black tracking-tighter uppercase leading-none mt-1">
+                      {d.card_title}
+                    </h2>
+                    <span className="text-xs md:text-base opacity-80 mt-1 block">
+                      {d.card_sub}
+                    </span>
                   </div>
 
-                  <div className="pl-6 flex flex-col justify-between py-1">
-                    <div className="space-y-2 text-[10px] font-sans leading-normal">
-                      <p className="font-bold text-foreground">Web & Mobile Development</p>
-                      <p className="text-foreground/70">UX-focused interfaces</p>
-                      <p className="text-foreground/70 font-mono text-[9px] uppercase tracking-tight">Frontend Systems</p>
+                  <div className="pl-4 flex flex-col justify-center py-1 font-sans">
+                    <div className="space-y-1.5 text-xs md:text-base leading-snug">
+                      <p className="font-bold text-foreground">{d.card_focus}</p>
+                      <p className="text-foreground/80">{d.card_ux}</p>
+                      <p className="text-foreground/80 font-mono text-[10px] md:text-xs uppercase tracking-tight">{d.card_systems}</p>
                     </div>
 
-                    <div className="mt-4 text-[9px] opacity-50">
-                      <span>Durango, México</span>
-                      <span className="block text-[8px] opacity-80 mt-0.5 font-bold">✓ Open to remote opportunities</span>
+                    <div className="mt-3 text-[10px] md:text-xs opacity-75 font-mono">
+                      <span>{d.card_loc}</span>
+                      <span className="block text-[9px] md:text-[10px] font-bold mt-1 opacity-90">{d.card_remote}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Footer Links */}
-                <div className="border-t border-foreground/20 pt-3 flex flex-wrap justify-between items-center gap-2">
-                  <div className="flex gap-4 uppercase font-bold text-[9px] pointer-events-auto">
-                    <Link href="/cv" className="hover:bg-foreground hover:text-background px-1 py-0.5 transition-colors cursor-pointer relative z-50">
+                <div className="border-t border-foreground/20 pt-2 flex flex-wrap justify-between items-center gap-2">
+                  <div className="flex gap-4 uppercase font-bold text-[10px] md:text-xs pointer-events-auto">
+                    <Link href="/cv" className="hover:bg-foreground hover:text-background px-1.5 py-0.5 transition-colors cursor-pointer relative z-50">
                       [ {lang === 'es' ? 'VER CV' : 'DOWNLOAD CV'} ]
                     </Link>
-                    <a href="https://github.com/Dandanieldan" target="_blank" rel="noreferrer" className="hover:bg-foreground hover:text-background px-1 py-0.5 transition-colors cursor-pointer relative z-50">
+                    <a href="https://github.com/Dandanieldan" target="_blank" rel="noreferrer" className="hover:bg-foreground hover:text-background px-1.5 py-0.5 transition-colors cursor-pointer relative z-50">
                       [ GitHub ]
                     </a>
-                    <a href="https://www.linkedin.com/in/daniel-villarreal-h" target="_blank" rel="noreferrer" className="hover:bg-foreground hover:text-background px-1 py-0.5 transition-colors cursor-pointer relative z-50">
+                    <a href="https://www.linkedin.com/in/daniel-villarreal-h" target="_blank" rel="noreferrer" className="hover:bg-foreground hover:text-background px-1.5 py-0.5 transition-colors cursor-pointer relative z-50">
                       [ LinkedIn ]
                     </a>
                   </div>
@@ -1078,9 +1117,9 @@ export default function Portfolio() {
                       e.stopPropagation();
                       setIsProfileActive(false);
                     }}
-                    className="opacity-50 hover:opacity-100 transition-opacity font-bold cursor-pointer relative z-50"
+                    className="opacity-60 hover:opacity-100 transition-opacity font-bold cursor-pointer relative z-50 text-[10px] md:text-xs"
                   >
-                    [ CLOSE ]
+                    {d.card_close}
                   </button>
                 </div>
               </div>
