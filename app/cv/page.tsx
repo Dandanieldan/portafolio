@@ -189,7 +189,7 @@ const cvData = {
     ],
     educationTitle: "EDUCATION",
     education: [
-      { degree: "Software Engineering", school: "Universidad Politécnica de Durango (UNIPOLI)", date: "2022 – 2026" },
+      { degree: "Software Engineering", school: "Polytechnic University of Durango (UNIPOLI)", date: "2022 – 2026" },
       { degree: "Networks and Telecommunications", school: "Universidad Politécnica de Durango (UNIPOLI)", date: "2019 – 2021" }
     ],
     additionalTitle: "ADDITIONAL INFORMATION",
@@ -335,47 +335,48 @@ export default function CVPage() {
       <div className="w-full max-w-[850px] bg-white dark:bg-zinc-900/30 border border-zinc-200/50 dark:border-zinc-800/50 shadow-[0_4px_30px_rgba(0,0,0,0.03)] dark:shadow-[0_4px_30px_rgba(0,0,0,0.2)] p-6 md:p-14 font-sans leading-relaxed text-zinc-800 dark:text-zinc-300 text-xs transition-colors duration-300 print:bg-white print:text-black print:p-0 print:shadow-none print:border-none print:max-w-full">
         
         {/* Header */}
-        <div className="text-center pb-6 mb-6 print:pb-4 print:mb-4 border-b border-zinc-200 dark:border-zinc-800 print:border-black">
+        <div className="text-center pb-6 mb-6 border-b border-zinc-200 dark:border-zinc-800 print:border-black">
           <h1 className="text-2xl md:text-3xl font-black tracking-tighter text-black dark:text-white print:text-black uppercase">
             {t.title}
           </h1>
           <h2 className="text-xs md:text-sm font-mono tracking-widest uppercase mt-1.5 text-zinc-500 dark:text-zinc-400 print:text-black font-semibold">
             {t.subtitle}
           </h2>
-          <p className="font-mono text-[9px] md:text-[10px] mt-3 text-zinc-400 dark:text-zinc-500 print:text-zinc-600 tracking-tight">
-            {t.contact}
+          <p className="font-mono text-[9px] md:text-[10px] mt-3 text-zinc-400 dark:text-zinc-500 print:text-zinc-600 tracking-tight flex flex-col md:flex-row justify-center items-center gap-1 md:gap-2 flex-wrap">
+            <span>{t.contact}</span>
+            <span className="hidden md:inline text-zinc-300 dark:text-zinc-700 print:text-zinc-400 select-none">|</span>
+            <span className="flex items-center gap-2">
+              <a
+                href="https://danielvillarreal.vercel.app"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-black dark:hover:text-white print:text-zinc-800 transition-colors underline underline-offset-2 print:no-underline"
+              >
+                {t.portfolioLabel}: danielvillarreal.vercel.app
+              </a>
+              <span className="text-zinc-300 dark:text-zinc-700 print:text-zinc-400 select-none">|</span>
+              <a
+                href="https://www.linkedin.com/in/daniel-villarreal-h"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-black dark:hover:text-white print:text-zinc-800 transition-colors underline underline-offset-2 print:no-underline"
+              >
+                {t.linkedinLabel}: linkedin.com/in/daniel-villarreal-h
+              </a>
+            </span>
           </p>
-          <div className="flex justify-center items-center gap-4 mt-2 flex-wrap">
-            <a
-              href="https://danielvillarreal.vercel.app"
-              target="_blank"
-              rel="noreferrer"
-              className="font-mono text-[9px] md:text-[10px] text-zinc-400 dark:text-zinc-500 print:text-zinc-800 print:no-underline tracking-tight hover:text-black dark:hover:text-white transition-colors underline underline-offset-2"
-            >
-              {t.portfolioLabel}: danielvillarreal.vercel.app
-            </a>
-            <span className="text-zinc-300 dark:text-zinc-700 print:text-zinc-400 select-none">|</span>
-            <a
-              href="https://www.linkedin.com/in/daniel-villarreal-h"
-              target="_blank"
-              rel="noreferrer"
-              className="font-mono text-[9px] md:text-[10px] text-zinc-400 dark:text-zinc-500 print:text-zinc-800 print:no-underline tracking-tight hover:text-black dark:hover:text-white transition-colors underline underline-offset-2"
-            >
-              {t.linkedinLabel}: linkedin.com/in/daniel-villarreal-h
-            </a>
-          </div>
         </div>
 
         {/* Profile / Summary */}
-        <div className="mb-6 print:mb-4">
+        <div className="mb-6">
           <p className="text-justify leading-relaxed text-zinc-700 dark:text-zinc-300 print:text-black text-[11px] md:text-[12px]">
             {t.profile}
           </p>
         </div>
 
         {/* Skills Section */}
-        <div className="mb-6 print:mb-4">
-          <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black border-b border-zinc-200 dark:border-zinc-800 print:border-black pb-1 mb-3 print:mb-2 text-[10px] font-bold">
+        <div className="mb-6">
+          <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black border-b border-zinc-200 dark:border-zinc-800 print:border-black pb-1 mb-3 text-[10px] font-bold">
             {t.skillsTitle}
           </h3>
           <div className="space-y-2">
@@ -389,8 +390,8 @@ export default function CVPage() {
         </div>
 
         {/* Projects Section */}
-        <div className="mb-6 print:mb-4">
-          <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black border-b border-zinc-200 dark:border-zinc-800 print:border-black pb-1 mb-4 print:mb-3 text-[10px] font-bold">
+        <div className="mb-6">
+          <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black border-b border-zinc-200 dark:border-zinc-800 print:border-black pb-1 mb-4 text-[10px] font-bold">
             {t.projectsTitle}
           </h3>
           <div className="space-y-5">
@@ -414,8 +415,8 @@ export default function CVPage() {
         </div>
 
         {/* Technical Experience Section */}
-        <div className="mb-6 print:mb-4">
-          <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black border-b border-zinc-200 dark:border-zinc-800 print:border-black pb-1 mb-4 print:mb-3 text-[10px] font-bold">
+        <div className="mb-6">
+          <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black border-b border-zinc-200 dark:border-zinc-800 print:border-black pb-1 mb-4 text-[10px] font-bold">
             {t.experienceTitle}
           </h3>
           <div className="space-y-4">
@@ -436,10 +437,10 @@ export default function CVPage() {
         </div>
 
         {/* Columns for Education & Additional */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-t border-zinc-200 dark:border-zinc-800 print:border-black pt-6 print:pt-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-t border-zinc-200 dark:border-zinc-800 print:border-black pt-6">
           {/* Left Column: Education */}
           <div>
-            <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black text-[10px] font-bold mb-3 print:mb-1">
+            <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black text-[10px] font-bold mb-3">
               {t.educationTitle}
             </h3>
             <div className="space-y-4 text-[11px] md:text-[12px]">
@@ -458,7 +459,7 @@ export default function CVPage() {
           {/* Right Column: Certs & Additional */}
           <div className="space-y-4">
             <div>
-              <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black text-[10px] font-bold mb-3 print:mb-1">
+              <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black text-[10px] font-bold mb-3">
                 {t.certificationsTitle}
               </h3>
               <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-zinc-400 print:text-black text-[11px] md:text-[12px] leading-relaxed">
@@ -469,7 +470,7 @@ export default function CVPage() {
             </div>
 
             <div>
-              <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black text-[10px] font-bold mb-3 print:mb-1">
+              <h3 className="font-mono tracking-widest text-zinc-400 dark:text-zinc-500 print:text-black text-[10px] font-bold mb-3">
                 {t.additionalTitle}
               </h3>
               <ul className="list-disc pl-4 space-y-1 text-zinc-600 dark:text-zinc-400 print:text-black text-[11px] md:text-[12px] leading-relaxed">

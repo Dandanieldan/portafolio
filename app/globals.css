@@ -111,18 +111,5 @@ body.cv-mode::-webkit-scrollbar-thumb:hover {
   background: rgba(128, 128, 128, 0.5) !important;
 }
 
-/* ===================== PRINT STYLES ===================== */
-@media print {
-  .noise-overlay {
-    display: none !important;
-  }
-
-  * {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-}
-
-
 
 
