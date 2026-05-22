@@ -291,29 +291,29 @@ export default function CVPage() {
   const isDark = resolvedTheme === "dark";
 
   return (
-    <div className="cv-page min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 p-0 md:p-8 flex flex-col items-center transition-colors duration-300">
+    <div className="cv-page min-h-screen bg-zinc-50 dark:bg-zinc-950 print:bg-white text-zinc-900 dark:text-zinc-100 p-0 md:p-8 print:p-0 flex flex-col items-center transition-colors duration-300">
       {/* Immersive Film Grain Overlay */}
-      <div className="noise-overlay" />
+      <div className="noise-overlay print:hidden" />
 
       {/* Floating Control Header - Hidden on Print */}
       <div className="w-full max-w-[850px] sticky top-0 z-40 bg-zinc-50/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-zinc-200/60 dark:border-zinc-800/80 p-4 mb-4 md:mb-8 flex justify-between items-center rounded-none md:rounded-lg print:hidden">
-        <Link 
-          href="/" 
+        <Link
+          href="/"
           className="flex items-center gap-2 text-xs font-mono font-bold uppercase hover:opacity-60 transition-opacity"
         >
           <ArrowLeft size={14} /> {t.backToPortfolio}
         </Link>
         <div className="flex gap-2">
           {/* Language Switcher */}
-          <button 
+          <button
             onClick={() => setLang(lang === "es" ? "en" : "es")}
             className="flex items-center gap-1.5 text-[10px] md:text-xs font-mono font-bold uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black border border-black dark:border-white px-2.5 py-1.5 transition-colors"
           >
             <Globe size={12} /> {t.langText}
           </button>
-          
-          {/* Print Button */}
-          <button 
+
+          {/* Print PDF Button */}
+          <button
             onClick={() => window.print()}
             className="flex items-center gap-1.5 text-[10px] md:text-xs font-mono font-bold uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black border border-black dark:border-white px-2.5 py-1.5 transition-colors"
           >
@@ -321,7 +321,7 @@ export default function CVPage() {
           </button>
 
           {/* Theme Toggle */}
-          <button 
+          <button
             onClick={() => setTheme(isDark ? "light" : "dark")}
             className="flex items-center gap-1.5 text-[10px] md:text-xs font-mono font-bold uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black border border-black dark:border-white px-2.5 py-1.5 transition-colors"
             title={isDark ? "Light Mode" : "Dark Mode"}
@@ -332,8 +332,16 @@ export default function CVPage() {
       </div>
 
       {/* Main Resume Sheet - Proportional layout representing dynamic web + perfect print output */}
-      <div className="w-full max-w-[850px] bg-white dark:bg-zinc-900/30 border border-zinc-200/50 dark:border-zinc-800/50 shadow-[0_4px_30px_rgba(0,0,0,0.03)] dark:shadow-[0_4px_30px_rgba(0,0,0,0.2)] p-6 md:p-14 font-sans leading-relaxed text-zinc-800 dark:text-zinc-300 text-xs transition-colors duration-300 print:bg-white print:text-zinc-800 print:p-0 print:max-w-full">
-        
+      <style dangerouslySetInnerHTML={{ __html: `
+        @media print {
+          @page {
+            margin-top: 1.5cm;
+            margin-bottom: 1.5cm;
+          }
+        }
+      `}} />
+      <div className="w-full max-w-[850px] bg-white dark:bg-zinc-900/30 border border-zinc-200/50 dark:border-zinc-800/50 shadow-[0_4px_30px_rgba(0,0,0,0.03)] dark:shadow-[0_4px_30px_rgba(0,0,0,0.2)] p-6 md:p-14 font-sans leading-relaxed text-zinc-800 dark:text-zinc-300 text-xs transition-colors duration-300 print:bg-white print:text-zinc-800 print:max-w-[850px] print:mx-auto print:border-none print:shadow-none print:px-14 print:py-0">
+
         {/* Header */}
         <div className="text-center pb-6 mb-6 print:pb-4 print:mb-4 border-b border-zinc-200 dark:border-zinc-800 print:border-zinc-200">
           <h1 className="text-2xl md:text-3xl font-black tracking-tighter text-black dark:text-white print:text-black uppercase">
@@ -396,8 +404,8 @@ export default function CVPage() {
           </h3>
           <div className="space-y-5">
             {t.projects.map((proj, idx) => (
-              <div 
-                key={idx} 
+              <div
+                key={idx}
                 className="hover:border-l-black dark:hover:border-l-white transition-all pl-0 md:pl-4 md:-ml-4 border-l-2 border-l-transparent text-[11px] md:text-[12px]"
               >
                 <div className="flex flex-col md:flex-row md:justify-between items-start md:items-baseline gap-1">
@@ -421,7 +429,7 @@ export default function CVPage() {
           </h3>
           <div className="space-y-4">
             {t.experience.map((exp, idx) => (
-              <div 
+              <div
                 key={idx}
                 className="hover:border-l-black dark:hover:border-l-white transition-all pl-0 md:pl-4 md:-ml-4 border-l-2 border-l-transparent text-[11px] md:text-[12px]"
               >
