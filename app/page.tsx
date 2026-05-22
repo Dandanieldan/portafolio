@@ -559,99 +559,138 @@ const CommandPaletteDemo = ({ dict }: { dict: any }) => {
 
 
 // --- Live Dashboard Demo ---
+// --- Live Dashboard Demo ---
 const LiveDashboardDemo = ({ dict }: { dict: any }) => {
-  const [nodes, setNodes] = useState<{ id: number, x: number, y: number, size: number }[]>([]);
-  
+  const [logs, setLogs] = useState<{ id: number; method: string; path: string; status: number; ms: number }[]>([]);
+  const [requestCount, setRequestCount] = useState(14820);
+  const [latency, setLatency] = useState(38);
+  const [chartBars, setChartBars] = useState<number[]>([40, 50, 45, 60, 55, 70, 65, 80, 75, 90, 85, 95, 90, 100, 95]);
+
+  useEffect(() => {
+    // Generate initial logs
+    const initialPaths = [
+      { method: 'GET', path: '/api/v1/users', status: 200 },
+      { method: 'POST', path: '/api/v1/checkout', status: 201 },
+      { method: 'GET', path: '/api/v1/analytics', status: 200 },
+      { method: 'PUT', path: '/api/v1/settings', status: 204 },
+      { method: 'GET', path: '/api/v1/products', status: 200 }
+    ];
+    const initialLogs = initialPaths.map((p, idx) => ({
+      id: Date.now() - idx * 1000,
+      method: p.method,
+      path: p.path,
+      status: p.status,
+      ms: Math.floor(Math.random() * 80) + 10
+    }));
+    setLogs(initialLogs);
+  }, []);
+
   useEffect(() => {
     const interval = setInterval(() => {
-      setNodes(prev => {
-        const newNodes = [...prev, {
-          id: Date.now(),
-          x: Math.random() * 100,
-          y: Math.random() * 100,
-          size: Math.random() * 8 + 2
-        }].slice(-25);
-        return newNodes;
+      // Add a new log
+      const paths = [
+        { method: 'GET', path: '/api/v1/users', status: 200 },
+        { method: 'POST', path: '/api/v1/checkout', status: 201 },
+        { method: 'GET', path: '/api/v1/analytics', status: 200 },
+        { method: 'PUT', path: '/api/v1/settings', status: 204 },
+        { method: 'GET', path: '/api/v1/products', status: 200 },
+        { method: 'DELETE', path: '/api/v1/sessions', status: 200 },
+        { method: 'GET', path: '/api/v1/auth/me', status: 304 }
+      ];
+      const selected = paths[Math.floor(Math.random() * paths.length)];
+      const newLog = {
+        id: Date.now(),
+        method: selected.method,
+        path: selected.path,
+        status: selected.status,
+        ms: Math.floor(Math.random() * 85) + 12
+      };
+
+      setLogs(prev => [newLog, ...prev.slice(0, 4)]);
+      setRequestCount(c => c + 1);
+      setLatency(Math.floor(Math.random() * 40) + 25);
+      
+      // Update sparkline chart
+      setChartBars(prev => {
+        const next = [...prev.slice(1)];
+        next.push(Math.floor(Math.random() * 60) + 40);
+        return next;
       });
-    }, 250);
+    }, 1500);
+
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="flex flex-col h-full w-full interactive-demo overflow-hidden border-l border-black/10 dark:border-white/10 bg-zinc-950 p-6 relative">
-      {/* Grid Background */}
-      <div className="absolute inset-0 opacity-[0.08] dark:opacity-[0.15]" 
-           style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
-      
-      {/* Header */}
-      <div className="flex justify-between items-center z-10 mb-6">
-        <div className="text-[9px] font-mono tracking-widest uppercase text-white/50">{dict.proj5_demo_title}</div>
-        <div className="flex items-center gap-2">
-          <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
-          <span className="text-[9px] font-mono tracking-widest text-green-500">LIVE</span>
+    <div className="flex flex-col h-full w-full interactive-demo overflow-hidden bg-background text-foreground p-4 md:p-6 relative select-none">
+      {/* Editorial Header */}
+      <div className="flex justify-between items-center pb-3 border-b border-foreground/10 mb-4">
+        <div className="text-[10px] font-mono tracking-widest uppercase font-bold text-foreground/60">{dict.proj5_demo_title || "METRICS PANEL"}</div>
+        <div className="flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+          <span className="text-[8px] font-mono tracking-widest font-bold text-green-500">LIVE</span>
         </div>
       </div>
-      
-      {/* Dashboard Body */}
-      <div className="flex-1 flex gap-4 z-10 h-full">
-        {/* Main Vis */}
-        <div className="flex-[2] border border-white/10 bg-black/40 relative overflow-hidden backdrop-blur-sm h-full">
-           <AnimatePresence>
-             {nodes.map(n => (
-               <motion.div
-                 key={n.id}
-                 initial={{ opacity: 0, scale: 0 }}
-                 animate={{ opacity: [0, 1, 0], scale: [0, 1.5, 0.5] }}
-                 transition={{ duration: 2, ease: "easeOut" }}
-                 className="absolute rounded-full bg-white border border-white/40"
-                 style={{ left: `${n.x}%`, top: `${n.y}%`, width: n.size, height: n.size }}
-               />
-             ))}
-           </AnimatePresence>
-           
-           <div className="absolute bottom-4 left-4 flex gap-4">
-             <div>
-               <div className="text-[8px] font-mono text-white/40 mb-1">LATENCY</div>
-               <div className="text-xs font-mono text-white">12ms</div>
-             </div>
-             <div>
-               <div className="text-[8px] font-mono text-white/40 mb-1">EVENTS/S</div>
-               <div className="text-xs font-mono text-white">14.2K</div>
-             </div>
-           </div>
+
+      <div className="flex-1 flex flex-col gap-4 overflow-hidden">
+        {/* Metric Cards Row */}
+        <div className="grid grid-cols-2 gap-2 text-left">
+          <div className="border border-foreground/10 bg-foreground/[0.02] p-2 flex flex-col">
+            <span className="text-[8px] font-mono tracking-widest uppercase text-foreground/45">AVG LATENCY</span>
+            <span className="text-sm font-mono font-bold mt-1 text-foreground">{latency}ms</span>
+          </div>
+          <div className="border border-foreground/10 bg-foreground/[0.02] p-2 flex flex-col">
+            <span className="text-[8px] font-mono tracking-widest uppercase text-foreground/45">REQUESTS</span>
+            <span className="text-sm font-mono font-bold mt-1 text-foreground">{requestCount.toLocaleString()}</span>
+          </div>
         </div>
-        
-        {/* Sidebar Metrics */}
-        <div className="flex-1 flex flex-col gap-4 h-full">
-           {/* Chart 1 */}
-           <div className="flex-1 border border-white/10 bg-black/40 p-3 flex flex-col justify-end gap-1 relative overflow-hidden">
-             <div className="text-[8px] font-mono text-white/40 absolute top-3 left-3">MEMORY (GB)</div>
-             <div className="flex items-end gap-1 h-12 w-full">
-               {[40, 60, 30, 80, 50, 90, 70].map((h, i) => (
-                 <motion.div 
-                   key={i}
-                   animate={{ height: [`${h}%`, `${Math.max(10, h - 20)}%`, `${h}%`] }}
-                   transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.1 }}
-                   className="flex-1 bg-white/20"
-                 />
-               ))}
-             </div>
-           </div>
-           
-           {/* Chart 2 */}
-           <div className="flex-1 border border-white/10 bg-black/40 p-3 relative overflow-hidden flex flex-col">
-             <div className="text-[8px] font-mono text-white/40 mb-2">ACTIVE NODES</div>
-             <div className="flex flex-wrap gap-1 content-start flex-1 overflow-hidden">
-                {Array(36).fill(0).map((_, i) => (
-                  <motion.div
-                    key={i}
-                    animate={{ opacity: [0.2, 1, 0.2] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: Math.random() * 2 }}
-                    className="w-2 h-2 bg-white/40"
-                  />
-                ))}
-             </div>
-           </div>
+
+        {/* Live Sparkline Graph */}
+        <div className="border border-foreground/10 bg-foreground/[0.02] p-3 flex flex-col justify-between h-20 relative overflow-hidden">
+          <span className="text-[8px] font-mono tracking-widest uppercase text-foreground/45 absolute top-2 left-2">REQUEST FLOW</span>
+          <div className="flex items-end gap-1 h-8 w-full mt-auto">
+            {chartBars.map((h, i) => (
+              <motion.div 
+                key={i}
+                animate={{ height: `${h}%` }}
+                transition={{ type: "spring", stiffness: 100, damping: 15 }}
+                className="flex-1 bg-foreground/20 hover:bg-foreground/40 transition-colors"
+                style={{ height: `${h}%` }}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Real-time Console Log Stream */}
+        <div className="flex-1 border border-foreground/10 bg-foreground/[0.02] p-3 flex flex-col overflow-hidden text-left">
+          <span className="text-[8px] font-mono tracking-widest uppercase text-foreground/45 mb-2 block">HTTP EVENT STREAM</span>
+          <div className="flex-1 flex flex-col gap-1.5 font-mono text-[9px] overflow-hidden">
+            <AnimatePresence initial={false}>
+              {logs.map(log => (
+                <motion.div
+                  key={log.id}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex items-center justify-between border-b border-foreground/[0.03] pb-1"
+                >
+                  <span className="flex items-center gap-1.5 truncate">
+                    <span className={`px-1 rounded-[2px] text-[8px] font-bold ${
+                      log.method === 'POST' ? 'bg-zinc-200 dark:bg-zinc-800 text-foreground' : 'bg-transparent text-foreground/60 border border-foreground/20'
+                    }`}>
+                      {log.method}
+                    </span>
+                    <span className="text-foreground/75 truncate">{log.path}</span>
+                  </span>
+                  <span className="flex items-center gap-2 shrink-0">
+                    <span className="text-foreground/50">{log.ms}ms</span>
+                    <span className={`font-bold ${log.status === 201 ? 'text-green-500' : 'text-foreground/75'}`}>{log.status}</span>
+                  </span>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </div>
@@ -913,10 +952,10 @@ export default function Portfolio() {
           {isProfileActive && (
             <motion.div
               initial={{ opacity: 0 }}
-              animate={{ opacity: 0.5 }}
+              animate={{ opacity: 0.3 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsProfileActive(false)}
-              className="fixed inset-0 bg-black/50 dark:bg-black/80 z-30 pointer-events-auto backdrop-blur-[2px]"
+              className="fixed inset-0 bg-black/10 dark:bg-black/35 z-30 pointer-events-auto backdrop-blur-[1px]"
             />
           )}
         </AnimatePresence>
@@ -940,93 +979,101 @@ export default function Portfolio() {
             </span>
           </div>
 
-          {/* 3D Flip Container */}
+          {/* 3D Flip Container - Kept w-fit to prevent layout shifting */}
           <div 
-            className="relative z-40 w-full max-w-2xl min-h-[280px] md:min-h-[350px]" 
+            className="relative z-40 w-fit" 
             style={{ perspective: 1500 }}
           >
             <motion.div
               animate={{ rotateY: isProfileActive ? 180 : 0 }}
-              transition={{ type: "spring", stiffness: 70, damping: 18 }}
+              transition={{ type: "spring", stiffness: 60, damping: 16 }}
               style={{ transformStyle: "preserve-3d" }}
-              className="relative w-full h-full"
+              className="relative w-fit"
             >
-              {/* FRONT SIDE: Original Typography */}
+              {/* FRONT SIDE: Original typography with restored dragging functionality */}
               <div 
                 style={{ backfaceVisibility: "hidden" }}
-                onClick={() => setIsProfileActive(true)}
-                className="cursor-pointer group select-none w-fit"
+                className="w-fit"
               >
-                <h1 className="text-[11vw] md:text-[10vw] leading-[0.95] font-black tracking-tighter uppercase px-4 -mx-4 rounded-sm group-hover:bg-foreground group-hover:text-background transition-all duration-300">
-                  {d.hero_title1}<br />
-                  {d.hero_title2}<br />
-                  {d.hero_title3}
-                </h1>
+                <motion.div
+                  drag
+                  dragConstraints={{ left: -100, right: 100, top: -50, bottom: 50 }}
+                  className="cursor-grab active:cursor-grabbing group inline-block relative z-10 w-fit"
+                >
+                  <h1 className="text-[11vw] md:text-[10vw] leading-[0.95] font-black tracking-tighter uppercase px-4 -mx-4 rounded-sm group-hover:bg-foreground group-hover:text-background transition-all duration-300">
+                    {d.hero_title1}<br />
+                    {d.hero_title2}<br />
+                    {d.hero_title3}
+                  </h1>
+                </motion.div>
               </div>
 
-              {/* BACK SIDE: Minimal Digital Identity Card */}
+              {/* BACK SIDE: Minimal Editorial Digital Identity Card - Fits front side dimensions */}
               <div 
                 style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
-                className="absolute inset-0 w-full h-full border border-foreground/20 bg-background text-foreground p-6 md:p-8 flex flex-col justify-between shadow-[0_10px_40px_rgba(0,0,0,0.06)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.3)] font-sans"
+                className="absolute inset-0 w-full h-full border border-foreground bg-background text-foreground p-6 md:p-8 flex flex-col justify-between shadow-[0_10px_35px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_35px_rgba(255,255,255,0.03)] font-mono text-[10px] tracking-tight leading-tight select-text"
               >
                 {/* ID Header */}
-                <div className="flex justify-between items-center border-b border-foreground/10 pb-4 font-mono text-[9px] tracking-widest text-foreground/55 uppercase">
-                  <span>[ SYSTEM PROFILE ]</span>
-                  <span className="flex items-center gap-1.5 font-bold">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                <div className="flex justify-between items-center border-b border-foreground/20 pb-3 uppercase text-[9px] opacity-75">
+                  <span className="font-bold">SYSTEM ACTIVE // PROFILE ID: #DV-618</span>
+                  <span className="flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-foreground animate-pulse" />
                     STATUS: AVAILABLE
                   </span>
                 </div>
 
                 {/* Main Body */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-auto">
-                  <div>
-                    <h2 className="text-2xl md:text-3xl font-black tracking-tighter uppercase leading-none">
-                      Daniel Villarreal
-                    </h2>
-                    <span className="font-mono text-[10px] uppercase tracking-wider text-foreground/60 block mt-1">
-                      Software Developer
-                    </span>
+                <div className="grid grid-cols-2 gap-6 my-auto text-left">
+                  <div className="border-r border-foreground/20 pr-6 flex flex-col justify-between py-1">
+                    <div>
+                      <div className="text-[9px] opacity-40 uppercase">DEVELOPER</div>
+                      <h2 className="text-xl font-sans font-black tracking-tighter uppercase leading-none mt-1">
+                        Daniel Villarreal
+                      </h2>
+                      <span className="text-[10px] opacity-70 block mt-0.5">
+                        Software Developer
+                      </span>
+                    </div>
                     
-                    <div className="mt-4 space-y-1 font-mono text-[9px] text-foreground/50 uppercase">
+                    <div className="mt-4 space-y-0.5 text-[8px] opacity-50 uppercase">
                       <div>SYSTEM ID: #DV-61833</div>
                       <div>SECTOR: MX (GMT-6)</div>
                     </div>
                   </div>
 
-                  <div className="flex flex-col justify-between border-t md:border-t-0 md:border-l border-foreground/10 pt-4 md:pt-0 md:pl-6">
-                    <div className="space-y-2 text-xs md:text-sm font-medium tracking-tight">
-                      <p className="leading-tight font-bold">Web & Mobile Development</p>
-                      <p className="leading-tight text-foreground/75">UX-focused interfaces</p>
-                      <p className="leading-tight text-foreground/75 font-mono text-[11px] uppercase tracking-tight">Frontend Systems</p>
+                  <div className="pl-6 flex flex-col justify-between py-1">
+                    <div className="space-y-2 text-[10px] font-sans leading-normal">
+                      <p className="font-bold text-foreground">Web & Mobile Development</p>
+                      <p className="text-foreground/70">UX-focused interfaces</p>
+                      <p className="text-foreground/70 font-mono text-[9px] uppercase tracking-tight">Frontend Systems</p>
                     </div>
 
-                    <div className="mt-4 font-mono text-[9px] uppercase tracking-widest text-foreground/50">
+                    <div className="mt-4 text-[9px] opacity-50">
                       <span>Durango, México</span>
-                      <span className="block text-[8px] text-green-500/80 font-bold mt-1">✓ Open to remote opportunities</span>
+                      <span className="block text-[8px] opacity-80 mt-0.5 font-bold">✓ Open to remote opportunities</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Footer Links */}
-                <div className="border-t border-foreground/10 pt-4 flex flex-wrap justify-between items-center gap-3">
-                  <div className="flex gap-4 font-mono text-[10px] tracking-wider uppercase font-bold">
-                    <Link href="/cv" className="hover:underline text-foreground">
+                <div className="border-t border-foreground/20 pt-3 flex flex-wrap justify-between items-center gap-2">
+                  <div className="flex gap-4 uppercase font-bold text-[9px]">
+                    <Link href="/cv" className="hover:bg-foreground hover:text-background px-1 py-0.5 transition-colors">
                       [ {lang === 'es' ? 'VER CV' : 'DOWNLOAD CV'} ]
                     </Link>
-                    <a href="https://github.com/Dandanieldan" target="_blank" rel="noreferrer" className="hover:underline text-foreground">
+                    <a href="https://github.com/Dandanieldan" target="_blank" rel="noreferrer" className="hover:bg-foreground hover:text-background px-1 py-0.5 transition-colors">
                       [ GitHub ]
                     </a>
-                    <a href="https://www.linkedin.com/in/daniel-villarreal-h" target="_blank" rel="noreferrer" className="hover:underline text-foreground">
+                    <a href="https://www.linkedin.com/in/daniel-villarreal-h" target="_blank" rel="noreferrer" className="hover:bg-foreground hover:text-background px-1 py-0.5 transition-colors">
                       [ LinkedIn ]
                     </a>
                   </div>
 
                   <button 
                     onClick={() => setIsProfileActive(false)}
-                    className="font-mono text-[9px] uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity"
+                    className="opacity-50 hover:opacity-100 transition-opacity font-bold"
                   >
-                    ← CLOSE PROFILE
+                    [ CLOSE ]
                   </button>
                 </div>
               </div>
