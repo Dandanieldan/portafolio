@@ -86,7 +86,7 @@ const cvData = {
     ],
     educationTitle: "EDUCACIÓN",
     education: [
-      { degree: "Ingeniería en Software", school: "Universidad Politécnica de Durango (UNIPOLI)", date: "2022 – Presente" },
+      { degree: "Ingeniería en Software", school: "Universidad Politécnica de Durango (UNIPOLI)", date: "2022 – 2026" },
       { degree: "Redes y Telecomunicaciones", school: "Universidad Politécnica de Durango (UNIPOLI)", date: "2019 – 2021" }
     ],
     additionalTitle: "INFORMACIÓN ADICIONAL",
@@ -189,7 +189,7 @@ const cvData = {
     ],
     educationTitle: "EDUCATION",
     education: [
-      { degree: "Software Engineering", school: "Universidad Politécnica de Durango (UNIPOLI)", date: "2022 – Present" },
+      { degree: "Software Engineering", school: "Universidad Politécnica de Durango (UNIPOLI)", date: "2022 – 2026" },
       { degree: "Networks and Telecommunications", school: "Universidad Politécnica de Durango (UNIPOLI)", date: "2019 – 2021" }
     ],
     additionalTitle: "ADDITIONAL INFORMATION",
