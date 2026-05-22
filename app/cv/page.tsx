@@ -103,6 +103,8 @@ const cvData = {
       "HTML & CSS Essentials — Cisco Networking Academy",
       "Python Essentials — Cisco Networking Academy"
     ],
+    portfolioLabel: "Portafolio",
+    linkedinLabel: "LinkedIn",
     backToPortfolio: "Volver",
     printText: "Imprimir / PDF",
     langText: "English",
@@ -204,6 +206,8 @@ const cvData = {
       "HTML & CSS Essentials — Cisco Networking Academy",
       "Python Essentials — Cisco Networking Academy"
     ],
+    portfolioLabel: "Portfolio",
+    linkedinLabel: "LinkedIn",
     backToPortfolio: "Back",
     printText: "Print / PDF",
     langText: "Español",
@@ -341,6 +345,25 @@ export default function CVPage() {
           <p className="font-mono text-[9px] md:text-[10px] mt-3 text-zinc-400 dark:text-zinc-500 print:text-zinc-600 tracking-tight">
             {t.contact}
           </p>
+          <div className="flex justify-center items-center gap-4 mt-2 flex-wrap">
+            <a
+              href="https://portafolio-fmxyg5hrh-dandanieldans-projects.vercel.app"
+              target="_blank"
+              rel="noreferrer"
+              className="font-mono text-[9px] md:text-[10px] text-zinc-400 dark:text-zinc-500 print:text-zinc-600 tracking-tight hover:text-black dark:hover:text-white transition-colors underline underline-offset-2"
+            >
+              {t.portfolioLabel}: portafolio-fmxyg5hrh-dandanieldans-projects.vercel.app
+            </a>
+            <span className="text-zinc-300 dark:text-zinc-700 print:text-zinc-400 select-none">|</span>
+            <a
+              href="https://www.linkedin.com/in/daniel-villarreal-h"
+              target="_blank"
+              rel="noreferrer"
+              className="font-mono text-[9px] md:text-[10px] text-zinc-400 dark:text-zinc-500 print:text-zinc-600 tracking-tight hover:text-black dark:hover:text-white transition-colors underline underline-offset-2"
+            >
+              {t.linkedinLabel}: linkedin.com/in/daniel-villarreal-h
+            </a>
+          </div>
         </div>
 
         {/* Profile / Summary */}
