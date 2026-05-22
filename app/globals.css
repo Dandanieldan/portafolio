@@ -1,26 +1,66 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #ffffff; /* Pure white */
+  --foreground: #000000; /* Pure black */
+}
+
+.dark {
+  --background: #000000; /* Pure black */
+  --foreground: #ffffff; /* Pure white */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  overflow: hidden; /* Hide main body scrollbar, we will handle it in a wrapper */
+  cursor: none;
+}
+
+::selection {
+  background: rgba(124, 111, 255, 0.3); /* Keep a subtle selection color, or make it gray? Let's make it gray */
+  background: rgba(128, 128, 128, 0.4);
+  color: var(--foreground);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 0px; /* Hide scrollbar entirely for the immersive full-screen experience */
+  display: none;
+}
+
+a, button, [role="button"], input, select, textarea {
+  cursor: none !important;
+}
+
+.custom-cursor {
+  pointer-events: none;
+}
+
+/* Film grain effect */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+.dark .noise-overlay {
+  opacity: 0.06;
 }
