@@ -51,7 +51,6 @@ const translations = {
     proj4_demo_title: "Interfaz Conversacional",
     proj4_demo_placeholder: "Escribe tu consulta...",
     proj4_demo_empty: "Flujo no encontrado",
-    nav_edu: "FORMACIÓN",
     about_title: "SOBRE MÍ",
     about_text: "Estudiante de Ingeniería de Software con experiencia comprobable en el desarrollo de soluciones web y móviles. Me enfoco en escribir código limpio, aprender ágilmente nuevas tecnologías y aportar valor real a los proyectos en los que participo.",
     bento_frontend: "FRONTEND CORE",
