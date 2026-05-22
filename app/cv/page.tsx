@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ArrowLeft, Printer, Globe, Download, Check } from "lucide-react";
+import { ArrowLeft, Printer, Globe, Sun, Moon } from "lucide-react";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 
 const cvData = {
   es: {
@@ -212,13 +213,21 @@ const cvData = {
 export default function CVPage() {
   const [lang, setLang] = useState<"es" | "en">("es");
   const [mounted, setMounted] = useState(false);
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const t = cvData[lang];
 
   useEffect(() => {
     setMounted(true);
+    // Add cv-mode class to body to allow scroll and restore cursor
+    document.body.classList.add("cv-mode");
+    return () => {
+      document.body.classList.remove("cv-mode");
+    };
   }, []);
 
   if (!mounted) return null;
+
+  const isDark = resolvedTheme === "dark";
 
   return (
     <div className="cv-page min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 p-0 md:p-8 flex flex-col items-center transition-colors duration-300">
@@ -250,15 +259,14 @@ export default function CVPage() {
             <Printer size={12} /> {t.printText}
           </button>
 
-          {/* Download Original English PDF */}
-          <a 
-            href="/cv-en.pdf" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-[10px] md:text-xs font-mono font-bold uppercase bg-black text-white dark:bg-white dark:text-black hover:opacity-85 px-2.5 py-1.5 transition-opacity"
+          {/* Theme Toggle */}
+          <button 
+            onClick={() => setTheme(isDark ? "light" : "dark")}
+            className="flex items-center gap-1.5 text-[10px] md:text-xs font-mono font-bold uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black border border-black dark:border-white px-2.5 py-1.5 transition-colors"
+            title={isDark ? "Light Mode" : "Dark Mode"}
           >
-            <Download size={12} /> {t.downloadENText}
-          </a>
+            {isDark ? <Sun size={12} /> : <Moon size={12} />}
+          </button>
         </div>
       </div>
 

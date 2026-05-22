@@ -65,8 +65,19 @@ a, button, [role="button"], input, select, textarea {
   opacity: 0.06;
 }
 
-/* Restore default cursor on CV page */
-.cv-page, .cv-page * {
+/* Restore default cursor and scroll on CV page */
+body.cv-mode {
+  overflow: auto !important;
   cursor: auto !important;
 }
+body.cv-mode a,
+body.cv-mode button,
+body.cv-mode [role="button"],
+body.cv-mode input,
+body.cv-mode select,
+body.cv-mode textarea,
+body.cv-mode * {
+  cursor: auto !important;
+}
+
 
