@@ -13,7 +13,8 @@ import {
 const translations = {
   es: {
     nav_projects: "PROYECTOS",
-    nav_exp: "EXPERIENCIA",
+    nav_edu: "FORMACIÓN",
+    nav_skills: "SKILLS",
     nav_contact: "CONTACTO",
     hero_title1: "SOFTWARE",
     hero_title2: "ENGINEER.",
@@ -91,6 +92,7 @@ const translations = {
   en: {
     nav_projects: "PROJECTS",
     nav_edu: "EDUCATION",
+    nav_skills: "SKILLS",
     nav_contact: "CONTACT",
     hero_title1: "SOFTWARE",
     hero_title2: "ENGINEER.",
