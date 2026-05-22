@@ -439,22 +439,22 @@ const DashboardDemo = ({ dict }: { dict: any }) => {
   const currentData = view === 'week' ? dataWeek : dataMonth;
 
   return (
-    <div className="flex flex-col h-full w-full interactive-demo overflow-hidden border-l border-black/10 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/20 px-8 py-16">
-      <div className="flex justify-between items-center mb-16">
+    <div className="flex flex-col h-full w-full interactive-demo overflow-hidden border-l border-black/10 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/20 px-4 md:px-8 py-6 md:py-16">
+      <div className="flex justify-between items-center mb-6 md:mb-16">
         <div className="text-[10px] font-mono tracking-widest uppercase text-zinc-500">{dict.proj2_demo_title}</div>
         <div className="flex border-2 border-black dark:border-white p-1">
-          <button onClick={() => setView('week')} className={`px-4 py-2 text-xs font-bold uppercase tracking-widest relative transition-colors ${view === 'week' ? 'text-white dark:text-black' : 'text-black dark:text-white'}`}>
+          <button onClick={() => setView('week')} className={`px-2 md:px-4 py-1 md:py-2 text-[10px] md:text-xs font-bold uppercase tracking-widest relative transition-colors ${view === 'week' ? 'text-white dark:text-black' : 'text-black dark:text-white'}`}>
             {view === 'week' && <motion.div layoutId="dash-tab" className="absolute inset-0 bg-black dark:bg-white" />}
             <span className="relative z-10">{dict.proj2_demo_week}</span>
           </button>
-          <button onClick={() => setView('month')} className={`px-4 py-2 text-xs font-bold uppercase tracking-widest relative transition-colors ${view === 'month' ? 'text-white dark:text-black' : 'text-black dark:text-white'}`}>
+          <button onClick={() => setView('month')} className={`px-2 md:px-4 py-1 md:py-2 text-[10px] md:text-xs font-bold uppercase tracking-widest relative transition-colors ${view === 'month' ? 'text-white dark:text-black' : 'text-black dark:text-white'}`}>
             {view === 'month' && <motion.div layoutId="dash-tab" className="absolute inset-0 bg-black dark:bg-white" />}
             <span className="relative z-10">{dict.proj2_demo_month}</span>
           </button>
         </div>
       </div>
 
-      <div className="flex-1 flex items-end gap-2 justify-between w-full h-full relative border-b-2 border-black dark:border-white pb-1">
+      <div className="flex-1 flex items-end gap-1 md:gap-2 justify-between w-full h-full relative border-b-2 border-black dark:border-white pb-1">
         {currentData.map((val, idx) => (
           <div key={`${view}-${idx}`} className="relative flex flex-col items-center group w-full h-full justify-end">
             <div className="absolute -top-10 bg-black dark:bg-white text-white dark:text-black text-[10px] font-bold py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
@@ -466,7 +466,7 @@ const DashboardDemo = ({ dict }: { dict: any }) => {
               animate={{ height: `${val}%` }}
               transition={{ type: "spring", stiffness: 300, damping: 25 }}
               className="w-full bg-zinc-300 dark:bg-zinc-700 group-hover:bg-black dark:group-hover:bg-white transition-colors origin-bottom"
-              style={{ maxWidth: view === 'week' ? '40px' : '20px' }}
+              style={{ maxWidth: view === 'week' ? '30px' : '15px' }}
             />
           </div>
         ))}
@@ -485,16 +485,16 @@ const KanbanDemo = ({ dict }: { dict: any }) => {
   const moveItem = (id: number, newStatus: string) => setItems(items.map(i => i.id === id ? { ...i, status: newStatus } : i));
 
   return (
-    <div className="flex flex-col h-full w-full interactive-demo overflow-hidden border-l border-black/10 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/20 p-8">
-      <div className="text-[10px] font-mono tracking-widest uppercase text-zinc-500 text-center mb-12">{dict.proj3_demo_title}</div>
+    <div className="flex flex-col h-full w-full interactive-demo overflow-hidden border-l border-black/10 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/20 p-4 md:p-8">
+      <div className="text-[10px] font-mono tracking-widest uppercase text-zinc-500 text-center mb-4 md:mb-12">{dict.proj3_demo_title}</div>
 
-      <div className="flex gap-8 h-full max-w-lg mx-auto w-full">
+      <div className="flex gap-3 md:gap-8 h-full max-w-lg mx-auto w-full">
         {['todo', 'done'].map((status) => (
-          <div key={status} className="flex-1 border-t-2 border-black dark:border-white pt-4 flex flex-col gap-4">
+          <div key={status} className="flex-1 border-t-2 border-black dark:border-white pt-2 md:pt-4 flex flex-col gap-2 md:gap-4">
             <h5 className="text-[10px] uppercase font-bold tracking-widest">
               {status === 'todo' ? dict.proj3_demo_todo : dict.proj3_demo_done}
             </h5>
-            <div className="flex-1 flex flex-col gap-3">
+            <div className="flex-1 flex flex-col gap-2 md:gap-3">
               <AnimatePresence>
                 {items.filter(i => i.status === status).map((item) => (
                   <motion.div
@@ -503,10 +503,10 @@ const KanbanDemo = ({ dict }: { dict: any }) => {
                     key={item.id}
                     initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }}
                     onClick={() => moveItem(item.id, status === 'todo' ? 'done' : 'todo')}
-                    className="bg-white dark:bg-black p-4 border border-black/20 dark:border-white/20 cursor-pointer hover:border-black dark:hover:border-white transition-colors flex items-center justify-between"
+                    className="bg-white dark:bg-black p-2.5 md:p-4 border border-black/20 dark:border-white/20 cursor-pointer hover:border-black dark:hover:border-white transition-colors flex items-center justify-between"
                   >
-                    <span className="text-sm font-bold">{item.title}</span>
-                    <ArrowRight size={14} className="opacity-50" />
+                    <span className="text-xs md:text-sm font-bold truncate">{item.title}</span>
+                    <ArrowRight size={12} className="opacity-50 shrink-0" />
                   </motion.div>
                 ))}
               </AnimatePresence>
@@ -531,24 +531,24 @@ const CommandPaletteDemo = ({ dict }: { dict: any }) => {
   const filtered = options.filter(o => o.text.toLowerCase().includes(query.toLowerCase()));
 
   return (
-    <div className="flex flex-col items-center justify-center h-full w-full interactive-demo overflow-hidden border-l border-black/10 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/20 p-8">
-      <div className="text-[10px] font-mono tracking-widest uppercase text-zinc-500 mb-12">{dict.proj4_demo_title}</div>
+    <div className="flex flex-col items-center justify-center h-full w-full interactive-demo overflow-hidden border-l border-black/10 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/20 p-4 md:p-8">
+      <div className="text-[10px] font-mono tracking-widest uppercase text-zinc-500 mb-4 md:mb-12">{dict.proj4_demo_title}</div>
 
       <div
         className={`w-full max-w-md bg-white dark:bg-black border-2 transition-all duration-300 ${open ? 'border-black dark:border-white shadow-[8px_8px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_rgba(255,255,255,1)]' : 'border-zinc-300 dark:border-zinc-800'}`}
         onClick={() => setOpen(true)}
       >
-        <div className="flex items-center px-4 py-4 border-b-2 border-transparent">
-          <Command size={18} className="text-zinc-400 mr-3" />
+        <div className="flex items-center px-3 md:px-4 py-2 md:py-4 border-b-2 border-transparent">
+          <Command size={16} className="text-zinc-400 mr-2 md:mr-3 shrink-0" />
           <input
             type="text"
             placeholder={dict.proj4_demo_placeholder}
-            className="bg-transparent border-none outline-none text-base w-full placeholder:text-zinc-400 font-bold font-mono cursor-none"
+            className="bg-transparent border-none outline-none text-sm md:text-base w-full placeholder:text-zinc-400 font-bold font-mono cursor-none"
             value={query}
             onChange={(e) => { setQuery(e.target.value); setOpen(true); }}
             onBlur={() => setTimeout(() => setOpen(false), 200)}
           />
-          <div className="text-[10px] border border-zinc-300 px-1 rounded text-zinc-400 font-mono">⌘K</div>
+          <div className="text-[9px] border border-zinc-300 px-1 rounded text-zinc-400 font-mono shrink-0">⌘K</div>
         </div>
 
         <AnimatePresence>
@@ -559,12 +559,12 @@ const CommandPaletteDemo = ({ dict }: { dict: any }) => {
             >
               <div className="flex flex-col max-h-48 overflow-y-auto">
                 {filtered.length > 0 ? filtered.map((opt, i) => (
-                  <div key={opt.id} className={`flex items-center gap-3 px-4 py-3 cursor-pointer text-sm font-bold hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors ${i === 0 ? 'bg-zinc-100 dark:bg-zinc-900' : ''}`}>
-                    <span>{opt.icon}</span>
-                    {opt.text}
+                  <div key={opt.id} className={`flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3 cursor-pointer text-xs md:text-sm font-bold hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors ${i === 0 ? 'bg-zinc-100 dark:bg-zinc-900' : ''}`}>
+                    <span className="shrink-0">{opt.icon}</span>
+                    <span className="truncate">{opt.text}</span>
                   </div>
                 )) : (
-                  <div className="px-4 py-6 text-center text-sm font-mono text-zinc-500">{dict.proj4_demo_empty}</div>
+                  <div className="px-4 py-6 text-center text-xs md:text-sm font-mono text-zinc-500">{dict.proj4_demo_empty}</div>
                 )}
               </div>
             </motion.div>
@@ -590,8 +590,7 @@ const LiveDashboardDemo = ({ dict }: { dict: any }) => {
       { method: 'GET', path: '/api/v1/users', status: 200 },
       { method: 'POST', path: '/api/v1/checkout', status: 201 },
       { method: 'GET', path: '/api/v1/analytics', status: 200 },
-      { method: 'PUT', path: '/api/v1/settings', status: 204 },
-      { method: 'GET', path: '/api/v1/products', status: 200 }
+      { method: 'PUT', path: '/api/v1/settings', status: 204 }
     ];
     const initialLogs = initialPaths.map((p, idx) => ({
       id: Date.now() - idx * 1000,
@@ -624,7 +623,7 @@ const LiveDashboardDemo = ({ dict }: { dict: any }) => {
         ms: Math.floor(Math.random() * 85) + 12
       };
 
-      setLogs(prev => [newLog, ...prev.slice(0, 4)]);
+      setLogs(prev => [newLog, ...prev.slice(0, 3)]);
       setRequestCount(c => c + 1);
       setLatency(Math.floor(Math.random() * 40) + 25);
       
@@ -719,7 +718,7 @@ const LiveDashboardDemo = ({ dict }: { dict: any }) => {
 // --- Skills Bento Component ---
 const SkillsBento = ({ dict }: { dict: any }) => {
   return (
-    <section id="skills" className="min-h-screen w-full snap-start flex flex-col justify-center py-24 px-6 md:px-16 lg:px-24">
+    <section id="skills" className="min-h-screen w-full md:snap-start flex flex-col justify-center py-24 px-6 md:px-16 lg:px-24">
       <div className="text-xs font-mono tracking-widest uppercase mb-12 flex items-center gap-4 text-zinc-500">
         <div className="w-8 h-[2px] bg-zinc-500"></div>
         {dict.nav_skills}
@@ -730,7 +729,7 @@ const SkillsBento = ({ dict }: { dict: any }) => {
         {/* Bento 1: About Me */}
         <motion.div
           whileHover={{ scale: 0.98 }}
-          className="col-span-1 md:col-span-2 row-span-1 bg-black text-white dark:bg-white dark:text-black p-8 md:p-12 flex flex-col justify-center shadow-[8px_8px_0px_rgba(0,0,0,0.1)] dark:shadow-[8px_8px_0px_rgba(255,255,255,0.2)]"
+          className="col-span-1 md:col-span-2 row-span-1 bg-black text-white dark:bg-white dark:text-black p-6 md:p-12 flex flex-col justify-center shadow-[8px_8px_0px_rgba(0,0,0,0.1)] dark:shadow-[8px_8px_0px_rgba(255,255,255,0.2)]"
         >
           <h3 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6">{dict.about_title}</h3>
           <p className="text-lg md:text-xl font-medium leading-relaxed opacity-90 max-w-xl">
@@ -741,7 +740,7 @@ const SkillsBento = ({ dict }: { dict: any }) => {
         {/* Bento 2: Frontend */}
         <motion.div
           whileHover={{ scale: 0.98 }}
-          className="col-span-1 md:col-span-1 row-span-1 border-2 border-black dark:border-white p-8 flex flex-col justify-between bg-zinc-50 dark:bg-zinc-900/20"
+          className="col-span-1 md:col-span-1 row-span-1 border-2 border-black dark:border-white p-6 md:p-8 flex flex-col justify-between bg-zinc-50 dark:bg-zinc-900/20"
         >
           <div>
             <h4 className="text-xl font-black uppercase tracking-tighter mb-2">{dict.bento_frontend}</h4>
@@ -755,7 +754,7 @@ const SkillsBento = ({ dict }: { dict: any }) => {
         {/* Bento 3: Backend */}
         <motion.div
           whileHover={{ scale: 0.98 }}
-          className="col-span-1 md:col-span-1 row-span-1 border-2 border-black dark:border-white p-8 flex flex-col justify-between bg-zinc-50 dark:bg-zinc-900/20"
+          className="col-span-1 md:col-span-1 row-span-1 border-2 border-black dark:border-white p-6 md:p-8 flex flex-col justify-between bg-zinc-50 dark:bg-zinc-900/20"
         >
           <div>
             <h4 className="text-xl font-black uppercase tracking-tighter mb-2">{dict.bento_backend}</h4>
@@ -769,7 +768,7 @@ const SkillsBento = ({ dict }: { dict: any }) => {
         {/* Bento 4: Mobile & Tools */}
         <motion.div
           whileHover={{ scale: 0.98 }}
-          className="col-span-1 md:col-span-2 row-span-1 border-2 border-black dark:border-white p-8 md:p-12 flex flex-col md:flex-row gap-8 items-start md:items-center justify-between bg-zinc-50 dark:bg-zinc-900/20"
+          className="col-span-1 md:col-span-2 row-span-1 border-2 border-black dark:border-white p-6 md:p-12 flex flex-col md:flex-row gap-8 items-start md:items-center justify-between bg-zinc-50 dark:bg-zinc-900/20"
         >
           <div className="max-w-md">
             <h4 className="text-2xl font-black uppercase tracking-tighter mb-4">{dict.bento_mobile}</h4>
@@ -783,7 +782,7 @@ const SkillsBento = ({ dict }: { dict: any }) => {
       </div>
     </section>
   );
-};
+}
 
 
 // --- Project Carousel Component ---
@@ -822,7 +821,7 @@ const ProjectCarousel = ({ dict, isDark }: { dict: any, isDark: boolean }) => {
   const handlePrev = () => setActive((prev) => (prev - 1 + projects.length) % projects.length);
 
   return (
-    <section id="projects" className="min-h-screen w-full snap-start flex flex-col pt-24 pb-12 overflow-hidden relative">
+    <section id="projects" className="min-h-screen w-full md:snap-start flex flex-col pt-24 pb-12 overflow-hidden relative">
       <div className="flex w-full px-6 md:px-16 lg:px-24 mb-8 justify-between items-end">
         <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-[0.9]">
           {dict.nav_projects}
@@ -870,28 +869,28 @@ const ProjectCarousel = ({ dict, isDark }: { dict: any, isDark: boolean }) => {
                 0{active + 1} / {projects[active].cat}
               </div>
 
-              <h3 className="text-4xl md:text-5xl font-black tracking-tighter mb-12 uppercase leading-[0.9]">
+              <h3 className="text-3xl md:text-5xl font-black tracking-tighter mb-4 md:mb-12 uppercase leading-[0.9]">
                 {projects[active].title}
               </h3>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-12 mb-4 md:mb-12">
                 <div className="border-l-2 border-black/20 dark:border-white/20 pl-4">
-                  <h4 className="font-bold uppercase tracking-widest text-[10px] mb-3 opacity-50 text-foreground">Reto / Challenge</h4>
-                  <p className="text-base md:text-lg font-medium opacity-90 leading-relaxed">
+                  <h4 className="font-bold uppercase tracking-widest text-[10px] mb-2 md:mb-3 opacity-50 text-foreground">Reto / Challenge</h4>
+                  <p className="text-sm md:text-lg font-medium opacity-90 leading-relaxed">
                     {projects[active].challenge}
                   </p>
                 </div>
                 <div className="border-l-2 border-black/20 dark:border-white/20 pl-4">
-                  <h4 className="font-bold uppercase tracking-widest text-[10px] mb-3 opacity-50 text-foreground">Solución / Solution</h4>
-                  <p className="text-base md:text-lg font-medium opacity-90 leading-relaxed">
+                  <h4 className="font-bold uppercase tracking-widest text-[10px] mb-2 md:mb-3 opacity-50 text-foreground">Solución / Solution</h4>
+                  <p className="text-sm md:text-lg font-medium opacity-90 leading-relaxed">
                     {projects[active].solution}
                   </p>
                 </div>
               </div>
 
-              <div className="flex gap-3 flex-wrap mt-auto">
+              <div className="flex gap-2 flex-wrap mt-4 md:mt-auto">
                 {projects[active].tags.map(tag => (
-                  <span key={tag} className="border border-black/20 dark:border-white/20 px-3 py-1 text-xs font-bold uppercase tracking-widest">
+                  <span key={tag} className="border border-black/20 dark:border-white/20 px-2 md:px-3 py-1 text-[10px] md:text-xs font-bold uppercase tracking-widest">
                     {tag}
                   </span>
                 ))}
@@ -944,7 +943,7 @@ export default function Portfolio() {
   return (
     <div 
       onScroll={handleScroll}
-      className="h-screen w-full overflow-y-scroll snap-y snap-mandatory bg-background text-foreground font-sans relative"
+      className="h-screen w-full overflow-y-scroll md:snap-y md:snap-mandatory bg-background text-foreground font-sans relative"
     >
       <div className="noise-overlay" />
       <CustomCursor isDark={isDark} />
@@ -1005,7 +1004,7 @@ export default function Portfolio() {
       {/* --- Sections --- */}
 
       {/* Hero Section */}
-      <section id="home" className="min-h-[100svh] w-full snap-start flex flex-col justify-center pt-24 pb-20 px-6 md:px-16 lg:px-24 relative">
+      <section id="home" className="min-h-[100svh] w-full md:snap-start flex flex-col justify-center pt-24 pb-20 px-6 md:px-16 lg:px-24 relative">
 
         <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: "easeOut" }} className="mb-24 relative">
           
@@ -1026,16 +1025,20 @@ export default function Portfolio() {
             </span>
           </div>
 
-          {/* 3D Flip Container - Kept w-fit to prevent layout shifting */}
+          {/* 3D Flip Container */}
           <div 
-            className="relative z-40 w-fit" 
+            className={`relative z-40 transition-all duration-500 ease-in-out ${
+              isProfileActive 
+                ? "w-[92vw] sm:w-[500px] h-[360px] sm:h-[280px] md:h-[240px]" 
+                : "w-fit h-fit"
+            }`}
             style={{ perspective: 1500 }}
           >
             <motion.div
               animate={{ rotateY: isProfileActive ? 180 : 0 }}
               transition={{ type: "spring", stiffness: 60, damping: 16 }}
               style={{ transformStyle: "preserve-3d" }}
-              className="relative w-fit"
+              className="relative w-full h-full"
             >
               {/* FRONT SIDE: Original typography with restored dragging and click-to-flip gestures */}
               <div 
@@ -1056,7 +1059,7 @@ export default function Portfolio() {
                 </motion.div>
               </div>
 
-              {/* BACK SIDE: Minimal Editorial Digital Identity Card - Fits front side dimensions */}
+              {/* BACK SIDE: Minimal Editorial Digital Identity Card - Fits container dimensions */}
               <div 
                 style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
                 className={`absolute inset-0 w-full h-full border-2 border-foreground bg-background text-foreground p-5 md:p-6 flex flex-col justify-between shadow-[0_10px_35px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_35px_rgba(255,255,255,0.03)] font-mono text-xs md:text-sm tracking-tight leading-tight select-text transition-all duration-300 ${
@@ -1073,8 +1076,8 @@ export default function Portfolio() {
                 </div>
 
                 {/* Main Body */}
-                <div className="grid grid-cols-2 gap-4 my-auto text-left">
-                  <div className="border-r border-foreground/20 pr-4 flex flex-col justify-center py-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-auto text-left">
+                  <div className="border-b sm:border-b-0 sm:border-r border-foreground/20 pb-3 sm:pb-0 sm:pr-4 flex flex-col justify-center py-1">
                     <div className="text-[10px] md:text-xs opacity-50 uppercase">DEVELOPER</div>
                     <h2 className="text-xl md:text-3xl font-sans font-black tracking-tighter uppercase leading-none mt-1">
                       {d.card_title}
@@ -1084,7 +1087,7 @@ export default function Portfolio() {
                     </span>
                   </div>
 
-                  <div className="pl-4 flex flex-col justify-center py-1 font-sans">
+                  <div className="pl-0 sm:pl-4 flex flex-col justify-center py-1 font-sans">
                     <div className="space-y-1.5 text-xs md:text-base leading-snug">
                       <p className="font-bold text-foreground">{d.card_focus}</p>
                       <p className="text-foreground/80">{d.card_ux}</p>
@@ -1144,10 +1147,10 @@ export default function Portfolio() {
       <ProjectCarousel dict={d} isDark={isDark} />
 
       {/* Education & Contact */}
-      <section id="education" className="min-h-screen w-full snap-start flex flex-col md:flex-row bg-foreground text-background">
+      <section id="education" className="min-h-screen w-full md:snap-start flex flex-col md:flex-row bg-foreground text-background">
 
         {/* Left Side: Education & Certs */}
-        <div className="w-full md:w-1/2 min-h-[50vh] md:h-full flex flex-col justify-center px-6 py-24 md:py-0 md:px-16 lg:px-24 border-b md:border-b-0 md:border-r border-background/20 relative">
+        <div className="w-full md:w-1/2 min-h-[50vh] md:h-full flex flex-col justify-center px-6 py-16 md:py-0 md:px-16 lg:px-24 border-b md:border-b-0 md:border-r border-background/20 relative">
 
           <div className="mb-12">
             <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-8 uppercase leading-tight">{d.edu_title}</h2>
@@ -1215,13 +1218,13 @@ export default function Portfolio() {
         </div>
 
         {/* Right Side: Contact */}
-        <div id="contact" className="w-full md:w-1/2 min-h-[50vh] md:h-full flex flex-col justify-center px-6 pt-16 pb-24 md:py-0 md:px-16 lg:px-24">
+        <div id="contact" className="w-full md:w-1/2 min-h-[50vh] md:h-full flex flex-col justify-center px-6 pt-12 pb-20 md:py-0 md:px-16 lg:px-24">
           <h2 className="text-5xl md:text-6xl font-black tracking-tighter mb-6 uppercase leading-tight">{d.nav_contact}</h2>
           <p className="text-lg mb-12 opacity-80 max-w-md leading-relaxed">
             {d.contact_desc}
           </p>
 
-          <a href="mailto:danielvillarrealh@gmail.com" className="text-xl md:text-3xl font-bold underline decoration-2 underline-offset-8 mb-16 hover:opacity-50 transition-opacity">
+          <a href="mailto:danielvillarrealh@gmail.com" className="text-base sm:text-xl md:text-3xl font-bold underline decoration-2 underline-offset-8 mb-16 hover:opacity-50 transition-opacity break-all">
             danielvillarrealh@gmail.com
           </a>
 
