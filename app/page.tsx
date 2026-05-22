@@ -52,7 +52,7 @@ const translations = {
     proj4_demo_placeholder: "Escribe tu consulta...",
     proj4_demo_empty: "Flujo no encontrado",
     about_title: "SOBRE MÍ",
-    about_text: "Ingeniero en Software apasionado por el desarrollo de tecnología útil y escalable. Cuento con experiencia en proyectos web y móviles, combinando pensamiento analítico, aprendizaje continuo y atención al detalle para construir soluciones sólidas.",
+    about_text: "Desarrollador de Software con experiencia en desarrollo web y móvil. Me enfoco en construir aplicaciones funcionales, escalables y centradas en la experiencia del usuario, creando soluciones modernas que combinan rendimiento, diseño y usabilidad.",
     bento_frontend: "FRONTEND CORE",
     bento_frontend_desc: "Desarrollo de interfaces interactivas con React y Next.js. Fuerte enfoque en la experiencia de usuario (UX), diseño responsivo y arquitectura escalable basada en componentes.",
     bento_backend: "BACKEND & DATOS",
@@ -129,7 +129,7 @@ const translations = {
     proj4_demo_placeholder: "Type your query...",
     proj4_demo_empty: "Flow not found",
     about_title: "ABOUT ME",
-    about_text: "Software Engineer passionate about building useful and scalable technology. I have experience in web and mobile projects, combining analytical thinking, continuous learning, and attention to detail to build solid solutions.",
+    about_text: "Software Developer with experience in web and mobile development. Focused on building functional, scalable, and user-centered applications, creating modern solutions that combine performance, design, and usability.",
     bento_frontend: "FRONTEND CORE",
     bento_frontend_desc: "Interactive interface development with React and Next.js. Strong focus on user experience (UX), responsive design, and scalable component-based architecture.",
     bento_backend: "BACKEND & DATA",
@@ -293,9 +293,8 @@ const CheckoutDemo = ({ dict }: { dict: any }) => {
               {frictionScore}
             </motion.div>
           </div>
-          <div className={`w-1.5 h-1.5 rounded-full ${
-            running ? 'bg-foreground animate-pulse' : optimized ? 'bg-foreground/30' : 'bg-foreground/20'
-          }`} />
+          <div className={`w-1.5 h-1.5 rounded-full ${running ? 'bg-foreground animate-pulse' : optimized ? 'bg-foreground/30' : 'bg-foreground/20'
+            }`} />
         </div>
       </div>
 
@@ -360,11 +359,10 @@ const CheckoutDemo = ({ dict }: { dict: any }) => {
                 className={`${field.w} flex flex-col gap-1`}
               >
                 <div className="text-[8px] font-mono uppercase tracking-widest text-zinc-400">{field.label}</div>
-                <div className={`h-7 border ${
-                  optimized
+                <div className={`h-7 border ${optimized
                     ? 'border-black dark:border-white'
                     : 'border-black/20 dark:border-white/20'
-                } bg-transparent w-full`} />
+                  } bg-transparent w-full`} />
               </motion.div>
             ))}
           </motion.div>
