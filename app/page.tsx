@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from 'next-themes';
+import Link from 'next/link';
 import {
   Sun, Moon, Package, Check, ArrowRight,
   ArrowUpRight, Command,
@@ -853,11 +854,161 @@ const ProjectCarousel = ({ dict, isDark }: { dict: any, isDark: boolean }) => {
   );
 };
 
+// --- Easter Egg: ID Card Modal ---
+const IdCardModal = ({ isOpen, onClose, lang }: { isOpen: boolean, onClose: () => void, lang: string }) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4">
+      {/* Container with relative sizing */}
+      <div className="relative w-full max-w-sm" style={{ perspective: 1000 }}>
+        <motion.div
+          animate={{ rotateY: isFlipped ? 180 : 0 }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+          style={{ transformStyle: "preserve-3d" }}
+          className="relative w-full h-[540px] cursor-pointer"
+        >
+          {/* FRONT SIDE (ID Card) */}
+          <div 
+            onClick={() => setIsFlipped(true)}
+            style={{ backfaceVisibility: "hidden" }}
+            className="absolute inset-0 bg-zinc-900 border-4 border-white text-white p-6 flex flex-col justify-between select-none shadow-[15px_15px_0px_rgba(255,255,255,0.1)] rounded-lg"
+          >
+            {/* Badge Header */}
+            <div className="border-b-2 border-white/20 pb-4 flex justify-between items-start">
+              <div>
+                <h4 className="font-mono text-[9px] tracking-widest text-zinc-400">UNIPOLI REGISTRATION</h4>
+                <h3 className="font-black text-sm uppercase tracking-tighter">SECURE ID BADGE</h3>
+              </div>
+              <div className="w-6 h-6 border border-white flex items-center justify-center text-[10px] font-black font-mono bg-white text-black">
+                DV
+              </div>
+            </div>
+
+            {/* Avatar / Portrait & Main Info */}
+            <div className="flex gap-4 my-auto">
+              {/* Glitchy Avatar placeholder */}
+              <div className="w-28 h-36 border-2 border-white/20 bg-zinc-950 flex flex-col items-center justify-center p-2 relative overflow-hidden">
+                <div className="absolute inset-0 bg-green-500/10 pointer-events-none animate-pulse"></div>
+                {/* Horizontal scan line */}
+                <motion.div 
+                  animate={{ top: ['0%', '100%', '0%'] }} 
+                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                  className="absolute left-0 right-0 h-[2px] bg-green-500/50" 
+                />
+                
+                {/* Simulated fingerprint / face wireframe */}
+                <div className="w-16 h-20 border border-dashed border-white/30 rounded-full flex items-center justify-center relative">
+                  <div className="w-8 h-12 border border-dotted border-white/20 rounded-full"></div>
+                </div>
+                <span className="text-[8px] font-mono text-zinc-500 mt-2 tracking-widest">DV_SYS_V4.0</span>
+              </div>
+
+              {/* Data list */}
+              <div className="flex-1 flex flex-col gap-2 font-mono text-[10px] justify-center">
+                <div>
+                  <span className="text-zinc-500 block text-[8px] uppercase">Surname, First Name</span>
+                  <span className="font-bold text-white uppercase text-xs">Villarreal H., Daniel</span>
+                </div>
+                <div>
+                  <span className="text-zinc-500 block text-[8px] uppercase">Clearance Level</span>
+                  <span className="font-bold text-white uppercase">Level 4 (Fullstack)</span>
+                </div>
+                <div>
+                  <span className="text-zinc-500 block text-[8px] uppercase">Active Access</span>
+                  <span className="font-bold text-green-400 uppercase tracking-widest animate-pulse">GRANTED</span>
+                </div>
+                <div>
+                  <span className="text-zinc-500 block text-[8px] uppercase">Core Directives</span>
+                  <span className="font-bold text-white uppercase text-[9px]">Web & Mobile Dev.</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Barcode & Flip Prompt */}
+            <div className="border-t-2 border-white/20 pt-4 flex flex-col gap-3">
+              {/* simulated barcode using simple CSS lines */}
+              <div className="h-10 bg-zinc-950 flex items-center justify-between px-2 py-1 opacity-70">
+                {Array(28).fill(0).map((_, i) => (
+                  <div 
+                    key={i} 
+                    className="bg-white h-full" 
+                    style={{ width: `${(i % 3 === 0 ? 3 : i % 2 === 0 ? 1 : 2)}px` }} 
+                  />
+                ))}
+              </div>
+              <div className="flex justify-between items-center text-[8px] font-mono text-zinc-400">
+                <span>SYSTEM REGISTRATION: #6183371209</span>
+                <span className="animate-pulse underline">CLICK TO DECRYPT →</span>
+              </div>
+            </div>
+          </div>
+
+          {/* BACK SIDE (Cover Letter) */}
+          <div 
+            onClick={() => setIsFlipped(false)}
+            style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+            className="absolute inset-0 bg-white border-4 border-black text-black p-6 flex flex-col justify-between select-none shadow-[15px_15px_0px_rgba(0,0,0,0.3)] dark:shadow-[15px_15px_0px_rgba(255,255,255,0.1)] rounded-lg"
+          >
+            {/* Header */}
+            <div className="border-b border-black/10 pb-3 flex justify-between items-center">
+              <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-500">Decrypted Cover Letter</span>
+              <span className="font-mono text-[9px] text-zinc-400">SYS_DECRYPT_OK</span>
+            </div>
+
+            {/* Letter Content */}
+            <div className="my-auto font-mono text-[10px] md:text-[11px] leading-relaxed text-zinc-800 flex flex-col gap-2.5">
+              {lang === 'es' ? (
+                <>
+                  <p className="font-bold text-black">A quien corresponda:</p>
+                  <p>
+                    Me apasiona descifrar la complejidad de los sistemas digitales.
+                  </p>
+                  <p>
+                    Este portafolio no solo contiene mi código, sino mi filosofía de ingeniería: eliminar la fricción entre la tecnología y el usuario final.
+                  </p>
+                  <p>
+                    Si buscas un desarrollador que traduzca ideas complejas en productos de software eficientes, fluidos y escalables, estás viendo la credencial correcta.
+                  </p>
+                  <p className="mt-1 font-bold text-black">— Daniel Villarreal</p>
+                </>
+              ) : (
+                <>
+                  <p className="font-bold text-black">To Whom It May Concern:</p>
+                  <p>
+                    I have a passion for decoding the complexity of digital systems.
+                  </p>
+                  <p>
+                    This portfolio contains not just my code, but my engineering philosophy: to eliminate friction between technology and the end user.
+                  </p>
+                  <p>
+                    If you are looking for a developer to translate complex ideas into efficient, seamless, and scalable software products, you are looking at the right badge.
+                  </p>
+                  <p className="mt-1 font-bold text-black">— Daniel Villarreal</p>
+                </>
+              )}
+            </div>
+
+            {/* Footer */}
+            <div className="border-t border-black/10 pt-3 flex justify-between items-center text-[9px] font-mono text-zinc-500">
+              <span>← CLICK TO LOCK</span>
+              <span className="underline font-bold" onClick={(e) => { e.stopPropagation(); onClose(); }}>CLOSE</span>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  )
+}
+
 // --- Main Application ---
 export default function Portfolio() {
   const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [lang, setLang] = useState<Lang>('es');
+  const [showIdCard, setShowIdCard] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
@@ -920,7 +1071,29 @@ export default function Portfolio() {
           </motion.div>
 
           <p className="mt-12 max-w-xl text-lg md:text-2xl font-medium tracking-tight border-l-4 border-black dark:border-white pl-6 relative z-0">
-            {d.hero_desc}
+            {lang === 'es' ? (
+              <>
+                Soy{" "}
+                <span 
+                  onClick={() => setShowIdCard(true)}
+                  className="underline decoration-wavy decoration-zinc-400 dark:decoration-zinc-600 hover:decoration-foreground cursor-pointer transition-colors font-bold"
+                >
+                  Daniel Villarreal
+                </span>
+                . Desarrollador especializado en el ecosistema React (Next.js, React Native). Construyo plataformas escalables, desde e-commerce de alcance nacional hasta aplicaciones móviles multiplataforma.
+              </>
+            ) : (
+              <>
+                I am{" "}
+                <span 
+                  onClick={() => setShowIdCard(true)}
+                  className="underline decoration-wavy decoration-zinc-400 dark:decoration-zinc-600 hover:decoration-foreground cursor-pointer transition-colors font-bold"
+                >
+                  Daniel Villarreal
+                </span>
+                . Developer specializing in the React ecosystem (Next.js, React Native). I build scalable platforms, from national-reach e-commerce to cross-platform mobile applications.
+              </>
+            )}
           </p>
         </motion.div>
 
@@ -1019,9 +1192,12 @@ export default function Portfolio() {
           </a>
 
           <div className="flex gap-4 md:gap-8 flex-wrap mb-auto items-center">
-            <a href="/cv.pdf" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm font-bold uppercase hover:bg-foreground hover:text-background border-2 border-foreground px-4 py-2 transition-colors">
-              {d.nav_cv} <ArrowUpRight size={16} />
+            <a href="/cv-en.pdf" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm font-bold uppercase hover:bg-foreground hover:text-background border-2 border-foreground px-4 py-2 transition-colors">
+              CV (EN) <ArrowUpRight size={16} />
             </a>
+            <Link href="/cv" className="flex items-center gap-2 text-sm font-bold uppercase hover:bg-foreground hover:text-background border-2 border-foreground px-4 py-2 transition-colors">
+              CV (ES) <ArrowUpRight size={16} />
+            </Link>
             <a href="https://github.com/Dandanieldan" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-xl font-bold uppercase hover:opacity-50 transition-opacity">
               GITHUB <ArrowUpRight size={24} />
             </a>
@@ -1034,6 +1210,7 @@ export default function Portfolio() {
         </div>
       </section>
 
+      <IdCardModal isOpen={showIdCard} onClose={() => setShowIdCard(false)} lang={lang} />
     </div>
   );
 }
