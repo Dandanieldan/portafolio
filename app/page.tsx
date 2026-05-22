@@ -52,7 +52,7 @@ const translations = {
     proj4_demo_placeholder: "Escribe tu consulta...",
     proj4_demo_empty: "Flujo no encontrado",
     about_title: "SOBRE MÍ",
-    about_text: "Estudiante de Ingeniería de Software con experiencia comprobable en el desarrollo de soluciones web y móviles. Me enfoco en escribir código limpio, aprender ágilmente nuevas tecnologías y aportar valor real a los proyectos en los que participo.",
+    about_text: "Ingeniero en Software apasionado por el desarrollo de tecnología útil y escalable. Cuento con experiencia en proyectos web y móviles, combinando pensamiento analítico, aprendizaje continuo y atención al detalle para construir soluciones sólidas.",
     bento_frontend: "FRONTEND CORE",
     bento_frontend_desc: "Desarrollo de interfaces interactivas con React y Next.js. Fuerte enfoque en la experiencia de usuario (UX), diseño responsivo y arquitectura escalable basada en componentes.",
     bento_backend: "BACKEND & DATOS",
@@ -129,7 +129,7 @@ const translations = {
     proj4_demo_placeholder: "Type your query...",
     proj4_demo_empty: "Flow not found",
     about_title: "ABOUT ME",
-    about_text: "Software Engineering student with proven experience developing web and mobile solutions. Focused on writing clean code, learning new technologies agilely, and delivering real value to the projects I participate in.",
+    about_text: "Software Engineer passionate about building useful and scalable technology. I have experience in web and mobile projects, combining analytical thinking, continuous learning, and attention to detail to build solid solutions.",
     bento_frontend: "FRONTEND CORE",
     bento_frontend_desc: "Interactive interface development with React and Next.js. Strong focus on user experience (UX), responsive design, and scalable component-based architecture.",
     bento_backend: "BACKEND & DATA",
@@ -227,59 +227,192 @@ const CustomCursor = ({ isDark }: { isDark: boolean }) => {
 // --- Demos UX/UI (Monochromatic Full-Screen Layouts) ---
 
 const CheckoutDemo = ({ dict }: { dict: any }) => {
-  const [inCart, setInCart] = useState(false);
+  const [optimized, setOptimized] = useState(false);
+  const [running, setRunning] = useState(false);
+  const [frictionScore, setFrictionScore] = useState(87);
+  const [tick, setTick] = useState(0);
+
+  const handleOptimize = () => {
+    if (running || optimized) return;
+    setRunning(true);
+    let score = 87;
+    const interval = setInterval(() => {
+      score = Math.max(12, score - Math.floor(Math.random() * 14 + 4));
+      setFrictionScore(score);
+      setTick(t => t + 1);
+      if (score <= 12) {
+        clearInterval(interval);
+        setOptimized(true);
+        setRunning(false);
+      }
+    }, 180);
+  };
+
+  const handleReset = () => {
+    setOptimized(false);
+    setRunning(false);
+    setFrictionScore(87);
+    setTick(0);
+  };
+
+  const highFrictionFields = [
+    { label: 'Full Legal Name', w: 'w-full' },
+    { label: 'Billing Address Line 1', w: 'w-full' },
+    { label: 'Billing Address Line 2', w: 'w-2/3' },
+    { label: 'ZIP Code', w: 'w-1/3' },
+    { label: 'Card Number', w: 'w-full' },
+    { label: 'CVV', w: 'w-1/4' },
+    { label: 'Expiry MM/YY', w: 'w-1/3' },
+    { label: 'Promo Code', w: 'w-2/3' },
+  ];
+
+  const lowFrictionFields = [
+    { label: 'Email', w: 'w-full' },
+    { label: 'Card', w: 'w-full' },
+  ];
+
+  const fields = optimized ? lowFrictionFields : highFrictionFields;
+  const scoreColor = frictionScore > 60 ? 'text-foreground' : frictionScore > 30 ? 'text-foreground/70' : 'text-foreground/40';
 
   return (
-    <div className="flex flex-col items-center justify-center h-full w-full interactive-demo overflow-hidden relative border-l border-black/10 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/20">
-      <div className="absolute top-8 w-full text-center text-[10px] font-mono tracking-widest uppercase text-zinc-500">
-        {dict.proj1_demo_title}
-      </div>
-
-      {!inCart ? (
-        <div className="flex flex-col md:flex-row gap-12 items-center justify-center w-full mt-8">
-          <div className="flex flex-col items-center">
-            <span className="text-[10px] uppercase tracking-wider mb-4 font-bold text-zinc-500">{dict.proj1_demo_item}</span>
+    <div className="flex flex-col h-full w-full interactive-demo overflow-hidden relative bg-zinc-50 dark:bg-zinc-900/10 p-5">
+      {/* Header bar */}
+      <div className="flex items-center justify-between mb-4 border-b border-black/10 dark:border-white/10 pb-3">
+        <div className="text-[9px] font-mono tracking-widest uppercase text-zinc-400">
+          {dict.proj1_demo_title}
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5">
+            <div className={`text-[9px] font-mono uppercase tracking-widest ${scoreColor}`}>FRICTION</div>
             <motion.div
-              drag
-              dragSnapToOrigin
-              onDragEnd={(e, info) => {
-                if (info.offset.x > 100 || (info.offset.x > 50 && info.offset.y > 50)) setInCart(true);
-              }}
-              whileDrag={{ scale: 1.1, zIndex: 10, rotate: 5 }}
-              className="w-24 h-24 bg-white dark:bg-black border-2 border-black dark:border-white flex flex-col items-center justify-center cursor-grab active:cursor-grabbing shadow-[8px_8px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_rgba(255,255,255,1)]"
+              key={frictionScore}
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`text-[11px] font-black font-mono tabular-nums ${scoreColor}`}
             >
-              <Package size={32} className="mb-2 text-black dark:text-white" />
+              {frictionScore}
             </motion.div>
           </div>
-
-          <div className="hidden md:block text-zinc-400">
-            <ArrowRight size={24} className="animate-pulse" />
-          </div>
-
-          <div className="flex flex-col items-center">
-            <span className="text-[10px] uppercase tracking-wider mb-4 font-bold text-zinc-500">{dict.nav_contact} (?)</span>
-            <div className="w-32 h-32 border-2 border-dashed border-zinc-400 dark:border-zinc-600 rounded-none flex items-center justify-center bg-transparent">
-              <span className="text-sm text-zinc-500 font-bold">{dict.proj1_demo_drop}</span>
-            </div>
-          </div>
+          <div className={`w-1.5 h-1.5 rounded-full ${
+            running ? 'bg-foreground animate-pulse' : optimized ? 'bg-foreground/30' : 'bg-foreground/20'
+          }`} />
         </div>
-      ) : (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
-          className="flex flex-col items-center justify-center mt-8"
-        >
-          <div className="w-20 h-20 bg-black dark:bg-white text-white dark:text-black rounded-full flex items-center justify-center mb-6">
-            <Check size={40} />
-          </div>
-          <h4 className="text-2xl font-bold uppercase tracking-tight">{dict.proj1_demo_success}</h4>
-          <button
-            onClick={() => setInCart(false)}
-            className="mt-6 text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-black dark:hover:text-white border-b border-zinc-500 pb-1"
+      </div>
+
+      {/* System label */}
+      <AnimatePresence mode="wait">
+        {running && (
+          <motion.div
+            key="scanning"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="text-[9px] font-mono uppercase tracking-widest text-zinc-400 mb-3 flex items-center gap-2"
           >
-            {dict.proj1_demo_reset}
-          </button>
-        </motion.div>
-      )}
+            <motion.span
+              animate={{ opacity: [1, 0.2, 1] }}
+              transition={{ repeat: Infinity, duration: 0.6 }}
+            >▸</motion.span>
+            ADAPTIVE LAYOUT — OPTIMIZATION ACTIVE
+          </motion.div>
+        )}
+        {optimized && !running && (
+          <motion.div
+            key="done"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-[9px] font-mono uppercase tracking-widest text-zinc-400 mb-3"
+          >
+            ✓ COGNITIVE LOAD REDUCED — INTERACTION LATENCY MINIMIZED
+          </motion.div>
+        )}
+        {!running && !optimized && (
+          <motion.div
+            key="idle"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-[9px] font-mono uppercase tracking-widest text-zinc-400 mb-3"
+          >
+            SYSTEM STATE — HIGH FRICTION DETECTED
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Form fields */}
+      <div className="flex-1 overflow-hidden relative">
+        <AnimatePresence>
+          <motion.div
+            key={optimized ? 'opt' : 'raw'}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="flex flex-wrap gap-2 w-full"
+          >
+            {fields.map((field, i) => (
+              <motion.div
+                key={field.label}
+                layout
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3, delay: i * 0.05 }}
+                className={`${field.w} flex flex-col gap-1`}
+              >
+                <div className="text-[8px] font-mono uppercase tracking-widest text-zinc-400">{field.label}</div>
+                <div className={`h-7 border ${
+                  optimized
+                    ? 'border-black dark:border-white'
+                    : 'border-black/20 dark:border-white/20'
+                } bg-transparent w-full`} />
+              </motion.div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Eliminated fields ghost */}
+        {optimized && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="mt-4 pt-3 border-t border-black/10 dark:border-white/10"
+          >
+            <div className="text-[8px] font-mono uppercase tracking-widest text-zinc-300 dark:text-zinc-600 mb-2">6 fields eliminated</div>
+            <div className="flex flex-wrap gap-1.5">
+              {['Billing Line 2', 'ZIP', 'CVV', 'Expiry', 'Promo Code', 'Legal Name'].map(f => (
+                <div key={f} className="text-[8px] font-mono text-zinc-300 dark:text-zinc-600 line-through">{f}</div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </div>
+
+      {/* CTA */}
+      <div className="mt-4 pt-3 border-t border-black/10 dark:border-white/10">
+        {!optimized ? (
+          <motion.button
+            onClick={handleOptimize}
+            disabled={running}
+            whileTap={{ scale: 0.97 }}
+            className="w-full py-2.5 bg-black dark:bg-white text-white dark:text-black text-[10px] font-bold uppercase tracking-widest disabled:opacity-40 transition-opacity"
+          >
+            {running ? 'OPTIMIZING...' : 'RUN OPTIMIZATION →'}
+          </motion.button>
+        ) : (
+          <div className="flex gap-2">
+            <div className="flex-1 py-2.5 bg-black dark:bg-white text-white dark:text-black text-[10px] font-bold uppercase tracking-widest text-center">
+              COMPLETE ORDER
+            </div>
+            <button
+              onClick={handleReset}
+              className="px-4 py-2.5 border border-black/20 dark:border-white/20 text-[10px] font-mono uppercase tracking-widest text-zinc-400 hover:border-black dark:hover:border-white transition-colors"
+            >
+              RESET
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
