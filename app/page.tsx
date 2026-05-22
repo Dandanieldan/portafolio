@@ -859,6 +859,7 @@ export default function Portfolio() {
   const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [lang, setLang] = useState<Lang>('es');
+  const [isProfileActive, setIsProfileActive] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
@@ -907,18 +908,130 @@ export default function Portfolio() {
 
       {/* Hero Section */}
       <section id="home" className="min-h-[100svh] w-full snap-start flex flex-col justify-center pt-24 pb-20 px-6 md:px-16 lg:px-24 relative">
-        <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: "easeOut" }} className="mb-24">
-          <motion.div
-            drag
-            dragConstraints={{ left: -100, right: 100, top: -50, bottom: 50 }}
-            className="cursor-grab active:cursor-grabbing group inline-block relative z-10 w-fit"
+        {/* Profile Card Overlay backdrop */}
+        <AnimatePresence>
+          {isProfileActive && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsProfileActive(false)}
+              className="fixed inset-0 bg-black/50 dark:bg-black/80 z-30 pointer-events-auto backdrop-blur-[2px]"
+            />
+          )}
+        </AnimatePresence>
+
+        <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: "easeOut" }} className="mb-24 relative">
+          
+          {/* Circular Trigger */}
+          <div className="flex items-center gap-4 mb-6 select-none relative z-40">
+            <button 
+              onClick={() => setIsProfileActive(!isProfileActive)}
+              className="w-10 h-10 rounded-full border border-foreground/30 hover:border-foreground flex items-center justify-center transition-colors pointer-events-auto relative group bg-background"
+              title={isProfileActive ? "Restore Title" : "Activate Profile"}
+            >
+              <span className="w-2.5 h-2.5 rounded-full bg-foreground transition-transform duration-300 group-hover:scale-125" />
+              {isProfileActive && (
+                <span className="absolute inset-0 rounded-full border border-foreground animate-ping opacity-45" />
+              )}
+            </button>
+            <span className="font-mono text-[9px] uppercase tracking-widest opacity-60">
+              {isProfileActive ? "System: Profile Active" : "Click to view profile card"}
+            </span>
+          </div>
+
+          {/* 3D Flip Container */}
+          <div 
+            className="relative z-40 w-full max-w-2xl min-h-[280px] md:min-h-[350px]" 
+            style={{ perspective: 1500 }}
           >
-            <h1 className="text-[11vw] md:text-[10vw] leading-[0.95] font-black tracking-tighter uppercase px-4 -mx-4 rounded-sm group-hover:bg-foreground group-hover:text-background transition-all duration-300">
-              {d.hero_title1}<br />
-              {d.hero_title2}<br />
-              {d.hero_title3}
-            </h1>
-          </motion.div>
+            <motion.div
+              animate={{ rotateY: isProfileActive ? 180 : 0 }}
+              transition={{ type: "spring", stiffness: 70, damping: 18 }}
+              style={{ transformStyle: "preserve-3d" }}
+              className="relative w-full h-full"
+            >
+              {/* FRONT SIDE: Original Typography */}
+              <div 
+                style={{ backfaceVisibility: "hidden" }}
+                onClick={() => setIsProfileActive(true)}
+                className="cursor-pointer group select-none w-fit"
+              >
+                <h1 className="text-[11vw] md:text-[10vw] leading-[0.95] font-black tracking-tighter uppercase px-4 -mx-4 rounded-sm group-hover:bg-foreground group-hover:text-background transition-all duration-300">
+                  {d.hero_title1}<br />
+                  {d.hero_title2}<br />
+                  {d.hero_title3}
+                </h1>
+              </div>
+
+              {/* BACK SIDE: Minimal Digital Identity Card */}
+              <div 
+                style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+                className="absolute inset-0 w-full h-full border border-foreground/20 bg-background text-foreground p-6 md:p-8 flex flex-col justify-between shadow-[0_10px_40px_rgba(0,0,0,0.06)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.3)] font-sans"
+              >
+                {/* ID Header */}
+                <div className="flex justify-between items-center border-b border-foreground/10 pb-4 font-mono text-[9px] tracking-widest text-foreground/55 uppercase">
+                  <span>[ SYSTEM PROFILE ]</span>
+                  <span className="flex items-center gap-1.5 font-bold">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                    STATUS: AVAILABLE
+                  </span>
+                </div>
+
+                {/* Main Body */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-auto">
+                  <div>
+                    <h2 className="text-2xl md:text-3xl font-black tracking-tighter uppercase leading-none">
+                      Daniel Villarreal
+                    </h2>
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-foreground/60 block mt-1">
+                      Software Developer
+                    </span>
+                    
+                    <div className="mt-4 space-y-1 font-mono text-[9px] text-foreground/50 uppercase">
+                      <div>SYSTEM ID: #DV-61833</div>
+                      <div>SECTOR: MX (GMT-6)</div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col justify-between border-t md:border-t-0 md:border-l border-foreground/10 pt-4 md:pt-0 md:pl-6">
+                    <div className="space-y-2 text-xs md:text-sm font-medium tracking-tight">
+                      <p className="leading-tight font-bold">Web & Mobile Development</p>
+                      <p className="leading-tight text-foreground/75">UX-focused interfaces</p>
+                      <p className="leading-tight text-foreground/75 font-mono text-[11px] uppercase tracking-tight">Frontend Systems</p>
+                    </div>
+
+                    <div className="mt-4 font-mono text-[9px] uppercase tracking-widest text-foreground/50">
+                      <span>Durango, México</span>
+                      <span className="block text-[8px] text-green-500/80 font-bold mt-1">✓ Open to remote opportunities</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Footer Links */}
+                <div className="border-t border-foreground/10 pt-4 flex flex-wrap justify-between items-center gap-3">
+                  <div className="flex gap-4 font-mono text-[10px] tracking-wider uppercase font-bold">
+                    <Link href="/cv" className="hover:underline text-foreground">
+                      [ {lang === 'es' ? 'VER CV' : 'DOWNLOAD CV'} ]
+                    </Link>
+                    <a href="https://github.com/Dandanieldan" target="_blank" rel="noreferrer" className="hover:underline text-foreground">
+                      [ GitHub ]
+                    </a>
+                    <a href="https://www.linkedin.com/in/daniel-villarreal-h" target="_blank" rel="noreferrer" className="hover:underline text-foreground">
+                      [ LinkedIn ]
+                    </a>
+                  </div>
+
+                  <button 
+                    onClick={() => setIsProfileActive(false)}
+                    className="font-mono text-[9px] uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity"
+                  >
+                    ← CLOSE PROFILE
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
 
           <p className="mt-12 max-w-xl text-lg md:text-2xl font-medium tracking-tight border-l-4 border-black dark:border-white pl-6 relative z-0">
             {d.hero_desc}

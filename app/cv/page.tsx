@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { ArrowLeft, Printer, Globe, Sun, Moon } from "lucide-react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
+import { motion } from "framer-motion";
 
 const cvData = {
   es: {
@@ -210,6 +211,60 @@ const cvData = {
   }
 };
 
+// --- Custom Cursor Component ---
+const CustomCursor = ({ isDark }: { isDark: boolean }) => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const updateMousePosition = (e: MouseEvent) => setMousePosition({ x: e.clientX, y: e.clientY });
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('a') || target.closest('button') || target.closest('.interactive-demo') || target.closest('input')) {
+        setIsHovering(true);
+      } else {
+        setIsHovering(false);
+      }
+    };
+
+    window.addEventListener('mousemove', updateMousePosition);
+    window.addEventListener('mouseover', handleMouseOver);
+    return () => {
+      window.removeEventListener('mousemove', updateMousePosition);
+      window.removeEventListener('mouseover', handleMouseOver);
+    };
+  }, []);
+
+  if (!mounted) return null;
+
+  return (
+    <>
+      <motion.div
+        className={`fixed top-0 left-0 w-3 h-3 rounded-full hidden md:block z-[100] pointer-events-none mix-blend-difference bg-white`}
+        animate={{
+          x: mousePosition.x - 6,
+          y: mousePosition.y - 6,
+          scale: isHovering ? 0 : 1,
+          opacity: isHovering ? 0 : 1
+        }}
+        transition={{ type: 'tween', ease: 'backOut', duration: 0.1 }}
+      />
+      <motion.div
+        className={`fixed top-0 left-0 w-8 h-8 rounded-full border hidden md:block z-[100] pointer-events-none mix-blend-difference border-white`}
+        animate={{
+          x: mousePosition.x - 16,
+          y: mousePosition.y - 16,
+          scale: isHovering ? 1.5 : 1,
+          backgroundColor: isHovering ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0)'
+        }}
+        transition={{ type: 'spring', stiffness: 250, damping: 20 }}
+      />
+    </>
+  );
+};
+
 export default function CVPage() {
   const [lang, setLang] = useState<"es" | "en">("es");
   const [mounted, setMounted] = useState(false);
@@ -218,9 +273,11 @@ export default function CVPage() {
 
   useEffect(() => {
     setMounted(true);
-    // Add cv-mode class to body to allow scroll and restore cursor
+    // Add cv-mode class to body & documentElement to allow scroll and custom cursor hide
+    document.documentElement.classList.add("cv-mode");
     document.body.classList.add("cv-mode");
     return () => {
+      document.documentElement.classList.remove("cv-mode");
       document.body.classList.remove("cv-mode");
     };
   }, []);
@@ -402,6 +459,7 @@ export default function CVPage() {
         </div>
 
       </div>
+      <CustomCursor isDark={isDark} />
     </div>
   );
 }

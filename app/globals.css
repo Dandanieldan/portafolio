@@ -65,11 +65,22 @@ a, button, [role="button"], input, select, textarea {
   opacity: 0.06;
 }
 
-/* Restore default cursor and scroll on CV page */
+/* Restore scrollbar, scroll behavior, and hide native cursor for CV page */
+html.cv-mode,
 body.cv-mode {
   overflow: auto !important;
-  cursor: auto !important;
+  overflow-y: auto !important;
+  height: auto !important;
+  min-height: 100vh !important;
+  cursor: none !important;
 }
+html.cv-mode a,
+html.cv-mode button,
+html.cv-mode [role="button"],
+html.cv-mode input,
+html.cv-mode select,
+html.cv-mode textarea,
+html.cv-mode *,
 body.cv-mode a,
 body.cv-mode button,
 body.cv-mode [role="button"],
@@ -77,7 +88,28 @@ body.cv-mode input,
 body.cv-mode select,
 body.cv-mode textarea,
 body.cv-mode * {
-  cursor: auto !important;
+  cursor: none !important;
 }
+
+/* Custom Scrollbar for CV page */
+html.cv-mode::-webkit-scrollbar,
+body.cv-mode::-webkit-scrollbar {
+  width: 8px !important;
+  display: block !important;
+}
+html.cv-mode::-webkit-scrollbar-track,
+body.cv-mode::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+html.cv-mode::-webkit-scrollbar-thumb,
+body.cv-mode::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.3) !important;
+  border-radius: 4px !important;
+}
+html.cv-mode::-webkit-scrollbar-thumb:hover,
+body.cv-mode::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.5) !important;
+}
+
 
 
