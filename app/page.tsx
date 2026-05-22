@@ -127,7 +127,6 @@ const translations = {
     proj4_demo_title: "Conversational Interface",
     proj4_demo_placeholder: "Type your query...",
     proj4_demo_empty: "Flow not found",
-    nav_edu: "EDUCATION",
     about_title: "ABOUT ME",
     about_text: "Software Engineering student with proven experience developing web and mobile solutions. Focused on writing clean code, learning new technologies agilely, and delivering real value to the projects I participate in.",
     bento_frontend: "FRONTEND CORE",
