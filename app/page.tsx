@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import {
-  Sun, Moon, Package, Check, ArrowRight,
+  Sun, Moon, Package, Check, ArrowRight, Barcode,
   ArrowUpRight, Command,
   Calendar as CalendarIcon, MessageSquare, Layout
 } from 'lucide-react';
@@ -23,17 +23,29 @@ const translations = {
     hero_title3: "FRONTEND DEV.",
     hero_desc: "Soy Daniel Villarreal, desarrollador de software enfocado en crear experiencias web y móviles modernas, funcionales y escalables. Me apasiona construir productos digitales centrados en claridad, rendimiento y experiencia de usuario.",
     scroll_down: "DESCUBRE MI TRABAJO",
-    proj1_cat: "E-COMMERCE A GRAN ESCALA",
+    proj0_cat: "PRÉSTAMOS FINANCIEROS",
+    proj0_title: "SPAUJED",
+    proj0_challenge: "Profesores perdían días en trámites presenciales, entrega física de comprobantes y estudios socioeconómicos en papel para solicitar préstamos.",
+    proj0_solution: "Automaticé el 100% del proceso con una plataforma web. Un motor de cálculo evalúa la capacidad de pago instantáneamente y digitaliza la validación de documentos.",
+    proj0_demo_title: "Simulador de Préstamo",
+    proj0_demo_amount: "Monto",
+    proj0_demo_biweekly: "Descuento Quincenal",
+    proj0_demo_btn: "Evaluar Crédito",
+    proj0_demo_validating: "Validando identidad...",
+    proj0_demo_contract: "Calculando capacidad...",
+    proj0_demo_approved: "CRÉDITO APROBADO",
+    proj0_demo_sign: "Firmar Contrato",
+    proj1_cat: "LOGÍSTICA Y E-COMMERCE",
     proj1_title: "Correos Clic",
-    proj1_challenge: "Modernizar la experiencia de compra heredada de Correos de México, reduciendo la fricción cognitiva en el checkout para competir con gigantes del retail digital.",
-    proj1_solution: "Implementé una arquitectura frontend basada en componentes con Next.js y Tailwind CSS. Creé micro-interacciones fluidas y optimicé el rendimiento visualizando estados optimistas.",
+    proj1_challenge: "El registro y checkout de envíos presentaba alta fricción cognitiva, validaciones lentas y un diseño desactualizado.",
+    proj1_solution: "Desarrollé una interfaz moderna con Next.js y Tailwind CSS. Implementé un cotizador volumétrico en tiempo real y validaciones dinámicas con generación de guías imprimibles.",
     proj1_demo_title: "Interacciones de Compra",
     proj1_demo_item: "Producto",
     proj1_demo_drop: "Arrastra para comprar",
     proj1_demo_success: "¡En el carrito!",
     proj1_demo_reset: "Reiniciar",
     proj2_cat: "PLATAFORMA SAAS",
-    proj2_title: "Fitness & Coaching",
+    proj2_title: "EcoFitness Hub",
     proj2_challenge: "Los entrenadores carecían de una herramienta centralizada para ver el progreso real de sus clientes, dependiendo de mensajes dispersos y hojas de cálculo.",
     proj2_solution: "Desarrollé un ecosistema digital completo conectando entrenadores con usuarios. Implementé un panel de control con visualización de métricas en tiempo real y registro de evidencia fotográfica.",
     proj2_demo_title: "Métricas de Progreso",
@@ -108,17 +120,29 @@ const translations = {
     hero_title3: "FRONTEND DEV.",
     hero_desc: "I am Daniel Villarreal, a software developer focused on building modern, functional, and scalable web and mobile experiences. I'm passionate about crafting digital products centered on clarity, performance, and user experience.",
     scroll_down: "DISCOVER MY WORK",
-    proj1_cat: "LARGE-SCALE E-COMMERCE",
+    proj0_cat: "FINANCIAL LOANS",
+    proj0_title: "SPAUJED",
+    proj0_challenge: "Teachers lost days in in-person procedures, physical voucher delivery, and paper-based socio-economic studies to request loans.",
+    proj0_solution: "Automated 100% of the process with a web platform. A calculation engine instantly evaluates payment capacity and digitizes document validation.",
+    proj0_demo_title: "Loan Simulator",
+    proj0_demo_amount: "Amount",
+    proj0_demo_biweekly: "Bi-weekly Deduction",
+    proj0_demo_btn: "Evaluate Credit",
+    proj0_demo_validating: "Validating identity...",
+    proj0_demo_contract: "Calculating capacity...",
+    proj0_demo_approved: "CREDIT APPROVED",
+    proj0_demo_sign: "Sign Contract",
+    proj1_cat: "LOGISTICS & E-COMMERCE",
     proj1_title: "Correos Clic",
-    proj1_challenge: "Modernize Correos de Mexico's legacy shopping experience by reducing cognitive friction in the checkout process to compete with digital retail giants.",
-    proj1_solution: "Implemented a component-based frontend architecture with Next.js and Tailwind CSS. Built fluid micro-interactions and optimized performance using optimistic UI states.",
+    proj1_challenge: "Shipment registration and checkout flow had high cognitive friction, slow validations, and outdated design.",
+    proj1_solution: "Developed a modern interface with Next.js and Tailwind CSS. Implemented a real-time volumetric quoting engine with dynamic validations and instant label printing.",
     proj1_demo_title: "Purchase Interactions",
     proj1_demo_item: "Product",
     proj1_demo_drop: "Drop to buy",
     proj1_demo_success: "In Cart!",
     proj1_demo_reset: "Reset",
     proj2_cat: "SAAS PLATFORM",
-    proj2_title: "Fitness & Coaching",
+    proj2_title: "EcoFitness Hub",
     proj2_challenge: "Coaches lacked a centralized tool to track their clients' real progress, relying on scattered messages and spreadsheets.",
     proj2_solution: "Developed a complete digital ecosystem connecting coaches with users. Built a real-time dashboard for metrics visualization and photographic evidence tracking.",
     proj2_demo_title: "Progress Metrics",
@@ -243,190 +267,622 @@ const CustomCursor = ({ isDark }: { isDark: boolean }) => {
 
 // --- Demos UX/UI (Monochromatic Full-Screen Layouts) ---
 
-const CheckoutDemo = ({ dict }: { dict: any }) => {
-  const [optimized, setOptimized] = useState(false);
-  const [running, setRunning] = useState(false);
-  const [frictionScore, setFrictionScore] = useState(87);
-  const [tick, setTick] = useState(0);
+const SpaujedDemo = ({ dict }: { dict: any }) => {
+  const [amount, setAmount] = useState(50000);
+  const [status, setStatus] = useState<'idle' | 'scanning' | 'approved'>('idle');
+  const [scanProgress, setScanProgress] = useState(0);
 
-  const handleOptimize = () => {
-    if (running || optimized) return;
-    setRunning(true);
-    let score = 87;
+  const handleRequest = () => {
+    if (status !== 'idle') return;
+    setStatus('scanning');
+    let p = 0;
     const interval = setInterval(() => {
-      score = Math.max(12, score - Math.floor(Math.random() * 14 + 4));
-      setFrictionScore(score);
-      setTick(t => t + 1);
-      if (score <= 12) {
+      p += 5;
+      setScanProgress(p);
+      if (p >= 100) {
         clearInterval(interval);
-        setOptimized(true);
-        setRunning(false);
+        setStatus('approved');
       }
-    }, 180);
+    }, 100);
   };
 
   const handleReset = () => {
-    setOptimized(false);
-    setRunning(false);
-    setFrictionScore(87);
-    setTick(0);
+    setStatus('idle');
+    setAmount(50000);
+    setScanProgress(0);
   };
 
-  const highFrictionFields = [
-    { label: 'Full Legal Name', w: 'w-full' },
-    { label: 'Billing Address Line 1', w: 'w-full' },
-    { label: 'Billing Address Line 2', w: 'w-2/3' },
-    { label: 'ZIP Code', w: 'w-1/3' },
-    { label: 'Card Number', w: 'w-full' },
-    { label: 'CVV', w: 'w-1/4' },
-    { label: 'Expiry MM/YY', w: 'w-1/3' },
-    { label: 'Promo Code', w: 'w-2/3' },
-  ];
-
-  const lowFrictionFields = [
-    { label: 'Email', w: 'w-full' },
-    { label: 'Card', w: 'w-full' },
-  ];
-
-  const fields = optimized ? lowFrictionFields : highFrictionFields;
-  const scoreColor = frictionScore > 60 ? 'text-foreground' : frictionScore > 30 ? 'text-foreground/70' : 'text-foreground/40';
+  const biweekly = Math.round((amount * 1.08) / 48); // Fake math
 
   return (
-    <div className="flex flex-col h-full w-full interactive-demo overflow-hidden relative bg-zinc-50 dark:bg-zinc-900/10 p-5">
-      {/* Header bar */}
-      <div className="flex items-center justify-between mb-4 border-b border-black/10 dark:border-white/10 pb-3">
-        <div className="text-[9px] font-mono tracking-widest uppercase text-zinc-400">
-          {dict.proj1_demo_title}
-        </div>
+    <div className="flex flex-col h-full w-full interactive-demo overflow-hidden relative bg-zinc-100 dark:bg-[#0a0a0a] text-black dark:text-white p-5 font-mono select-none group transition-colors duration-500">
+      {/* Avant-garde Grid & Glow Background */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(0,0,0,0.05)_0%,transparent_70%)] dark:bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.1)_0%,transparent_70%)] pointer-events-none transition-colors duration-500" />
+      
+      {/* Light Grid */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.04)_1px,transparent_1px)] bg-[size:30px_30px] opacity-100 dark:opacity-0 pointer-events-none transition-all duration-1000 group-hover:scale-105" />
+      {/* Dark Grid */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:30px_30px] opacity-0 dark:opacity-100 pointer-events-none transition-all duration-1000 group-hover:scale-105" />
+
+      {/* Header */}
+      <div className="relative z-10 flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5">
-            <div className={`text-[9px] font-mono uppercase tracking-widest ${scoreColor}`}>FRICTION</div>
-            <motion.div
-              key={frictionScore}
-              initial={{ opacity: 0, y: -4 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={`text-[11px] font-black font-mono tabular-nums ${scoreColor}`}
-            >
-              {frictionScore}
-            </motion.div>
-          </div>
-          <div className={`w-1.5 h-1.5 rounded-full ${running ? 'bg-foreground animate-pulse' : optimized ? 'bg-foreground/30' : 'bg-foreground/20'
-            }`} />
+          <div className="w-2 h-2 rounded-full bg-black dark:bg-white animate-pulse" />
+          <span className="text-[10px] tracking-widest uppercase text-black/70 dark:text-white/60">{dict.proj0_demo_title}</span>
+        </div>
+        <div className="text-[10px] uppercase tracking-widest text-black/60 dark:text-white/40 border border-black/10 dark:border-white/10 px-2 py-1 rounded-full backdrop-blur-sm bg-black/5 dark:bg-transparent">
+          SPJ-SYSTEM-v2
         </div>
       </div>
 
-      {/* System label */}
-      <AnimatePresence mode="wait">
-        {running && (
-          <motion.div
-            key="scanning"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="text-[9px] font-mono uppercase tracking-widest text-zinc-400 mb-3 flex items-center gap-2"
-          >
-            <motion.span
-              animate={{ opacity: [1, 0.2, 1] }}
-              transition={{ repeat: Infinity, duration: 0.6 }}
-            >▸</motion.span>
-            ADAPTIVE LAYOUT — OPTIMIZATION ACTIVE
-          </motion.div>
-        )}
-        {optimized && !running && (
-          <motion.div
-            key="done"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-[9px] font-mono uppercase tracking-widest text-zinc-400 mb-3"
-          >
-            ✓ COGNITIVE LOAD REDUCED — INTERACTION LATENCY MINIMIZED
-          </motion.div>
-        )}
-        {!running && !optimized && (
-          <motion.div
-            key="idle"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-[9px] font-mono uppercase tracking-widest text-zinc-400 mb-3"
-          >
-            SYSTEM STATE — HIGH FRICTION DETECTED
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div className="flex-1 relative z-10 flex flex-col items-center justify-center w-full max-w-sm mx-auto">
+        <AnimatePresence mode="wait">
+          {status === 'idle' && (
+            <motion.div 
+              key="idle"
+              initial={{ opacity: 0, filter: "blur(10px)", y: 20 }}
+              animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+              exit={{ opacity: 0, filter: "blur(10px)", scale: 0.9 }}
+              className="w-full flex flex-col gap-6"
+            >
+              {/* Dynamic Glass Amount Display */}
+              <div className="relative p-6 rounded-2xl border border-black/10 dark:border-white/10 bg-white/40 dark:bg-white/5 backdrop-blur-md overflow-hidden group-hover:border-black/20 dark:group-hover:border-white/20 transition-colors shadow-xl shadow-black/5 dark:shadow-none">
+                <div className="absolute -top-10 -right-10 w-32 h-32 bg-black/5 dark:bg-white/10 rounded-full blur-3xl pointer-events-none" />
+                <span className="text-[10px] uppercase tracking-widest text-black/70 dark:text-white/60 block mb-2">{dict.proj0_demo_amount}</span>
+                <div className="text-4xl md:text-5xl font-black tracking-tighter text-black dark:text-white">
+                  ${amount.toLocaleString()}
+                </div>
+                
+                {/* Advanced Slider */}
+                <div className="mt-8 relative">
+                  <div className="absolute top-1/2 -translate-y-1/2 left-0 w-full h-1 bg-black/10 dark:bg-white/10 rounded-full overflow-hidden">
+                    <motion.div 
+                      className="h-full bg-black dark:bg-white"
+                      style={{ width: `${((amount - 5000) / 145000) * 100}%` }}
+                    />
+                  </div>
+                  <input 
+                    type="range" 
+                    min="5000" max="150000" step="1000" 
+                    value={amount} 
+                    onChange={(e) => setAmount(Number(e.target.value))}
+                    className="w-full appearance-none bg-transparent h-6 relative z-10 outline-none cursor-pointer slider-thumb-avant"
+                  />
+                  <style dangerouslySetInnerHTML={{__html: `
+                    input[type=range].slider-thumb-avant::-webkit-slider-thumb {
+                      appearance: none;
+                      width: 20px;
+                      height: 20px;
+                      background: black;
+                      border-radius: 50%;
+                      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+                      cursor: pointer;
+                      transition: transform 0.1s;
+                    }
+                    .dark input[type=range].slider-thumb-avant::-webkit-slider-thumb {
+                      background: white;
+                      box-shadow: 0 0 15px rgba(255,255,255,0.5);
+                    }
+                    input[type=range].slider-thumb-avant::-webkit-slider-thumb:hover {
+                      transform: scale(1.2);
+                    }
+                  `}} />
+                </div>
+                <div className="flex justify-between mt-3 text-[9px] text-black/60 dark:text-white/50 font-mono">
+                  <span>$5K</span>
+                  <span>$150K</span>
+                </div>
+              </div>
 
-      {/* Form fields */}
-      <div className="flex-1 overflow-hidden relative">
-        <AnimatePresence>
-          <motion.div
-            key={optimized ? 'opt' : 'raw'}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            className="flex flex-wrap gap-2 w-full"
-          >
-            {fields.map((field, i) => (
-              <motion.div
-                key={field.label}
-                layout
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3, delay: i * 0.05 }}
-                className={`${field.w} flex flex-col gap-1`}
-              >
-                <div className="text-[8px] font-mono uppercase tracking-widest text-zinc-400">{field.label}</div>
-                <div className={`h-7 border ${optimized
-                    ? 'border-black dark:border-white'
-                    : 'border-black/20 dark:border-white/20'
-                  } bg-transparent w-full`} />
-              </motion.div>
-            ))}
-          </motion.div>
+              {/* Action Area */}
+              <div className="flex gap-4 items-center">
+                <div className="flex-1 p-4 rounded-xl border border-black/5 dark:border-white/5 bg-black/[0.02] dark:bg-white/[0.02] flex flex-col">
+                  <span className="text-[9px] uppercase tracking-widest text-black/70 dark:text-white/60">{dict.proj0_demo_biweekly}</span>
+                  <span className="text-lg font-bold">${biweekly.toLocaleString()}</span>
+                </div>
+                <button 
+                  onClick={handleRequest}
+                  className="h-full px-6 rounded-xl bg-black dark:bg-white text-white dark:text-black text-[10px] font-bold uppercase tracking-widest hover:scale-105 hover:shadow-[0_0_20px_rgba(0,0,0,0.15)] dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all flex items-center justify-center"
+                >
+                  <ArrowRight size={18} />
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+          {status === 'scanning' && (
+            <motion.div 
+              key="scanning"
+              initial={{ opacity: 0, scale: 1.1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="w-full aspect-square max-w-[240px] rounded-full border border-black/10 dark:border-white/10 flex items-center justify-center relative bg-white/50 dark:bg-white/[0.02] backdrop-blur-sm"
+            >
+              <svg className="absolute inset-0 w-full h-full -rotate-90">
+                <circle cx="50%" cy="50%" r="48%" fill="none" className="stroke-black/10 dark:stroke-white/10" strokeWidth="2" />
+                <motion.circle 
+                  cx="50%" cy="50%" r="48%" fill="none" stroke="currentColor" strokeWidth="2"
+                  strokeDasharray="300" strokeDashoffset={300 - (300 * scanProgress) / 100}
+                  className="transition-all duration-100 ease-linear text-black dark:text-white"
+                />
+              </svg>
+              <div className="flex flex-col items-center justify-center text-center">
+                <span className="text-4xl font-black">{scanProgress}%</span>
+                <span className="text-[9px] uppercase tracking-widest text-black/70 dark:text-white/60 mt-2 w-32">
+                  {scanProgress < 50 ? dict.proj0_demo_validating : dict.proj0_demo_contract}
+                </span>
+              </div>
+            </motion.div>
+          )}
+
+          {status === 'approved' && (
+            <motion.div 
+              key="approved"
+              initial={{ opacity: 0, y: 30, rotateX: 20 }}
+              animate={{ opacity: 1, y: 0, rotateX: 0 }}
+              transition={{ type: "spring", damping: 20, stiffness: 100 }}
+              className="w-full flex flex-col relative"
+              style={{ perspective: 1000 }}
+            >
+              {/* Floating Ticket: High contrast inverse color based on theme */}
+              <div className="bg-zinc-950 dark:bg-white text-white dark:text-black p-6 rounded-t-2xl rounded-bl-2xl rounded-br-md relative shadow-[0_30px_60px_rgba(0,0,0,0.3)] dark:shadow-[0_20px_50px_rgba(255,255,255,0.15)] overflow-hidden transition-colors">
+                <div className="absolute -top-10 -right-10 text-white/5 dark:text-black/5 rotate-12">
+                  <Package size={120} strokeWidth={1} />
+                </div>
+                
+                <div className="flex items-center gap-2 mb-6 relative z-10">
+                  <div className="w-6 h-6 rounded-full bg-white dark:bg-black text-black dark:text-white flex items-center justify-center">
+                    <Check size={12} strokeWidth={4} />
+                  </div>
+                  <span className="text-xs font-black uppercase tracking-widest">{dict.proj0_demo_approved}</span>
+                </div>
+
+                <div className="space-y-4 font-mono relative z-10">
+                  <div>
+                    <div className="text-[9px] uppercase tracking-widest text-white/70 dark:text-black/70">Capital Autorizado</div>
+                    <div className="text-3xl font-black tracking-tighter">${amount.toLocaleString()}</div>
+                  </div>
+                  <div className="flex justify-between border-t border-white/10 dark:border-black/10 pt-4">
+                    <div>
+                      <div className="text-[9px] uppercase tracking-widest text-white/70 dark:text-black/70">Tasa</div>
+                      <div className="text-sm font-bold">8.0%</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-[9px] uppercase tracking-widest text-white/70 dark:text-black/70">{dict.proj0_demo_biweekly}</div>
+                      <div className="text-sm font-bold">${biweekly.toLocaleString()}</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Fake Barcode */}
+                <div className="mt-6 pt-4 border-t border-white/10 dark:border-black/10 flex flex-col items-center relative z-10">
+                  {/* Light mode: white bars. Dark mode: black bars */}
+                  <div className="w-full h-8 opacity-80 hidden dark:block bg-[repeating-linear-gradient(90deg,black,black_2px,transparent_2px,transparent_4px,black_4px,black_5px,transparent_5px,transparent_8px)]" />
+                  <div className="w-full h-8 opacity-80 block dark:hidden bg-[repeating-linear-gradient(90deg,white,white_2px,transparent_2px,transparent_4px,white_4px,white_5px,transparent_5px,transparent_8px)]" />
+                  
+                  <span className="text-[8px] tracking-widest mt-1 opacity-50">SPJ-{Math.floor(Math.random() * 9999999)}</span>
+                </div>
+              </div>
+
+              <div className="flex gap-2 mt-4">
+                <button 
+                  onClick={handleReset}
+                  className="px-4 py-3 border border-black/20 dark:border-white/20 text-black dark:text-white text-[10px] uppercase tracking-widest hover:bg-black/5 dark:hover:bg-white/10 transition-colors rounded-xl"
+                >
+                  ↺
+                </button>
+                <button className="flex-1 py-3 bg-black dark:bg-white text-white dark:text-black text-[10px] font-bold uppercase tracking-widest hover:scale-[1.02] transition-transform rounded-xl shadow-xl shadow-black/10 dark:shadow-none">
+                  {dict.proj0_demo_sign}
+                </button>
+              </div>
+            </motion.div>
+          )}
         </AnimatePresence>
+      </div>
+    </div>
+  );
+};
 
-        {/* Eliminated fields ghost */}
-        {optimized && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="mt-4 pt-3 border-t border-black/10 dark:border-white/10"
-          >
-            <div className="text-[8px] font-mono uppercase tracking-widest text-zinc-300 dark:text-zinc-600 mb-2">6 fields eliminated</div>
-            <div className="flex flex-wrap gap-1.5">
-              {['Billing Line 2', 'ZIP', 'CVV', 'Expiry', 'Promo Code', 'Legal Name'].map(f => (
-                <div key={f} className="text-[8px] font-mono text-zinc-300 dark:text-zinc-600 line-through">{f}</div>
-              ))}
-            </div>
-          </motion.div>
-        )}
+const ShippingDemo = ({ dict }: { dict: any }) => {
+  const [generated, setGenerating] = useState(false);
+  const [width, setWidth] = useState(40);
+  const [height, setHeight] = useState(40);
+  const [weight, setWeight] = useState(10);
+
+  const handleGenerate = () => {
+    setGenerating(true);
+  };
+
+  const handleReset = () => {
+    setGenerating(false);
+  };
+
+  // Escala visual de la caja (max 150px)
+  const boxW = 60 + (width / 100) * 90;
+  const boxH = 60 + (height / 100) * 90;
+  
+  // Sombra basada en peso
+  const shadowOpacity = 0.1 + (weight / 50) * 0.4;
+
+  return (
+    <div className="flex flex-col h-full w-full interactive-demo overflow-hidden relative bg-zinc-100 dark:bg-[#0a0a0a] text-black dark:text-white p-4 md:p-5 font-mono select-none transition-colors duration-500">
+      {/* Background grid for measurement aesthetic */}
+      <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none" 
+           style={{ backgroundImage: 'radial-gradient(currentColor 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
+      
+      {/* Header */}
+      <div className="relative z-10 flex items-center justify-between mb-2">
+        <div className="text-[9px] tracking-widest uppercase text-black/70 dark:text-white/60">Simulador de Paquetes</div>
+        <div className="flex items-center gap-2 border border-black/10 dark:border-white/10 px-2 py-0.5 rounded-full bg-black/5 dark:bg-white/5 backdrop-blur-sm">
+          <div className="text-[8px] uppercase tracking-widest text-black/60 dark:text-white/50">
+            {generated ? 'GUÍA LISTA' : 'MODO DIMENSIÓN'}
+          </div>
+          <div className={`w-1.5 h-1.5 rounded-full ${generated ? 'bg-black dark:bg-white' : 'bg-black/20 dark:bg-white/20'}`} />
+        </div>
       </div>
 
-      {/* CTA */}
-      <div className="mt-4 pt-3 border-t border-black/10 dark:border-white/10">
-        {!optimized ? (
-          <motion.button
-            onClick={handleOptimize}
-            disabled={running}
-            whileTap={{ scale: 0.97 }}
-            className="w-full py-2.5 bg-black dark:bg-white text-white dark:text-black text-[10px] font-bold uppercase tracking-widest disabled:opacity-40 transition-opacity"
-          >
-            {running ? 'OPTIMIZING...' : 'RUN OPTIMIZATION →'}
-          </motion.button>
-        ) : (
-          <div className="flex gap-2">
-            <div className="flex-1 py-2.5 bg-black dark:bg-white text-white dark:text-black text-[10px] font-bold uppercase tracking-widest text-center">
-              COMPLETE ORDER
-            </div>
-            <button
-              onClick={handleReset}
-              className="px-4 py-2.5 border border-black/20 dark:border-white/20 text-[10px] font-mono uppercase tracking-widest text-zinc-400 hover:border-black dark:hover:border-white transition-colors"
+      <div className="flex-1 relative z-10 flex flex-col w-full h-full justify-between items-center overflow-hidden">
+        <AnimatePresence mode="wait">
+          {!generated ? (
+            <motion.div 
+              key="simulator"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8, filter: "blur(10px)" }}
+              transition={{ duration: 0.4 }}
+              className="w-full flex-1 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 overflow-hidden py-2"
             >
-              RESET
-            </button>
+              {/* Dynamic Box */}
+              <div className="flex-1 flex items-center justify-center w-full relative min-h-[140px] md:min-h-0 md:h-full">
+                
+                {/* Weight Label (Floating inside container) */}
+                <div className="absolute top-1.5 right-1.5 text-[8px] uppercase tracking-widest text-black/40 dark:text-white/40">
+                  Peso: {weight} kg
+                </div>
+
+                {/* Horizontal CAD Dimension Line (Width) */}
+                <motion.div
+                  className="absolute flex items-center justify-between text-[8px] text-zinc-400 dark:text-zinc-500 pointer-events-none"
+                  animate={{
+                    width: boxW,
+                    y: -(boxH / 2) - 14,
+                  }}
+                  transition={{ type: "spring", stiffness: 150, damping: 15 }}
+                >
+                  <div className="w-[1px] h-2 bg-zinc-300 dark:bg-zinc-800" />
+                  <div className="flex-1 h-[1px] border-t border-dashed border-zinc-300 dark:border-zinc-800 mx-1" />
+                  <span className="text-[8px] font-bold text-zinc-500 dark:text-zinc-400 font-mono px-0.5">{width} cm</span>
+                  <div className="flex-1 h-[1px] border-t border-dashed border-zinc-300 dark:border-zinc-800 mx-1" />
+                  <div className="w-[1px] h-2 bg-zinc-300 dark:bg-zinc-800" />
+                </motion.div>
+
+                {/* Vertical CAD Dimension Line (Height) */}
+                <motion.div
+                  className="absolute flex flex-col items-center justify-between text-[8px] text-zinc-400 dark:text-zinc-500 pointer-events-none"
+                  animate={{
+                    height: boxH,
+                    x: -(boxW / 2) - 14,
+                  }}
+                  transition={{ type: "spring", stiffness: 150, damping: 15 }}
+                >
+                  <div className="h-[1px] w-2 bg-zinc-300 dark:bg-zinc-800" />
+                  <div className="flex-1 w-[1px] border-l border-dashed border-zinc-300 dark:bg-zinc-800 my-1" />
+                  <span className="text-[8px] font-bold text-zinc-500 dark:text-zinc-400 font-mono py-0.5 -rotate-90 select-none whitespace-nowrap">{height} cm</span>
+                  <div className="flex-1 w-[1px] border-l border-dashed border-zinc-300 dark:bg-zinc-800 my-1" />
+                  <div className="h-[1px] w-2 bg-zinc-300 dark:bg-zinc-800" />
+                </motion.div>
+
+                <motion.div
+                  layoutId="package-entity"
+                  className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-black/20 dark:border-white/20 rounded-lg flex items-center justify-center relative"
+                  animate={{ 
+                    width: boxW, 
+                    height: boxH,
+                    boxShadow: `0 15px 30px rgba(0,0,0,${shadowOpacity})`
+                  }}
+                  transition={{ type: "spring", stiffness: 150, damping: 15 }}
+                >
+                  <Package className="text-black/10 dark:text-white/10" size={32} />
+                  {/* Cintas de embalaje (decorativo vectorial) */}
+                  <div className="absolute w-full h-[2px] bg-black/5 dark:bg-white/5" />
+                  <div className="absolute h-full w-[2px] bg-black/5 dark:bg-white/5" />
+                </motion.div>
+              </div>
+
+              {/* Controles: Presets y Ajuste Fino */}
+              <div className="w-full md:w-[180px] lg:w-[200px] flex flex-col gap-3 shrink-0 justify-center">
+                
+                {/* Presets de Talla */}
+                <div className="flex gap-1 w-full p-0.5 bg-black/5 dark:bg-white/5 rounded-lg border border-black/10 dark:border-white/10">
+                  {[
+                    { id: 'chica', label: 'Chica', w: 20, h: 20, kg: 2 },
+                    { id: 'mediana', label: 'Mediana', w: 40, h: 40, kg: 10 },
+                    { id: 'grande', label: 'Grande', w: 70, h: 70, kg: 25 },
+                  ].map((preset) => {
+                    const isActive = width === preset.w && height === preset.h;
+                    return (
+                      <button
+                        key={preset.id}
+                        onClick={() => {
+                          setWidth(preset.w);
+                          setHeight(preset.h);
+                          setWeight(preset.kg);
+                        }}
+                        className={`flex-1 py-1 text-[8px] uppercase tracking-widest font-bold rounded transition-all ${
+                          isActive 
+                            ? 'bg-white dark:bg-zinc-800 text-black dark:text-white shadow-sm border border-black/10 dark:border-white/10' 
+                            : 'text-black/50 dark:text-white/50 hover:bg-black/5 dark:hover:bg-white/5'
+                        }`}
+                      >
+                        {preset.label}
+                      </button>
+                    )
+                  })}
+                </div>
+
+                {/* Ajuste Fino (Inputs numéricos) */}
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { label: "Ancho", val: width, set: setWidth, unit: "cm" },
+                    { label: "Alto", val: height, set: setHeight, unit: "cm" },
+                    { label: "Peso", val: weight, set: setWeight, unit: "kg" }
+                  ].map((ctrl, i) => (
+                    <div key={i} className="flex flex-col gap-0.5 relative group">
+                      <div className="text-[7px] uppercase tracking-widest text-black/50 dark:text-white/50 px-0.5">
+                        {ctrl.label}
+                      </div>
+                      <div className="relative">
+                        <input 
+                          type="number" 
+                          value={ctrl.val}
+                          onChange={(e) => ctrl.set(Number(e.target.value) || 0)}
+                          className="w-full bg-transparent border-b border-black/20 dark:border-white/20 pb-0.5 text-xs font-bold text-black dark:text-white outline-none focus:border-black dark:focus:border-white transition-colors"
+                        />
+                        <span className="absolute right-0 bottom-1 text-[8px] text-black/30 dark:text-white/30 pointer-events-none">
+                          {ctrl.unit}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <button
+                  onClick={handleGenerate}
+                  className="w-full py-2 bg-black dark:bg-white text-white dark:text-black text-[9px] font-bold uppercase tracking-widest rounded-lg hover:scale-[1.02] transition-transform shadow-md"
+                >
+                  Generar Guía
+                </button>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div 
+              key="ticket"
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ type: "spring", stiffness: 200, damping: 20 }}
+              className="w-full flex-1 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 overflow-hidden py-2"
+            >
+              <motion.div 
+                layoutId="package-entity"
+                className="w-full md:flex-1 max-w-[280px] bg-white dark:bg-zinc-950 border border-black/10 dark:border-white/10 rounded-xl shadow-lg p-4 flex flex-col relative overflow-hidden"
+              >
+                {/* Decoración superior ticket */}
+                <div className="absolute top-0 left-0 w-full h-1 bg-black dark:bg-white opacity-10" />
+                
+                <div className="flex justify-between items-start mb-3 pt-1">
+                  <Barcode className="w-12 h-6 text-black dark:text-white animate-pulse" strokeWidth={1} />
+                  <div className="text-right font-mono">
+                    <div className="text-[10px] font-black tracking-widest">CM-8472X</div>
+                    <div className="text-[6px] uppercase tracking-widest text-black/50 dark:text-white/50">Tracking ID</div>
+                  </div>
+                </div>
+
+                <div className="w-full h-[1px] border-t border-dashed border-black/20 dark:border-white/20 mb-2.5" />
+
+                <div className="grid grid-cols-2 gap-2 mb-3 text-left">
+                  <div>
+                    <div className="text-[6px] uppercase tracking-widest text-black/40 dark:text-white/40 mb-0.5">Remitente</div>
+                    <div className="text-[9px] font-bold truncate">USR-DANIEL</div>
+                    <div className="text-[8px] text-black/60 dark:text-white/60 mt-0.5 leading-tight">Av. Tecnológico<br/>Durango, Dgo.</div>
+                  </div>
+                  <div>
+                    <div className="text-[6px] uppercase tracking-widest text-black/40 dark:text-white/40 mb-0.5">Destinatario</div>
+                    <div className="text-[9px] font-bold truncate">CLIENTE WEB</div>
+                    <div className="text-[8px] text-black/60 dark:text-white/60 mt-0.5 leading-tight">Reforma 222<br/>CDMX</div>
+                  </div>
+                </div>
+
+                <div className="bg-black/5 dark:bg-white/5 rounded p-1.5 flex justify-between items-center mt-auto">
+                  <div className="flex gap-2 text-[8px] font-bold">
+                    <div><span className="text-black/40 dark:text-white/40 mr-0.5">DIM</span>{width}x{height} cm</div>
+                    <div><span className="text-black/40 dark:text-white/40 mr-0.5">PESO</span>{weight} kg</div>
+                  </div>
+                  <Check className="text-black dark:text-white w-3 h-3" />
+                </div>
+              </motion.div>
+
+              <div className="flex flex-row md:flex-col gap-2 w-full md:w-[130px] shrink-0 justify-center">
+                <button 
+                  onClick={handleReset}
+                  className="flex-1 md:w-full py-2 border border-black/10 dark:border-white/10 text-black dark:text-white text-[8px] uppercase tracking-widest hover:bg-black/5 dark:hover:bg-white/5 transition-colors rounded-lg"
+                >
+                  ↺ Nueva
+                </button>
+                <button className="flex-[2] md:w-full py-2 bg-black dark:bg-white text-white dark:text-black text-[8px] font-bold uppercase tracking-widest rounded-lg hover:opacity-80 transition-opacity flex items-center justify-center gap-1">
+                  Imprimir <ArrowRight size={10} />
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+};
+
+const FitnessDemo = ({ dict }: { dict: any }) => {
+  const [week, setWeek] = useState(1);
+  const totalWeeks = 12;
+
+  // Interpolated metrics
+  const weight = 85 - ((85 - 72) * (week - 1) / (totalWeeks - 1));
+  const bodyFat = 24.5 - ((24.5 - 11) * (week - 1) / (totalWeeks - 1));
+  const adherence = 75 + ((98 - 75) * (week - 1) / (totalWeeks - 1));
+
+  // Radar Chart Math
+  const progress = (week - 1) / (totalWeeks - 1);
+  const data = [
+    90 - (progress * 60), // Grasa (Contrae)
+    40 + (progress * 50), // Músculo (Expande)
+    30 + (progress * 60), // Resistencia (Expande)
+    70 + (progress * 25), // Adherencia (Expande leve)
+    45 + (progress * 45)  // Fuerza (Expande)
+  ];
+
+  const labels = ['Grasa', 'Músculo', 'Resist.', 'Plan', 'Fuerza'];
+
+  const getPoints = (values: number[]) => {
+    return values.map((val, i) => {
+      const angle = -Math.PI / 2 + (i * 2 * Math.PI) / 5;
+      const radius = (val / 100) * 40; // Max radius is 40
+      return `${50 + radius * Math.cos(angle)},${50 + radius * Math.sin(angle)}`;
+    }).join(' ');
+  };
+
+  const currentPoints = getPoints(data);
+  const basePoints = getPoints([100, 100, 100, 100, 100]);
+  const midPoints = getPoints([50, 50, 50, 50, 50]);
+
+  return (
+    <div className="flex flex-col h-full w-full interactive-demo overflow-hidden relative bg-zinc-100 dark:bg-[#0a0a0a] text-black dark:text-white p-6 font-mono select-none transition-colors duration-500">
+      <div className="flex justify-between items-center mb-6 border-b border-black/10 dark:border-white/10 pb-4">
+        <div className="text-[10px] tracking-widest uppercase text-black/70 dark:text-white/60">
+          Fitness Ecosystem
+        </div>
+        <div className="text-[8px] font-bold uppercase tracking-widest border border-black/20 dark:border-white/20 text-black dark:text-white bg-transparent px-3 py-1 rounded-full backdrop-blur-sm">
+          Live Sync
+        </div>
+      </div>
+
+      <div className="flex-1 flex items-center justify-center relative w-full h-full min-h-[200px]">
+        {/* Floating Text Metrics (Left/Right) */}
+        <div className="absolute top-0 left-0 z-10">
+          <div className="text-[8px] uppercase tracking-widest text-black/50 dark:text-white/50 mb-1">Peso</div>
+          <div className="text-2xl font-black">{weight.toFixed(1)}<span className="text-sm font-normal text-black/40 dark:text-white/40 ml-1">kg</span></div>
+        </div>
+        
+        <div className="absolute bottom-0 right-0 text-right z-10">
+          <div className="text-[8px] uppercase tracking-widest text-black/50 dark:text-white/50 mb-1">Adherencia</div>
+          <div className="text-2xl font-black">{Math.round(adherence)}<span className="text-sm font-normal text-black/40 dark:text-white/40 ml-1">%</span></div>
+        </div>
+
+        {/* Radar Chart */}
+        <div className="relative w-full max-w-[240px] aspect-square flex items-center justify-center">
+          <svg viewBox="0 0 100 100" className="w-full h-full overflow-visible">
+            {/* Grids */}
+            <polygon points={basePoints} fill="none" stroke="currentColor" strokeWidth="0.2" className="text-black/20 dark:text-white/20" />
+            <polygon points={midPoints} fill="none" stroke="currentColor" strokeWidth="0.2" className="text-black/20 dark:text-white/20" />
+            
+            {/* Axes Lines */}
+            {[0, 1, 2, 3, 4].map(i => {
+              const angle = -Math.PI / 2 + (i * 2 * Math.PI) / 5;
+              return (
+                <line 
+                  key={i} 
+                  x1="50" y1="50" 
+                  x2={50 + 40 * Math.cos(angle)} 
+                  y2={50 + 40 * Math.sin(angle)} 
+                  stroke="currentColor" 
+                  strokeWidth="0.2" 
+                  className="text-black/20 dark:text-white/20"
+                />
+              )
+            })}
+
+            {/* Dynamic Data Polygon */}
+            <motion.polygon 
+              points={currentPoints}
+              fill="currentColor"
+              fillOpacity="0.05"
+              stroke="currentColor"
+              strokeWidth="0.8"
+              className="text-black dark:text-white"
+              animate={{ points: currentPoints }}
+              transition={{ type: "spring", stiffness: 100, damping: 20 }}
+            />
+
+            {/* Dynamic Data Points (Dots) */}
+            {data.map((val, i) => {
+              const angle = -Math.PI / 2 + (i * 2 * Math.PI) / 5;
+              const radius = (val / 100) * 40;
+              const x = 50 + radius * Math.cos(angle);
+              const y = 50 + radius * Math.sin(angle);
+              return (
+                <motion.circle 
+                  key={`dot-${i}`}
+                  r="1.5"
+                  fill="currentColor"
+                  className="text-black dark:text-white"
+                  animate={{ cx: x, cy: y }}
+                  transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                />
+              )
+            })}
+
+            {/* Axis Labels */}
+            {labels.map((label, i) => {
+              const angle = -Math.PI / 2 + (i * 2 * Math.PI) / 5;
+              const x = 50 + 48 * Math.cos(angle);
+              const y = 50 + 48 * Math.sin(angle);
+              return (
+                <text 
+                  key={`label-${i}`}
+                  x={x} y={y}
+                  textAnchor="middle"
+                  alignmentBaseline="middle"
+                  className="text-[3px] uppercase tracking-widest fill-black/60 dark:fill-white/60"
+                >
+                  {label}
+                </text>
+              )
+            })}
+          </svg>
+        </div>
+      </div>
+
+      {/* Scrubbing Dashboard */}
+      <div className="mt-4 border-t border-black/10 dark:border-white/10 pt-4">
+        <div className="flex justify-between items-end mb-4">
+          <div className="flex flex-col">
+            <span className="text-[8px] uppercase tracking-widest text-black/50 dark:text-white/50">Progreso Temporal</span>
+            <span className="text-lg font-bold">Semana {week} / {totalWeeks}</span>
           </div>
-        )}
+        </div>
+        
+        <div className="relative w-full h-10 flex items-center group cursor-ew-resize">
+          <input 
+            type="range" 
+            min="1" 
+            max={totalWeeks} 
+            value={week} 
+            onChange={(e) => setWeek(parseInt(e.target.value))}
+            className="w-full absolute z-10 opacity-0 cursor-ew-resize h-full"
+          />
+          {/* Custom Slider Track */}
+          <div className="w-full h-1 bg-black/10 dark:bg-white/10 rounded-full relative overflow-hidden group-hover:h-2 transition-all">
+            <motion.div 
+              className="absolute top-0 left-0 h-full bg-black dark:bg-white"
+              animate={{ width: `${((week - 1) / (totalWeeks - 1)) * 100}%` }}
+              transition={{ type: "spring", bounce: 0, duration: 0.3 }}
+            />
+          </div>
+          {/* Custom Slider Thumb */}
+          <motion.div 
+            className="absolute w-3 h-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-full shadow-lg pointer-events-none group-hover:scale-150 transition-transform"
+            animate={{ left: `calc(${((week - 1) / (totalWeeks - 1)) * 100}% - 6px)` }}
+            transition={{ type: "spring", bounce: 0, duration: 0.3 }}
+          />
+        </div>
       </div>
     </div>
   );
@@ -785,35 +1241,98 @@ const SkillsBento = ({ dict }: { dict: any }) => {
 }
 
 
+const AdditionalProjectsDemo = () => {
+  const extras = [
+    {
+      title: "Agenda & Notas",
+      desc: "Tablero Kanban reactivo para la gestión de tareas móviles y web.",
+      tech: ["React Native", "Expo", "Firebase"]
+    },
+    {
+      title: "Chatbot & APIs",
+      desc: "Integración conversacional inteligente consumiendo APIs REST.",
+      tech: ["Node.js", "REST APIs", "Express"]
+    },
+    {
+      title: "Live Dashboard",
+      desc: "Visualizador en tiempo real de logs y métricas de red a 60 FPS.",
+      tech: ["React", "WebSockets", "Framer Motion"]
+    }
+  ];
+
+  return (
+    <div className="flex flex-col h-full w-full justify-center p-6 md:p-8 font-mono bg-zinc-50 dark:bg-[#060606] text-black dark:text-white select-none transition-colors duration-500 overflow-y-auto">
+      <div className="text-[9px] uppercase tracking-widest text-black/40 dark:text-white/40 mb-6 border-b border-black/10 dark:border-white/10 pb-2 flex justify-between items-center font-bold">
+        <span>Otros Desarrollos</span>
+        <span className="text-[8px] opacity-65">Daniel Villarreal</span>
+      </div>
+      <div className="flex flex-col gap-4">
+        {extras.map((proj, idx) => (
+          <motion.div
+            key={idx}
+            className="group relative p-4 border border-black/5 dark:border-white/5 rounded-xl bg-white/40 dark:bg-white/[0.02] hover:bg-white/60 dark:hover:bg-white/[0.04] transition-all duration-300 overflow-hidden"
+            whileHover={{ scale: 1.02 }}
+          >
+            {/* Accent Bar */}
+            <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-black/10 dark:bg-white/10 group-hover:bg-black dark:group-hover:bg-white transition-colors duration-300" />
+            
+            <div className="flex justify-between items-center mb-1.5 pl-2 text-left">
+              <span className="text-xs font-bold uppercase tracking-wider group-hover:translate-x-1 transition-transform duration-300">{proj.title}</span>
+              <span className="text-[7px] text-zinc-500 dark:text-zinc-400 font-bold border border-zinc-200 dark:border-zinc-800/60 px-2 py-0.5 rounded-full bg-white dark:bg-zinc-900 shadow-sm">
+                {proj.tech[0]}
+              </span>
+            </div>
+            <p className="text-[10px] text-black/60 dark:text-white/50 leading-relaxed font-sans font-medium pl-2 text-left">
+              {proj.desc}
+            </p>
+            <div className="flex gap-1.5 mt-3 pl-2 flex-wrap">
+              {proj.tech.map((t, i) => (
+                <span key={i} className="text-[7px] bg-black/5 dark:bg-white/5 px-2 py-0.5 text-black/50 dark:text-white/40 font-bold rounded-sm border border-black/[0.02] dark:border-white/[0.02]">
+                  {t}
+                </span>
+              ))}
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 // --- Project Carousel Component ---
-const ProjectCarousel = ({ dict, isDark }: { dict: any, isDark: boolean }) => {
+const ProjectCarousel = ({ dict, isDark, lang }: { dict: any, isDark: boolean, lang: Lang }) => {
   const [active, setActive] = useState(0);
 
   const projects = [
     {
+      cat: dict.proj0_cat, title: dict.proj0_title, challenge: dict.proj0_challenge, solution: dict.proj0_solution,
+      tags: ['Next.js', 'TypeScript', 'Tailwind CSS'],
+      demo: <SpaujedDemo dict={dict} />,
+      role: ""
+    },
+    {
       cat: dict.proj1_cat, title: dict.proj1_title, challenge: dict.proj1_challenge, solution: dict.proj1_solution,
-      tags: ['Next.js', 'React', 'Tailwind CSS'],
-      demo: <CheckoutDemo dict={dict} />
+      tags: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Zustand'],
+      demo: <ShippingDemo dict={dict} />,
+      role: ""
     },
     {
-      cat: dict.proj2_cat, title: dict.proj2_title, challenge: dict.proj2_challenge, solution: dict.proj2_solution,
-      tags: ['React', 'Node.js', 'Database'],
-      demo: <DashboardDemo dict={dict} />
+      cat: "SAAS PLATFORM", 
+      title: "EcoFitness Hub", 
+      challenge: dict.proj2_challenge, 
+      solution: dict.proj2_solution,
+      tags: ['React', 'TypeScript', 'Framer Motion'],
+      demo: <FitnessDemo dict={dict} />,
+      role: ""
     },
     {
-      cat: dict.proj3_cat, title: dict.proj3_title, challenge: dict.proj3_challenge, solution: dict.proj3_solution,
-      tags: ['React Native', 'Expo', 'Mobile'],
-      demo: <KanbanDemo dict={dict} />
-    },
-    {
-      cat: dict.proj4_cat, title: dict.proj4_title, challenge: dict.proj4_challenge, solution: dict.proj4_solution,
-      tags: ['REST APIs', 'Automation', 'Chatbot'],
-      demo: <CommandPaletteDemo dict={dict} />
-    },
-    {
-      cat: dict.proj5_cat, title: dict.proj5_title, challenge: dict.proj5_challenge, solution: dict.proj5_solution,
-      tags: ['UX/UI', 'Framer Motion', 'React'],
-      demo: <LiveDashboardDemo dict={dict} />
+      cat: "DESARROLLOS VARIOS",
+      title: "Otros Proyectos",
+      challenge: "Optimización de procesos internos, flujos automatizados de mensajería y visualización de datos en tiempo real.",
+      solution: "Una colección de módulos y herramientas desarrolladas para resolver tareas específicas de comunicación, productividad y monitoreo de red.",
+      tags: ['React Native', 'WebSockets', 'REST APIs', 'Node.js'],
+      demo: <AdditionalProjectsDemo />,
+      role: "Módulos de Integración y Herramientas Auxiliares"
     }
   ];
 
@@ -823,9 +1342,14 @@ const ProjectCarousel = ({ dict, isDark }: { dict: any, isDark: boolean }) => {
   return (
     <section id="projects" className="min-h-screen w-full md:snap-start flex flex-col pt-24 pb-12 overflow-hidden relative">
       <div className="flex w-full px-6 md:px-16 lg:px-24 mb-8 justify-between items-end">
-        <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-[0.9]">
-          {dict.nav_projects}
-        </h2>
+        <div className="flex flex-col gap-1.5 text-left">
+          <span className="text-[8px] font-mono tracking-[0.2em] text-zinc-400 dark:text-zinc-500 uppercase font-semibold">
+            {lang === 'es' ? 'RETO / SOLUCIÓN' : 'CHALLENGE / SOLUTION'}
+          </span>
+          <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-[0.9]">
+            {dict.nav_projects}
+          </h2>
+        </div>
         <div className="flex gap-4">
           <button onClick={handlePrev} className="p-2 border border-black dark:border-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors">
             <ArrowRight className="rotate-180" />
@@ -864,25 +1388,35 @@ const ProjectCarousel = ({ dict, isDark }: { dict: any, isDark: boolean }) => {
               transition={{ duration: 0.4 }}
               className="flex flex-col h-full justify-center"
             >
-              <div className="text-xs font-mono tracking-widest uppercase mb-4 flex items-center gap-4 text-zinc-500">
+              <div className="text-xs font-mono tracking-widest uppercase mb-2 flex items-center gap-4 text-zinc-500">
                 <div className="w-8 h-[2px] bg-zinc-500"></div>
                 0{active + 1} / {projects[active].cat}
               </div>
+
+              {projects[active].role && (
+                <span className="text-[9px] font-mono uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mb-1.5 block">
+                  {projects[active].role}
+                </span>
+              )}
 
               <h3 className="text-3xl md:text-5xl font-black tracking-tighter mb-4 md:mb-12 uppercase leading-[0.9]">
                 {projects[active].title}
               </h3>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-12 mb-4 md:mb-12">
-                <div className="border-l-2 border-black/20 dark:border-white/20 pl-4">
-                  <h4 className="font-bold uppercase tracking-widest text-[10px] mb-2 md:mb-3 opacity-50 text-foreground">Reto / Challenge</h4>
-                  <p className="text-base md:text-lg font-medium opacity-90 leading-relaxed">
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-12 mb-4 md:mb-12">
+                <div className="border-l-[1px] border-zinc-200 dark:border-zinc-800/80 pl-5 text-left">
+                  <h4 className="font-mono text-[9px] tracking-[0.15em] text-zinc-400 dark:text-zinc-500 uppercase font-semibold mb-2.5">
+                    {lang === 'es' ? 'EL RETO' : 'THE CHALLENGE'}
+                  </h4>
+                  <p className="text-sm md:text-base font-sans font-medium text-zinc-700 dark:text-zinc-300 leading-relaxed">
                     {projects[active].challenge}
                   </p>
                 </div>
-                <div className="border-l-2 border-black/20 dark:border-white/20 pl-4">
-                  <h4 className="font-bold uppercase tracking-widest text-[10px] mb-2 md:mb-3 opacity-50 text-foreground">Solución / Solution</h4>
-                  <p className="text-base md:text-lg font-medium opacity-90 leading-relaxed">
+                <div className="border-l-[1px] border-zinc-200 dark:border-zinc-800/80 pl-5 text-left">
+                  <h4 className="font-mono text-[9px] tracking-[0.15em] text-zinc-400 dark:text-zinc-500 uppercase font-semibold mb-2.5">
+                    {lang === 'es' ? 'LA SOLUCIÓN' : 'THE SOLUTION'}
+                  </h4>
+                  <p className="text-sm md:text-base font-sans font-medium text-zinc-700 dark:text-zinc-300 leading-relaxed">
                     {projects[active].solution}
                   </p>
                 </div>
@@ -1144,7 +1678,7 @@ export default function Portfolio() {
       <SkillsBento dict={d} />
 
       {/* Projects Carousel */}
-      <ProjectCarousel dict={d} isDark={isDark} />
+      <ProjectCarousel dict={d} isDark={isDark} lang={lang} />
 
       {/* Education & Contact */}
       <section id="education" className="min-h-screen w-full md:snap-start flex flex-col md:flex-row bg-foreground text-background">
