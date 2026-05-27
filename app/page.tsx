@@ -754,7 +754,7 @@ const FitnessDemo = ({ dict }: { dict: any }) => {
   const midPoints = getPoints([50, 50, 50, 50, 50]);
 
   return (
-    <div className="flex flex-col h-full w-full interactive-demo overflow-hidden relative bg-zinc-100 dark:bg-[#0a0a0a] text-black dark:text-white p-6 font-mono select-none transition-colors duration-500">
+    <div className="flex flex-col h-full w-full interactive-demo overflow-hidden relative bg-zinc-100 dark:bg-[#0a0a0a] text-black dark:text-white p-4 md:p-6 font-mono select-none transition-colors duration-500">
       <div className="flex justify-between items-center mb-6 border-b border-black/10 dark:border-white/10 pb-4">
         <div className="text-[10px] tracking-widest uppercase text-black/70 dark:text-white/60">
           Fitness Ecosystem
@@ -777,7 +777,7 @@ const FitnessDemo = ({ dict }: { dict: any }) => {
         </div>
 
         {/* Radar Chart */}
-        <div className="relative w-full max-w-[240px] aspect-square flex items-center justify-center">
+        <div className="relative w-full max-w-[180px] md:max-w-[240px] aspect-square flex items-center justify-center">
           <svg viewBox="0 0 100 100" className="w-full h-full overflow-visible">
             {/* Grids */}
             <polygon points={basePoints} fill="none" stroke="currentColor" strokeWidth="0.2" className="text-black/20 dark:text-white/20" />
@@ -1340,7 +1340,7 @@ const ProjectCarousel = ({ dict, isDark, lang }: { dict: any, isDark: boolean, l
   const handlePrev = () => setActive((prev) => (prev - 1 + projects.length) % projects.length);
 
   return (
-    <section id="projects" className="min-h-screen w-full md:snap-start flex flex-col pt-24 pb-12 overflow-hidden relative">
+    <section id="projects" className="min-h-screen w-full md:snap-start flex flex-col pt-24 pb-12 overflow-x-hidden md:overflow-hidden relative">
       <div className="flex w-full px-6 md:px-16 lg:px-24 mb-8 justify-between items-end">
         <div className="flex flex-col gap-1.5 text-left">
           <span className="text-[8px] font-mono tracking-[0.2em] text-zinc-400 dark:text-zinc-500 uppercase font-semibold">
@@ -1362,7 +1362,7 @@ const ProjectCarousel = ({ dict, isDark, lang }: { dict: any, isDark: boolean, l
 
       <div className="flex-1 flex flex-col md:flex-row gap-8 md:gap-16 px-6 md:px-16 lg:px-24 max-w-[1400px] mx-auto w-full h-full pb-8">
         {/* Left Side: Demo (45% width on lg) */}
-        <div className="w-full md:w-1/2 lg:w-[45%] h-[40vh] md:h-[60vh] border border-black/20 dark:border-white/20 relative overflow-hidden bg-zinc-50 dark:bg-zinc-900/20 shadow-[8px_8px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_rgba(255,255,255,1)]">
+        <div className="w-full md:w-1/2 lg:w-[45%] h-[460px] md:h-[60vh] md:min-h-[500px] border border-black/20 dark:border-white/20 relative overflow-hidden bg-zinc-50 dark:bg-zinc-900/20 shadow-[8px_8px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_rgba(255,255,255,1)]">
           <AnimatePresence mode="wait">
             <motion.div
               key={active}
